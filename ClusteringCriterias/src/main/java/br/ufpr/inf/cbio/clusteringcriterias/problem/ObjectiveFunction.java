@@ -16,15 +16,15 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
-import org.uma.jmetal.util.pseudorandom.JMetalRandom;
+import org.uma.jmetal.solution.Solution;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
+ * @param <S>
  */
-public class ClusteringProblem {
+public interface ObjectiveFunction<S extends Solution> {
 
-    public static void main(String[] args) {
-        System.out.println("Hello World! [" + JMetalRandom.getInstance().nextDouble() + "]");
-    }
+    public double evaluate(S s);
+
 }
