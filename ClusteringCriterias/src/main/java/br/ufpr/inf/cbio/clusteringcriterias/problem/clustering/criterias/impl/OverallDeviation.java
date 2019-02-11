@@ -40,6 +40,12 @@ public class OverallDeviation implements ObjectiveFunction<Solution> {
      */
     @Override
     public double evaluate(Solution s) {
+        /**
+         * @TODO
+         * 1. Compute each centroid Point
+         * 2. Compute the distance of each object Point to its corresponding centroid
+         * 3. Accumulate the distances
+         */
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
