@@ -14,34 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.clusteringcriterias.problem.clustering.problem;
+package br.ufpr.inf.cbio.clusteringcriterias.distance;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.uma.jmetal.util.point.Point;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class DataSet {
+public interface DistanceCalculator {
 
-    private List<DataPoint> dataPoints;
-
-    public DataSet() {
-        dataPoints = new ArrayList<>();
-    }
-
-    public List<DataPoint> getDataPoints() {
-        return dataPoints;
-    }
-
-    public void setDataPoints(List<DataPoint> dataPoints) {
-        this.dataPoints = dataPoints;
-    }
-
-    public void addDataPoint(String id, Point p) {
-        dataPoints.add(new DataPoint(id, p));
-    }
+    public double computeDistance(Point a, Point b);
 
 }

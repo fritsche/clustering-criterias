@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.clusteringcriterias.problem.clustering.criterias.impl;
+package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
-import br.ufpr.inf.cbio.clusteringcriterias.problem.clustering.criterias.ObjectiveFunction;
-import org.uma.jmetal.solution.Solution;
+import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import org.uma.jmetal.solution.IntegerSolution;
 
 /**
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
@@ -28,7 +28,7 @@ import org.uma.jmetal.solution.Solution;
  * Bioinformatics), 7492 LNCS(PART 2), 32–41.
  * https://doi.org/10.1007/978-3-642-32964-7_4
  */
-public class MinimumCentroidDistance implements ObjectiveFunction<Solution> {
+public class MinimumCentroidDistance implements ObjectiveFunction<IntegerSolution> {
 
     /**
      * Minimum distance between cluster centroids. In this implementation the
@@ -39,7 +39,7 @@ public class MinimumCentroidDistance implements ObjectiveFunction<Solution> {
      * @return
      */
     @Override
-    public double evaluate(Solution s) {
+    public double evaluate(IntegerSolution s) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         /**
          * @TODO convert the output from maximization to minimization

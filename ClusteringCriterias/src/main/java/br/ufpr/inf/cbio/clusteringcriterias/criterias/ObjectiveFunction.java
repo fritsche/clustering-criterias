@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.clusteringcriterias.problem.clustering.criterias;
+package br.ufpr.inf.cbio.clusteringcriterias.criterias;
 
-import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.solution.IntegerSolution;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  * @param <S>
  */
-public interface ObjectiveFunction<S extends Solution> {
+public interface ObjectiveFunction<S extends IntegerSolution> {
 
     public double evaluate(S s);
 

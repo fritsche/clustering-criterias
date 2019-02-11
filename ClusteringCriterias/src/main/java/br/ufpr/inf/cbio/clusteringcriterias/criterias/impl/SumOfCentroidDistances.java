@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.clusteringcriterias.problem.clustering.criterias.impl;
+package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
-import br.ufpr.inf.cbio.clusteringcriterias.problem.clustering.criterias.ObjectiveFunction;
-import org.uma.jmetal.solution.Solution;
+import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import org.uma.jmetal.solution.IntegerSolution;
 
 /**
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
@@ -28,25 +28,24 @@ import org.uma.jmetal.solution.Solution;
  * Bioinformatics), 7492 LNCS(PART 2), 32–41.
  * https://doi.org/10.1007/978-3-642-32964-7_4
  */
-public class OverallDeviation implements ObjectiveFunction<Solution> {
+public class SumOfCentroidDistances implements ObjectiveFunction<IntegerSolution> {
 
     /**
-     * Overall deviation, measures the compactness of the clusters in the
-     * partitioning. It is the sum of the distances of each object to the
-     * centroid, accumulated for all clusters.
+     * Summed pairwise distance between cluster centroids. In this
+     * implementation the result is 1/x, where x is the minimum split. This
+     * operation is performed to convert the objective from maximization to
+     * minimization.
      *
      * @param s
      * @return
      */
     @Override
-    public double evaluate(Solution s) {
-        /**
-         * @TODO
-         * 1. Compute each centroid Point
-         * 2. Compute the distance of each object Point to its corresponding centroid
-         * 3. Accumulate the distances
-         */
+    public double evaluate(IntegerSolution s) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /**
+         * @TODO convert the output from maximization to minimization
+         * (1/result).
+         */
     }
 
 }

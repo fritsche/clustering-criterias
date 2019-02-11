@@ -14,16 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.clusteringcriterias.problem.clustering.distance;
+package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
-import org.uma.jmetal.util.point.Point;
+import org.uma.jmetal.problem.impl.AbstractIntegerProblem;
+import org.uma.jmetal.solution.IntegerSolution;
 
 /**
- *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public interface DistanceCalculator {
+public class ClusteringProblem extends AbstractIntegerProblem {
 
-    public double computeDistance(Point a, Point b);
+    public ClusteringProblem() {
+        
+    }
+
+    @Override
+    public void evaluate(IntegerSolution solution) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

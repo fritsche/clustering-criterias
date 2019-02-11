@@ -14,23 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.clusteringcriterias.problem.clustering.problem;
+package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
-import org.uma.jmetal.problem.impl.AbstractIntegerProblem;
-import org.uma.jmetal.solution.IntegerSolution;
+import java.util.ArrayList;
+import java.util.List;
+import org.uma.jmetal.util.point.Point;
 
 /**
+ *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class ClusteringProblem extends AbstractIntegerProblem {
+public class DataSet {
 
-    public ClusteringProblem() {
-        
+    private List<DataPoint> dataPoints;
+
+    public DataSet() {
+        dataPoints = new ArrayList<>();
     }
 
-    @Override
-    public void evaluate(IntegerSolution solution) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<DataPoint> getDataPoints() {
+        return dataPoints;
+    }
+
+    public void setDataPoints(List<DataPoint> dataPoints) {
+        this.dataPoints = dataPoints;
+    }
+
+    public void addDataPoint(String id, Point p) {
+        dataPoints.add(new DataPoint(id, p));
+    }
+
+    public Point getPoint(int i) {
+        return dataPoints.get(i).getPoint();
     }
 
 }
