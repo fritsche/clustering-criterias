@@ -16,6 +16,8 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import java.util.List;
 import org.uma.jmetal.problem.impl.AbstractIntegerProblem;
 import org.uma.jmetal.solution.IntegerSolution;
 
@@ -24,13 +26,24 @@ import org.uma.jmetal.solution.IntegerSolution;
  */
 public class ClusteringProblem extends AbstractIntegerProblem {
 
-    public ClusteringProblem() {
-        
+    private boolean computeCentroids;
+    private DataSet dataSet;
+    private List<ObjectiveFunction> objectiveFunctions;
+
+    public ClusteringProblem(boolean computeCentroids, DataSet dataSet, List<ObjectiveFunction> objectiveFunctions) {
+        this.computeCentroids = computeCentroids;
+        this.dataSet = dataSet;
+        this.objectiveFunctions = objectiveFunctions;
     }
 
     @Override
     public void evaluate(IntegerSolution solution) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (computeCentroids) {
+            (new PartitionCentroids()).computeCentroids(solution, dataSet);
+        }
+        for (int i = 0; i < objectiveFunctions.size(); i++) {
+            solution.setObjective(i, objectiveFunctions.get(i).evaluate(solution));
+        }
     }
 
 }

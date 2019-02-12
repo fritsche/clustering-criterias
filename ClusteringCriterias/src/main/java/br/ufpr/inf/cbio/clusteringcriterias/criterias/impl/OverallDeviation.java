@@ -18,6 +18,7 @@ package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
 import java.util.HashMap;
 import java.util.Map;
 import org.uma.jmetal.solution.IntegerSolution;
@@ -52,7 +53,7 @@ public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
     @Override
     public double evaluate(IntegerSolution s) {
 
-        Map<Integer, Point> centroids = computeCentroids(s);
+        Map<Integer, Point> centroids = (new PartitionCentroids()).getAttribute(s);
 
         /**
          * @TODO 1. Compute each centroid Point 2. Compute the distance of each
@@ -60,39 +61,6 @@ public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
          * distances
          */
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private Map<Integer, Point> computeCentroids(IntegerSolution s) {
-
-        Map<Integer, Point> sum = new HashMap();
-        Map<Integer, Integer> count = new HashMap();
-
-        for (int i = 0; i < s.getNumberOfVariables(); i++) {
-            Integer c = s.getVariableValue(i);
-            Point o = new ArrayPoint(dataSet.getPoint(i));
-            if (sum.containsKey(c)) {
-                Point p = sum.get(c);
-                for (int j = 0; j < p.getDimension(); j++) {
-                    p.setValue(j, p.getValue(j) + o.getValue(j));
-                }
-            } else {
-                sum.put(c, o);
-                count.put(c, 0);
-            }
-        }
-
-        Map<Integer, Point> centroids = new HashMap();
-
-        for (Map.Entry<Integer, Point> entry : sum.entrySet()) {
-            Integer key = entry.getKey();
-            Point p = entry.getValue();
-            for (int j = 0; j < p.getDimension(); j++) {
-                p.setValue(j, p.getValue(j) / (double) count.get(key));
-            }
-            centroids.put(key, p);
-        }
-
-        return centroids;
     }
 
 }
