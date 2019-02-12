@@ -25,7 +25,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.uma.jmetal.solution.IntegerSolution;
-import org.uma.jmetal.solution.impl.DefaultIntegerSolution;
 import org.uma.jmetal.util.point.Point;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
 

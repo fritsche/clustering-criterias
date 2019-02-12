@@ -17,7 +17,6 @@
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import org.uma.jmetal.util.point.Point;
-import org.uma.jmetal.util.point.impl.ArrayPoint;
 
 /**
  *
@@ -37,23 +36,8 @@ public class DataPoint {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Point getPoint() {
         return point;
-    }
-
-    public void setPoint(Point point) {
-        this.point = point;
-    }
-
-    public void setDimensionValue(int dimension, double value) {
-        if (point == null) {
-            point = new ArrayPoint();
-        }
-        point.setValue(dimension, value);
     }
 
 }
