@@ -39,6 +39,7 @@ public class ClusteringProblem extends AbstractIntegerProblem {
         this.setNumberOfVariables(dataSet.getDataPoints().size());
         this.setUpperLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), maxK - 1)));
         this.setLowerLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), 0)));
+        this.setNumberOfObjectives(objectiveFunctions.size());
     }
 
     @Override

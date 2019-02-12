@@ -14,11 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.clusteringcriterias.problem;
+package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusteringProblem;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -29,14 +31,15 @@ import static org.junit.Assert.*;
 import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.util.point.Point;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
+import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class PartitionCentroidsTest {
+public class OverallDeviationTest {
 
-    public PartitionCentroidsTest() {
+    public OverallDeviationTest() {
     }
 
     @BeforeClass
@@ -56,11 +59,12 @@ public class PartitionCentroidsTest {
     }
 
     /**
-     * Test of computeCentroids method, of class PartitionCentroids.
+     * Test of evaluate method, of class OverallDeviation.
      */
     @Test
-    public void testComputeCentroidsWithNegativeValuesAndTwoClusters() {
-        System.out.println("computeCentroidsWithNegativeValuesAndTwoClusters");
+    public void testEvaluate() {
+        System.out.println("evaluate");
+
         DataSet dataSet = new DataSet();
 
         dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
@@ -78,43 +82,16 @@ public class PartitionCentroidsTest {
         s.setVariableValue(2, 1); // solution 'c' cluster 1
         s.setVariableValue(3, 1); // solution 'd' cluster 1
 
-        PartitionCentroids instance = new PartitionCentroids();
-        instance.computeCentroids(s, dataSet);
+        PartitionCentroids partitionCentroids = new PartitionCentroids();
+        partitionCentroids.computeCentroids(s, dataSet);
 
-        Map<Integer, Point> centroids = instance.getAttribute(s);
+        Map<Integer, Point> centroids = partitionCentroids.getAttribute(s);
 
-        System.out.println("Cluster 0 centroid expected [0.0, 1.0]: actual " + Arrays.toString(centroids.get(0).getValues()));
-        assertTrue(Arrays.equals(new double[]{0.0, 1.0}, centroids.get(0).getValues()));
-        System.out.println("Cluster 1 centroid expected [0.0, -1.0]: actual " + Arrays.toString(centroids.get(1).getValues()));
-        assertTrue(Arrays.equals(new double[]{0.0, -1.0}, centroids.get(1).getValues()));
-
-    }
-
-    @Test
-    public void testComputeCentroids() {
-        System.out.println("computeCentroids");
-        DataSet dataSet = new DataSet();
-
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{2.0, 2.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{0.0, 2.0}));
-
-        int maxK = 1;
-        ClusteringProblem problem = new ClusteringProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
-        IntegerSolution s = problem.createSolution();
-
-        s.setVariableValue(0, 0); // solution 'a' cluster 0
-        s.setVariableValue(1, 0); // solution 'b' cluster 0
-        s.setVariableValue(2, 0); // solution 'c' cluster 0
-
-        PartitionCentroids instance = new PartitionCentroids();
-        instance.computeCentroids(s, dataSet);
-
-        Map<Integer, Point> centroids = instance.getAttribute(s);
-
-        System.out.println("Cluster 0 centroid expected [1.0, 1.6666666666666667]: actual " + Arrays.toString(centroids.get(0).getValues()));
-        assertTrue(Arrays.equals(new double[]{3.0 / 3.0, 5.0 / 3.0}, centroids.get(0).getValues()));
-
+        OverallDeviation instance = new OverallDeviation(dataSet, new EuclideanDistance());
+        double expResult = 4.0;
+        double result = instance.evaluate(s);
+        System.out.println("Evaluate Overall Deviation, expected: " + expResult + ", actual: " + result);
+        assertEquals(expResult, result, 0.0);
     }
 
 }
