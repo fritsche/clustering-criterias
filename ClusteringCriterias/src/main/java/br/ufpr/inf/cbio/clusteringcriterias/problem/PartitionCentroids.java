@@ -42,12 +42,13 @@ public class PartitionCentroids extends GenericSolutionAttribute<IntegerSolution
             Point o = new ArrayPoint(dataSet.getPoint(i));
             if (sum.containsKey(c)) {
                 Point p = sum.get(c);
+                count.put(c, count.get(c) + 1);
                 for (int j = 0; j < p.getDimension(); j++) {
                     p.setValue(j, p.getValue(j) + o.getValue(j));
                 }
             } else {
                 sum.put(c, o);
-                count.put(c, 0);
+                count.put(c, 1);
             }
         }
 

@@ -17,6 +17,9 @@
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.uma.jmetal.problem.impl.AbstractIntegerProblem;
 import org.uma.jmetal.solution.IntegerSolution;
@@ -30,10 +33,13 @@ public class ClusteringProblem extends AbstractIntegerProblem {
     private DataSet dataSet;
     private List<ObjectiveFunction> objectiveFunctions;
 
-    public ClusteringProblem(boolean computeCentroids, DataSet dataSet, List<ObjectiveFunction> objectiveFunctions) {
+    public ClusteringProblem(boolean computeCentroids, DataSet dataSet, List<ObjectiveFunction> objectiveFunctions, int maxK) {
         this.computeCentroids = computeCentroids;
         this.dataSet = dataSet;
         this.objectiveFunctions = objectiveFunctions;
+        this.setNumberOfVariables(dataSet.getDataPoints().size());
+        this.setUpperLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), maxK - 1)));
+        this.setLowerLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), 0)));
     }
 
     @Override

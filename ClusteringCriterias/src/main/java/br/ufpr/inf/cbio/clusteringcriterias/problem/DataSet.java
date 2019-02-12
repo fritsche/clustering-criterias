@@ -48,4 +48,8 @@ public class DataSet {
         return dataPoints.get(i).getPoint();
     }
 
+    public int getDimension() {
+        return dataPoints.get(0).getPoint().getDimension();
+    }
+
 }
