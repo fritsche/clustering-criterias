@@ -19,11 +19,10 @@ package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
-import java.util.HashMap;
 import java.util.Map;
 import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.util.point.Point;
-import org.uma.jmetal.util.point.impl.ArrayPoint;
+import org.uma.jmetal.util.point.util.distance.PointDistance;
 
 /**
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
@@ -36,10 +35,12 @@ import org.uma.jmetal.util.point.impl.ArrayPoint;
  */
 public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
 
-    private DataSet dataSet;
+    private final DataSet dataSet;
+    private final PointDistance distance;
 
-    public OverallDeviation(DataSet dataSet) {
+    public OverallDeviation(DataSet dataSet, PointDistance distance) {
         this.dataSet = dataSet;
+        this.distance = distance;
     }
 
     /**
@@ -53,14 +54,16 @@ public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
     @Override
     public double evaluate(IntegerSolution s) {
 
+        double sum = 0.0;
+
         Map<Integer, Point> centroids = (new PartitionCentroids()).getAttribute(s);
 
-        /**
-         * @TODO 1. Compute each centroid Point 2. Compute the distance of each
-         * object Point to its corresponding centroid 3. Accumulate the
-         * distances
-         */
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (int i = 0; i < s.getNumberOfVariables(); i++) {
+            int cluster = s.getVariableValue(i);
+            sum += distance.compute(centroids.get(cluster), dataSet.getPoint(i));
+        }
+
+        return sum;
     }
 
 }
