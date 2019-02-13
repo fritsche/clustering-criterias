@@ -16,6 +16,8 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.uma.jmetal.util.point.Point;
 
 /**
@@ -26,10 +28,12 @@ public class DataPoint {
 
     private String id;
     private Point point;
+    private List<Integer> neighbors;
 
     DataPoint(String id, Point p) {
         this.id = id;
         this.point = p;
+        this.neighbors = new ArrayList<>();
     }
 
     public String getId() {
@@ -38,6 +42,14 @@ public class DataPoint {
 
     public Point getPoint() {
         return point;
+    }
+
+    public void addNeighbor(int i) {
+        this.neighbors.add(i);
+    }
+
+    public List<Integer> getNeighbors() {
+        return neighbors;
     }
 
 }
