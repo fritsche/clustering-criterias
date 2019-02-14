@@ -18,8 +18,11 @@ package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.uma.jmetal.solution.IntegerSolution;
-import org.uma.jmetal.util.point.util.distance.PointDistance;
+import org.uma.jmetal.util.JMetalException;
 
 /**
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
@@ -32,9 +35,7 @@ import org.uma.jmetal.util.point.util.distance.PointDistance;
  */
 public class Connectivity implements ObjectiveFunction<IntegerSolution> {
 
-    public Connectivity(DataSet dataSet, PointDistance distance) {
-
-        //double[][] distances = computeDistanceMatrix(dataSet, distance);
+    public Connectivity() {
         /**
          * @TODO 1. compute distance matrix; 2. compute neighborhood matrix.
          */
@@ -52,17 +53,6 @@ public class Connectivity implements ObjectiveFunction<IntegerSolution> {
     @Override
     public double evaluate(IntegerSolution s) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public double[][] computeDistanceMatrix(DataSet dataSet, PointDistance distance) {
-        int n = dataSet.getDataPoints().size();
-        double[][] distances = new double[n][n];
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = i + 1; j < n; j++) {
-                distances[j][i] = distances[i][j] = distance.compute(dataSet.getPoint(i), dataSet.getPoint(j));
-            }
-        }
-        return distances;
     }
 
 }

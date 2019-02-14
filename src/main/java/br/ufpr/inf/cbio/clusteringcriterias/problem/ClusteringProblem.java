@@ -31,7 +31,7 @@ public class ClusteringProblem extends AbstractIntegerProblem {
     private final boolean computeCentroids;
     private final DataSet dataSet;
     private final List<ObjectiveFunction> objectiveFunctions;
-
+    
     public ClusteringProblem(boolean computeCentroids, DataSet dataSet, List<ObjectiveFunction> objectiveFunctions, int maxK) {
         this.computeCentroids = computeCentroids;
         this.dataSet = dataSet;
@@ -41,7 +41,7 @@ public class ClusteringProblem extends AbstractIntegerProblem {
         this.setLowerLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), 0)));
         this.setNumberOfObjectives(objectiveFunctions.size());
     }
-
+    
     @Override
     public void evaluate(IntegerSolution solution) {
         if (computeCentroids) {
