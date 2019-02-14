@@ -35,7 +35,7 @@ import org.uma.jmetal.util.JMetalException;
  */
 public class Connectivity implements ObjectiveFunction<IntegerSolution> {
 
-    private List<List<Integer>> neighborhood;
+    private final List<List<Integer>> neighborhood;
 
     public Connectivity(List<List<Integer>> neighborhood) {
         this.neighborhood = neighborhood;
@@ -52,7 +52,18 @@ public class Connectivity implements ObjectiveFunction<IntegerSolution> {
      */
     @Override
     public double evaluate(IntegerSolution s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        double connectivity = 0.0;
+        for (int i = 0; i < s.getNumberOfVariables(); i++) {
+            int c = s.getVariableValue(i);
+            List<Integer> neighbors = neighborhood.get(i);
+            for (int l = 0; l < neighbors.size(); l++) {
+                int neighbor = neighbors.get(l);
+                if (c != s.getVariableValue(neighbor)) {
+                    connectivity += 1.0 / (double) neighbors.size();
+                }
+            }
+        }
+        return connectivity;
     }
 
 }
