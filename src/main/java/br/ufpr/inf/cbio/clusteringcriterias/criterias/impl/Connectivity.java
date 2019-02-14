@@ -35,10 +35,10 @@ import org.uma.jmetal.util.JMetalException;
  */
 public class Connectivity implements ObjectiveFunction<IntegerSolution> {
 
-    public Connectivity() {
-        /**
-         * @TODO 1. compute distance matrix; 2. compute neighborhood matrix.
-         */
+    private List<List<Integer>> neighborhood;
+
+    public Connectivity(List<List<Integer>> neighborhood) {
+        this.neighborhood = neighborhood;
     }
 
     /**
