@@ -17,12 +17,8 @@
 package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.uma.jmetal.solution.IntegerSolution;
-import org.uma.jmetal.util.JMetalException;
 
 /**
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>

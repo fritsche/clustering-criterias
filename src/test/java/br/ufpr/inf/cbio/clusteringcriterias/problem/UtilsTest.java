@@ -79,11 +79,12 @@ public class UtilsTest {
     public void testComputeNeighborhood() {
         System.out.println("computeNeighborhood");
 
-        List<List<Double>> distances = new ArrayList<>(4);
-        distances.add(new ArrayList<>(Arrays.asList(0.0, 2.0, 3.0, 4.0)));
-        distances.add(new ArrayList<>(Arrays.asList(8.0, 0.0, 6.0, 5.0)));
-        distances.add(new ArrayList<>(Arrays.asList(14.0, 9.0, 0.0, 11.0)));
-        distances.add(new ArrayList<>(Arrays.asList(15.0, 13.0, 10.0, 0.0)));
+        double[][] distances = new double[][]{
+            {0.0, 2.0, 3.0, 4.0},
+            {8.0, 0.0, 6.0, 5.0},
+            {14.0, 9.0, 0.0, 11.0},
+            {15.0, 13.0, 10.0, 0.0}
+        };
 
         int k = 2;
         List<List<Integer>> expResult = new ArrayList<>(4);
