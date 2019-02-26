@@ -36,9 +36,9 @@ import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class ClusteringProblemTest {
+public class ClusterProblemTest {
 
-    public ClusteringProblemTest() {
+    public ClusterProblemTest() {
     }
 
     @BeforeClass
@@ -75,7 +75,7 @@ public class ClusteringProblemTest {
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
         functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
-        
+
         ClusterProblem problem = new ClusterProblem(true, dataSet, functions, maxK);
         IntegerSolution s = problem.createSolution();
 
@@ -119,7 +119,7 @@ public class ClusteringProblemTest {
         neighborhood.add(new ArrayList<>(Arrays.asList(2)));
         functions.add(new Connectivity(neighborhood));
 
-        ClusteringProblem problem = new ClusteringProblem(true, dataSet, functions, maxK);
+        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, maxK);
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0

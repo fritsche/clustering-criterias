@@ -22,9 +22,11 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import jdk.nashorn.internal.objects.NativeDebug;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -48,10 +50,13 @@ import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
  */
 public class Runner {
 
-    public static void main(String[] args) {
+    public void run() {
 
-        int maxFitnessEvaluations = 100;
+        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource("clustering/atom/dataset/atom.txt").getFile()));
+
+        int maxK = 2; // how to define maxK?
         int popSize = 10;
+        int maxFitnessEvaluations = popSize * 50;
 
         double crossoverProbability;
         double crossoverDistributionIndex;
@@ -59,15 +64,6 @@ public class Runner {
         CrossoverOperator<IntegerSolution> crossover;
         MutationOperator<IntegerSolution> mutation;
         SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
-
-        DataSet dataSet = new DataSet();
-
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
-        dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
-
-        int maxK = 2;
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
         functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
@@ -102,6 +98,10 @@ public class Runner {
             System.out.println(s);
         }
 
+    }
+
+    public static void main(String[] args) {
+        (new Runner()).run();
     }
 
 }
