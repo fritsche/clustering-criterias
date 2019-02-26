@@ -69,7 +69,7 @@ public class PartitionCentroidsTest {
         dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
         int maxK = 2;
-        ClusteringProblem problem = new ClusteringProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -100,7 +100,7 @@ public class PartitionCentroidsTest {
         dataSet.addDataPoint("c", new ArrayPoint(new double[]{0.0, 2.0}));
 
         int maxK = 1;
-        ClusteringProblem problem = new ClusteringProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0

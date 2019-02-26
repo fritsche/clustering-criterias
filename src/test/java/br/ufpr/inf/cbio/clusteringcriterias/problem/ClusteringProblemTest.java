@@ -17,6 +17,7 @@
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +74,8 @@ public class ClusteringProblemTest {
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
         functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
-
-        ClusteringProblem problem = new ClusteringProblem(true, dataSet, functions, maxK);
+        
+        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, maxK);
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0

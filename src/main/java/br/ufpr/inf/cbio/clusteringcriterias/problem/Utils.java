@@ -36,17 +36,22 @@ public class Utils {
                 distances[j][i] = distances[i][j] = distance.compute(dataSet.getPoint(i), dataSet.getPoint(j));
             }
         }
+
         return distances;
     }
 
-    public static List<List<Integer>> computeNeighborhood(List<List<Double>> distances, int k) {
-        int n = distances.size();
+    public static List<List<Integer>> computeNeighborhood(double[][] distances, int k) {
+        int n = distances.length;
         List<List<Integer>> neighborhood = new ArrayList<>(n);
         if (k >= n) {
             throw new JMetalException("The number of neighbors k should be smaller than the number of data points n.");
         }
         for (int i = 0; i < n; i++) {
-            neighborhood.add(getNeighbors(distances.get(i), i, k));
+            List<Double> di = new ArrayList<>();
+            for (double d : distances[i]) {
+                di.add(d);
+            }
+            neighborhood.add(getNeighbors(di, i, k));
         }
         return neighborhood;
     }

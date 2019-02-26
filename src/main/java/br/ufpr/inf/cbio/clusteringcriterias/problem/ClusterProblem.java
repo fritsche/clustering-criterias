@@ -26,13 +26,13 @@ import org.uma.jmetal.solution.IntegerSolution;
 /**
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class ClusteringProblem extends AbstractIntegerProblem {
+public class ClusterProblem extends AbstractIntegerProblem {
 
     private final boolean computeCentroids;
     private final DataSet dataSet;
     private final List<ObjectiveFunction> objectiveFunctions;
     
-    public ClusteringProblem(boolean computeCentroids, DataSet dataSet, List<ObjectiveFunction> objectiveFunctions, int maxK) {
+    public ClusterProblem(boolean computeCentroids, DataSet dataSet, List<ObjectiveFunction> objectiveFunctions, int maxK) {
         this.computeCentroids = computeCentroids;
         this.dataSet = dataSet;
         this.objectiveFunctions = objectiveFunctions;
