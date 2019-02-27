@@ -19,11 +19,13 @@ package br.ufpr.inf.cbio.clusteringcriterias.problem;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -129,6 +131,38 @@ public class ClusterProblemTest {
         double[] expected = new double[]{4.0, 0.0};
         double[] actual = s.getObjectives();
         assertTrue(Arrays.equals(expected, actual));
+    }
+
+    /**
+     * Test of createSolution method, of class ClusterProblem.
+     */
+    @Test
+    public void testCreateSolution() {
+        System.out.println("createSolution");
+
+        String dataSetPath = "clustering/test/dataset.txt";
+        String initialPartitionsPath = "clustering/test/initialPartitions/";
+
+        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+
+        ClusterProblem instance = new ClusterProblem(true, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+
+        IntegerSolution a = instance.createSolution();
+        int[] resultA = new int[4];
+        int[] expResultA = new int[]{1, 0, 1, 0};
+        for (int i = 0; i < a.getNumberOfVariables(); i++) {
+            resultA[i] = a.getVariableValue(i);
+        }
+
+        IntegerSolution b = instance.createSolution();
+        int[] resultB = new int[4];
+        int[] expResultB = new int[]{1, 0, 0, 1};
+        for (int i = 0; i < b.getNumberOfVariables(); i++) {
+            resultB[i] = b.getVariableValue(i);
+        }
+
+        Assert.assertArrayEquals(expResultA, resultA);
+        Assert.assertArrayEquals(expResultB, resultB);
     }
 
 }

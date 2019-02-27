@@ -66,12 +66,11 @@ public class ConnectivityTest {
         
         // four points dataset (point values don't matter on this test)
         DataSet dataSet = new DataSet();
-        dataSet.addDataPoint("", new ArrayPoint());
-        dataSet.addDataPoint("", new ArrayPoint());
-        dataSet.addDataPoint("", new ArrayPoint());
-        dataSet.addDataPoint("", new ArrayPoint());
+        dataSet.addDataPoint("a", new ArrayPoint());
+        dataSet.addDataPoint("b", new ArrayPoint());
+        dataSet.addDataPoint("c", new ArrayPoint());
+        dataSet.addDataPoint("d", new ArrayPoint());
         
-        int maxK = 2; // max number of clusters (upper bound)
         ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
         
         IntegerSolution s = problem.createSolution();

@@ -83,9 +83,6 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
         for (String[] row : rows) {
             int i = Collections.binarySearch(dataset.getDataPoints(), new DataPoint(row[0], null), new DataPointComparator());
             int value = Integer.parseInt(row[1]) - 1;
-            if (i < 0 ){
-                System.out.println("break");
-            }
             setVariableValue(i, value);
         }
     }
