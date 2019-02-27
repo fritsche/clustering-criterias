@@ -27,7 +27,8 @@ import org.uma.jmetal.util.solutionattribute.impl.GenericSolutionAttribute;
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class PartitionCentroids extends GenericSolutionAttribute<IntegerSolution, Map<Integer, Point>> {
+public class PartitionCentroids
+        extends GenericSolutionAttribute<IntegerSolution, Map<Integer, Point>> {
 
     public PartitionCentroids() {
     }

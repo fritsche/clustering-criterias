@@ -17,6 +17,8 @@
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,17 +33,27 @@ public class ClusterProblem extends AbstractIntegerProblem {
     private final boolean computeCentroids;
     private final DataSet dataSet;
     private final List<ObjectiveFunction> objectiveFunctions;
-    
-    public ClusterProblem(boolean computeCentroids, DataSet dataSet, List<ObjectiveFunction> objectiveFunctions, int maxK) {
+    private final List<IntegerSolution> initialPopulation;
+    private int nextSolution = 0;
+
+    public ClusterProblem(boolean computeCentroids, DataSet dataSet,
+            List<ObjectiveFunction> objectiveFunctions, List<File> initialPartitions) {
+
         this.computeCentroids = computeCentroids;
         this.dataSet = dataSet;
         this.objectiveFunctions = objectiveFunctions;
         this.setNumberOfVariables(dataSet.getDataPoints().size());
-        this.setUpperLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), maxK - 1)));
-        this.setLowerLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), 0)));
         this.setNumberOfObjectives(objectiveFunctions.size());
+        initialPopulation = this.parseInitialPopulation(initialPartitions);
     }
-    
+
+    @Override
+    public IntegerSolution createSolution() {
+        IntegerSolution solution = initialPopulation.get(nextSolution);
+        nextSolution = (nextSolution + 1) % initialPopulation.size();
+        return solution;
+    }
+
     @Override
     public void evaluate(IntegerSolution solution) {
         if (computeCentroids) {
@@ -50,6 +62,15 @@ public class ClusterProblem extends AbstractIntegerProblem {
         for (int i = 0; i < objectiveFunctions.size(); i++) {
             solution.setObjective(i, objectiveFunctions.get(i).evaluate(solution));
         }
+    }
+
+    private List<IntegerSolution> parseInitialPopulation(List<File> initialPartitions) {
+        List<IntegerSolution> population = new ArrayList<>(initialPartitions.size());
+        Collections.sort(dataSet.getDataPoints(), new DataPointComparator());
+        for (File file : initialPartitions) {
+            population.add(new PartitionSolution(this, file, dataSet));
+        }
+        return population;
     }
 
 }

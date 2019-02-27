@@ -19,6 +19,7 @@ package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,13 +66,12 @@ public class ConnectivityTest {
         
         // four points dataset (point values don't matter on this test)
         DataSet dataSet = new DataSet();
-        dataSet.addDataPoint("", new ArrayPoint());
-        dataSet.addDataPoint("", new ArrayPoint());
-        dataSet.addDataPoint("", new ArrayPoint());
-        dataSet.addDataPoint("", new ArrayPoint());
+        dataSet.addDataPoint("a", new ArrayPoint());
+        dataSet.addDataPoint("b", new ArrayPoint());
+        dataSet.addDataPoint("c", new ArrayPoint());
+        dataSet.addDataPoint("d", new ArrayPoint());
         
-        int maxK = 2; // max number of clusters (upper bound)
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
         
         IntegerSolution s = problem.createSolution();
         s.setVariableValue(0, 0);

@@ -16,9 +16,16 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.runner.Runner;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
 
@@ -78,6 +85,20 @@ public class Utils {
         neighbors.remove(k);
         di.remove(n);
         return neighbors;
+    }
+
+    public static List<File> getInitialPartitionFiles(String path) {
+        List<File> files = new ArrayList<>();
+        List<String> paths = new ArrayList<>();
+        try {
+            paths = IOUtils.readLines(Utils.class.getClassLoader().getResourceAsStream(path), Charsets.UTF_8);
+        } catch (IOException ex) {
+            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, "Error reading [" + path + "] folder.", ex);
+        }
+        for (String file : paths) {
+            files.add(new File(Utils.class.getClassLoader().getResource(path + File.separator + file).getFile()));
+        }
+        return files;
     }
 
 }
