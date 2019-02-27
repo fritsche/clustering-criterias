@@ -50,9 +50,10 @@ public class Runner {
 
     public void run() {
 
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource("clustering/atom/dataset/atom.txt").getFile()));
+        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource("clustering/iris/iris-dataset.txt").getFile()));
 
-        int maxK = 2; // how to define maxK?
+        int minK = 2; 
+        int maxK = 5;
         int popSize = 10;
         int maxFitnessEvaluations = popSize * 50;
 
@@ -63,7 +64,7 @@ public class Runner {
         MutationOperator<IntegerSolution> mutation;
         SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
 
-        List<ObjectiveFunction> functions = new ArrayList<>(1);
+        List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
         functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataSet, new EuclideanDistance()), maxK)));
 

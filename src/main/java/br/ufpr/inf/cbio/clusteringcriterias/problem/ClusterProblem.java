@@ -31,17 +31,21 @@ public class ClusterProblem extends AbstractIntegerProblem {
     private final boolean computeCentroids;
     private final DataSet dataSet;
     private final List<ObjectiveFunction> objectiveFunctions;
-    
+
     public ClusterProblem(boolean computeCentroids, DataSet dataSet, List<ObjectiveFunction> objectiveFunctions, int maxK) {
         this.computeCentroids = computeCentroids;
         this.dataSet = dataSet;
         this.objectiveFunctions = objectiveFunctions;
         this.setNumberOfVariables(dataSet.getDataPoints().size());
+        /**
+         * @TODO remove setUpperLimit and setLowerLimit used to generate the
+         * initial solutions. The initial solutions will be read from file.
+         */
         this.setUpperLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), maxK - 1)));
         this.setLowerLimit(new ArrayList<>(Collections.nCopies(getNumberOfVariables(), 0)));
         this.setNumberOfObjectives(objectiveFunctions.size());
     }
-    
+
     @Override
     public void evaluate(IntegerSolution solution) {
         if (computeCentroids) {

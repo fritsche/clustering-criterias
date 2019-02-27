@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import java.util.Objects;
 import org.uma.jmetal.util.point.Point;
 
 /**
@@ -39,4 +40,34 @@ public class DataPoint {
     public Point getPoint() {
         return point;
     }
+
+    @Override
+    public String toString() {
+        String string = id + "\t[";
+        for (int i = 0; i < point.getDimension() - 1; i++) {
+            string += point.getValue(i) + ", ";
+        }
+        string += point.getValue(point.getDimension() - 1) + "]";
+        return string;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        return this.hashCode() == ((DataPoint) obj).hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        hash = 97 * hash + Objects.hashCode(this.point);
+        return hash;
+    }
+
 }

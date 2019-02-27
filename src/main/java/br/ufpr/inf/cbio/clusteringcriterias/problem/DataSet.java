@@ -37,7 +37,11 @@ public class DataSet {
     }
 
     public DataSet(File file) {
-        this();
+        this.dataPoints = parseFile(file);
+    }
+
+    public static List<DataPoint> parseFile(File file) {
+        List<DataPoint> dps = new ArrayList<>();
         TsvParserSettings settings = new TsvParserSettings();
         TsvParser parser = new TsvParser(settings);
         List<String[]> rows = parser.parseAll(file);
@@ -50,8 +54,9 @@ public class DataSet {
             }
             Point p = new ArrayPoint(point);
             DataPoint data = new DataPoint(id, p);
-            dataPoints.add(data);
+            dps.add(data);
         }
+        return dps;
     }
 
     public List<DataPoint> getDataPoints() {
@@ -72,6 +77,15 @@ public class DataSet {
 
     public int getDimension() {
         return dataPoints.get(0).getPoint().getDimension();
+    }
+
+    @Override
+    public String toString() {
+        String string = "";
+        for (DataPoint point : dataPoints) {
+            string += point.toString() + "\n";
+        }
+        return string;
     }
 
 }
