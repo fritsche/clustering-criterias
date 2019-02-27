@@ -20,6 +20,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import java.util.ArrayList;
 import java.util.Map;
 import org.junit.After;
@@ -72,8 +73,7 @@ public class OverallDeviationTest {
         dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
         dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
-        int maxK = 2;
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0

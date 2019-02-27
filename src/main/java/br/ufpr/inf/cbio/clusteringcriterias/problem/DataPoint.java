@@ -28,7 +28,7 @@ public class DataPoint {
     private final String id;
     private final Point point;
 
-    DataPoint(String id, Point p) {
+    public DataPoint(String id, Point p) {
         this.id = id;
         this.point = p;
     }

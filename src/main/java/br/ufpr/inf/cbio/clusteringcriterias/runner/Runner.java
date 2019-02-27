@@ -23,9 +23,13 @@ import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -47,60 +51,62 @@ import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
 public class Runner {
-
+    
     public void run() {
-
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource("clustering/iris/iris-dataset.txt").getFile()));
-
-        int minK = 2; 
+        
+        String dataSetPath = "clustering/iris/iris-dataset.txt";
+        String initialPartitionsPath = "clustering/iris/initialPartitions/";
+        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+        
+        int minK = 2;
         int maxK = 5;
         int popSize = 10;
         int maxFitnessEvaluations = popSize * 50;
-
+        
         double crossoverProbability;
         double crossoverDistributionIndex;
         Problem problem;
         CrossoverOperator<IntegerSolution> crossover;
         MutationOperator<IntegerSolution> mutation;
         SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
-
+        
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
         functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataSet, new EuclideanDistance()), maxK)));
-
-        problem = new ClusterProblem(true, dataSet, functions, maxK);
-
+        
+        problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles(initialPartitionsPath));
+        
         crossoverProbability = 0.9;
         crossoverDistributionIndex = 20.0;
         crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
-
+        
         mutation = new NullMutation<>();
-
+        
         selection = new BinaryTournamentSelection<>(
                 new RankingAndCrowdingDistanceComparator<IntegerSolution>());
-
+        
         Algorithm<List<IntegerSolution>> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation)
                 .setSelectionOperator(selection)
                 .setMaxEvaluations(maxFitnessEvaluations)
                 .setPopulationSize(popSize + (popSize % 2))
                 .build();
-
+        
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
                 .execute();
-
+        
         long computingTime = algorithmRunner.getComputingTime();
         JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
-
+        
         List<IntegerSolution> population = SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
-
+        
         for (IntegerSolution s : population) {
             System.out.println(s);
         }
-
+        
     }
-
+    
     public static void main(String[] args) {
         (new Runner()).run();
     }
-
+    
 }

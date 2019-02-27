@@ -71,12 +71,10 @@ public class ClusterProblemTest {
         dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
         dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
-        int maxK = 2;
-
         List<ObjectiveFunction> functions = new ArrayList<>(1);
         functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
 
-        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, maxK);
+        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -107,8 +105,6 @@ public class ClusterProblemTest {
         dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
         dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
-        int maxK = 2;
-
         List<ObjectiveFunction> functions = new ArrayList<>(1);
         functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
 
@@ -119,7 +115,7 @@ public class ClusterProblemTest {
         neighborhood.add(new ArrayList<>(Arrays.asList(2)));
         functions.add(new Connectivity(neighborhood));
 
-        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, maxK);
+        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0

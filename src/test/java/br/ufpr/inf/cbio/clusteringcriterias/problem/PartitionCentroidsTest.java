@@ -68,8 +68,7 @@ public class PartitionCentroidsTest {
         dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
         dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
-        int maxK = 2;
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -98,22 +97,22 @@ public class PartitionCentroidsTest {
         dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
         dataSet.addDataPoint("b", new ArrayPoint(new double[]{2.0, 2.0}));
         dataSet.addDataPoint("c", new ArrayPoint(new double[]{0.0, 2.0}));
+        dataSet.addDataPoint("d", new ArrayPoint(new double[]{0.0, 0.0}));
 
-        int maxK = 1;
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), maxK);
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
         s.setVariableValue(1, 0); // solution 'b' cluster 0
         s.setVariableValue(2, 0); // solution 'c' cluster 0
+        s.setVariableValue(3, 0); // solution 'd' cluster 0
 
         PartitionCentroids instance = new PartitionCentroids();
         instance.computeCentroids(s, dataSet);
 
         Map<Integer, Point> centroids = instance.getAttribute(s);
 
-        System.out.println("Cluster 0 centroid expected [1.0, 1.6666666666666667]: actual " + Arrays.toString(centroids.get(0).getValues()));
-        assertTrue(Arrays.equals(new double[]{3.0 / 3.0, 5.0 / 3.0}, centroids.get(0).getValues()));
+        assertTrue(Arrays.equals(new double[]{3.0 / 4.0, 5.0 / 4.0}, centroids.get(0).getValues()));
 
     }
 
