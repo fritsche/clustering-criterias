@@ -49,7 +49,7 @@ public class Connectivity implements ObjectiveFunction<IntegerSolution> {
     @Override
     public double evaluate(IntegerSolution s) {
         double connectivity = 0.0;
-        for (int i = 0; i < s.getNumberOfVariables(); i++) {
+        for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
             int c = s.getVariableValue(i);
             List<Integer> neighbors = neighborhood.get(i);
             for (int l = 0; l < neighbors.size(); l++) {

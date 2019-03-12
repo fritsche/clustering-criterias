@@ -148,15 +148,15 @@ public class ClusterProblemTest {
         ClusterProblem instance = new ClusterProblem(true, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
 
         IntegerSolution a = instance.createSolution();
-        int[] resultA = new int[4];
-        int[] expResultA = new int[]{1, 0, 1, 0};
+        int[] resultA = new int[5];
+        int[] expResultA = new int[]{1, 0, 1, 0, 2};
         for (int i = 0; i < a.getNumberOfVariables(); i++) {
             resultA[i] = a.getVariableValue(i);
         }
 
         IntegerSolution b = instance.createSolution();
-        int[] resultB = new int[4];
-        int[] expResultB = new int[]{1, 0, 0, 1};
+        int[] resultB = new int[5];
+        int[] expResultB = new int[]{1, 0, 0, 1, 2};
         for (int i = 0; i < b.getNumberOfVariables(); i++) {
             resultB[i] = b.getVariableValue(i);
         }
