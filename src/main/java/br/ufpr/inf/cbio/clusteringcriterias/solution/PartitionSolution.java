@@ -77,6 +77,16 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
     }
 
     private void initializeIntegerVariables(File file, DataSet dataset) {
+
+        /**
+         * @TODO it it not possible to assume that the smaller cluster id is 0 or 1.
+         * There is files where it is 0 and there is files where it is 1.
+         * 1. Read the file, fill the variables, compute the smallest and highest id.
+         * 2. If the smallest value is 1, discount 1 from each variable. To ensure that the smallest id is 0.
+         * 3. Save the k on the first position of the array of variables.
+         * 
+         */
+        
         TsvParserSettings settings = new TsvParserSettings();
         TsvParser parser = new TsvParser(settings);
         List<String[]> rows = parser.parseAll(file);
