@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 /**
  *
@@ -73,7 +74,7 @@ public class HBGFCrossoverTest {
         c.setVariableValue(5, 0);
         c.setVariableValue(6, 1);
         c.setVariableValue(7, 2);
-        
+
         nvtxs = 11;
         xadj = new int[]{0, 2, 4, 6, 8, 10, 12, 14, 17, 21, 25, 28};
         adjncy = new int[]{
@@ -194,6 +195,75 @@ public class HBGFCrossoverTest {
         List<PartitionSolution> expResult = new ArrayList<>();
         expResult.add(c);
         List<PartitionSolution> result = instance.doCrossover(probability, a, b);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Another test of execute method, of class HBGFCrossover.
+     */
+    @Test
+    public void testExecuteScenario2() {
+        System.out.println("executeScenario2");
+        String dataSetPath = "clustering/test3/dataset.txt";
+        String initialPartitionsPath = "clustering/test3/initialPartitions/";
+        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        PartitionSolution x = (PartitionSolution) problem.createSolution();
+        PartitionSolution y = (PartitionSolution) problem.createSolution();
+        PartitionSolution z = (PartitionSolution) x.copy();
+        z.setVariableValue(0, 1);
+        z.setVariableValue(1, 1);
+        z.setVariableValue(2, 1);
+        z.setVariableValue(3, 2);
+        z.setVariableValue(4, 2);
+        z.setVariableValue(5, 2);
+        z.setVariableValue(6, 0);
+        z.setVariableValue(7, 0);
+        z.setVariableValue(8, 0);
+        z.setVariableValue(9, 3);
+        
+        List<PartitionSolution> source = new ArrayList<>();
+        source.add(x);
+        source.add(y);
+        HBGFCrossover instance = new HBGFCrossover();
+        List<PartitionSolution> expResult = new ArrayList<>();
+        expResult.add(z);
+        List<PartitionSolution> result = instance.execute(source);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Another test of execute method, of class HBGFCrossover.
+     */
+    @Test
+    public void testExecuteScenario3() {
+        System.out.println("executeScenario3");
+        JMetalRandom.getInstance().setSeed(9084463);
+        String dataSetPath = "clustering/test4/dataset.txt";
+        String initialPartitionsPath = "clustering/test4/initialPartitions/";
+        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        PartitionSolution x = (PartitionSolution) problem.createSolution();
+        PartitionSolution y = (PartitionSolution) problem.createSolution();
+        PartitionSolution z = (PartitionSolution) x.copy();
+//        z.setVariableValue(0, 1);
+//        z.setVariableValue(1, 1);
+//        z.setVariableValue(2, 1);
+//        z.setVariableValue(3, 2);
+//        z.setVariableValue(4, 2);
+//        z.setVariableValue(5, 2);
+//        z.setVariableValue(6, 0);
+//        z.setVariableValue(7, 0);
+//        z.setVariableValue(8, 0);
+//        z.setVariableValue(9, 3);
+        
+        List<PartitionSolution> source = new ArrayList<>();
+        source.add(x);
+        source.add(y);
+        HBGFCrossover instance = new HBGFCrossover();
+        List<PartitionSolution> expResult = new ArrayList<>();
+        expResult.add(z);
+        List<PartitionSolution> result = instance.execute(source);
         assertEquals(expResult, result);
     }
 

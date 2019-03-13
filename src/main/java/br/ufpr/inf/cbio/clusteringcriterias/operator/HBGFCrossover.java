@@ -115,7 +115,9 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
     public PartitionSolution hbgf(PartitionSolution a, PartitionSolution b) {
         GraphCSR gcsr = convertToGraph(a, b);
         int nvtxs = gcsr.getNumberOfVertices(); // number of vertices
-        int k = JMetalRandom.getInstance().nextInt(a.getVariableValue(a.getNumberOfVariables() - 1), b.getVariableValue(b.getNumberOfVariables() - 1));
+        int min = Math.min(a.getVariableValue(a.getNumberOfVariables() - 1), b.getVariableValue(b.getNumberOfVariables() - 1));
+        int max = Math.max(a.getVariableValue(a.getNumberOfVariables() - 1), b.getVariableValue(b.getNumberOfVariables() - 1));
+        int k = JMetalRandom.getInstance().nextInt(min, max);
         int part[] = new int[nvtxs];
         getPartition().partition(nvtxs, gcsr.getAdjacencyIndexes(), gcsr.getAdacencies(), k, part);
 

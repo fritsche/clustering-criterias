@@ -83,7 +83,7 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
         int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
         for (String[] row : rows) {
             int i = Collections.binarySearch(dataset.getDataPoints(), new DataPoint(row[0], null), new DataPointComparator());
-            int value = Integer.parseInt(row[1]) - 1;
+            int value = Integer.parseInt(row[1]);
             if (value > max) {
                 max = value;
             }
