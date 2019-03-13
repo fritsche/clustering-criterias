@@ -37,7 +37,6 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
 
     public PartitionSolution(IntegerProblem problem, File file, DataSet dataset) {
         super(problem);
-
         initializeIntegerVariables(file, dataset);
         initializeObjectiveValues();
     }

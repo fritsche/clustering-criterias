@@ -16,7 +16,6 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.operator.util;
 
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataPoint;
 import java.util.Arrays;
 
 /**
@@ -26,38 +25,38 @@ import java.util.Arrays;
  */
 public class GraphCSR {
 
-    private int nvtxs; // number of vertices
-    private int[] xadj; // indices
-    private int[] adjncy; // adjacencies
+    private int numberOfVertices; // number of vertices
+    private int[] adjacencyIndexes; // indices
+    private int[] adacencies; // adjacencies
 
     public GraphCSR(int nvtxs, int[] xadj, int[] adjncy) {
-        this.nvtxs = nvtxs;
-        this.xadj = xadj;
-        this.adjncy = adjncy;
+        this.numberOfVertices = nvtxs;
+        this.adjacencyIndexes = xadj;
+        this.adacencies = adjncy;
     }
 
-    public int[] getXadj() {
-        return xadj;
+    public int[] getAdjacencyIndexes() {
+        return adjacencyIndexes;
     }
 
-    public void setXadj(int[] xadj) {
-        this.xadj = xadj;
+    public void setAdjacencyIndexes(int[] adjacencyIndexes) {
+        this.adjacencyIndexes = adjacencyIndexes;
     }
 
-    public int[] getAdjncy() {
-        return adjncy;
+    public int[] getAdacencies() {
+        return adacencies;
     }
 
-    public void setAdjncy(int[] adjncy) {
-        this.adjncy = adjncy;
+    public void setAdacencies(int[] adacencies) {
+        this.adacencies = adacencies;
     }
 
-    public int getNvtxs() {
-        return nvtxs;
+    public int getNumberOfVertices() {
+        return numberOfVertices;
     }
 
-    public void setNvtxs(int nvtxs) {
-        this.nvtxs = nvtxs;
+    public void setNumberOfVertices(int numberOfVertices) {
+        this.numberOfVertices = numberOfVertices;
     }
 
     @Override
@@ -74,9 +73,9 @@ public class GraphCSR {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 79 * hash + this.nvtxs;
-        hash = 79 * hash + Arrays.hashCode(this.xadj);
-        hash = 79 * hash + Arrays.hashCode(this.adjncy);
+        hash = 79 * hash + this.numberOfVertices;
+        hash = 79 * hash + Arrays.hashCode(this.adjacencyIndexes);
+        hash = 79 * hash + Arrays.hashCode(this.adacencies);
         return hash;
     }
 

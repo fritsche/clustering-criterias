@@ -17,24 +17,48 @@
 package br.ufpr.inf.cbio.clusteringcriterias.operator;
 
 import br.ufpr.inf.cbio.clusteringcriterias.operator.util.GraphCSR;
+import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import org.uma.jmetal.operator.CrossoverOperator;
+import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class HBGFCrossover {
+public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
 
     public interface Partition extends Library {
 
         int partition(int nvtxs, int[] xadj, int[] adjncy, int nparts, int[] part);
     }
     private Partition partition;
+    private int numberOfGeneratedChildren;
+    private final int numberOfRequiredParents;
+    private double crossoverProbability;
+
+    public HBGFCrossover() {
+        this(1.0, 1);
+    }
+
+    public HBGFCrossover(int numberOfGeneratedChildren) {
+        this(1.0, numberOfGeneratedChildren);
+    }
+
+    public HBGFCrossover(double crossoverProbability) {
+        this(crossoverProbability, 1);
+    }
+
+    public HBGFCrossover(double crossoverProbability, int numberOfGeneratedChildren) {
+        this.crossoverProbability = crossoverProbability;
+        this.numberOfGeneratedChildren = numberOfGeneratedChildren;
+        this.numberOfRequiredParents = 2;
+    }
 
     public Partition getPartition() {
         if (partition == null) {
@@ -52,10 +76,10 @@ public class HBGFCrossover {
         return getPartition().partition(nvtxs, xadj, adjncy, nparts, part);
     }
 
-    public GraphCSR convertToGraph(List<Integer> a, List<Integer> b) {
-        int n = a.size() - 1; // number of objects
-        int ka = a.get(n); // max cluster id of parent A
-        int kb = b.get(n); // max cluster id of parent B
+    public GraphCSR convertToGraph(PartitionSolution a, PartitionSolution b) {
+        int n = a.getNumberOfVariables() - 1; // number of objects
+        int ka = a.getVariableValue(n); // max cluster id of parent A
+        int kb = b.getVariableValue(n); // max cluster id of parent B
         int nvtxs = n + ka + kb; // number of vertices in the graph.
         List<List<Integer>> adjncyList = new ArrayList<>(nvtxs);
         for (int i = 0; i < n; i++) {
@@ -67,11 +91,11 @@ public class HBGFCrossover {
         for (int i = 0; i < n; i++) {
             List<Integer> adjncy_i = adjncyList.get(i);
             // parent A
-            int clu_id = a.get(i) + n; // get i-th cluster id
+            int clu_id = a.getVariableValue(i) + n; // get i-th cluster id
             adjncy_i.add(clu_id); // add to adjacency of i
             adjncyList.get(clu_id).add(i); // add i as adjacency of clu_id
             // parent B
-            clu_id = b.get(i) + n + ka;
+            clu_id = b.getVariableValue(i) + n + ka;
             adjncy_i.add(clu_id);
             adjncyList.get(clu_id).add(i);
         }
@@ -88,18 +112,47 @@ public class HBGFCrossover {
         return new GraphCSR(nvtxs, xadj, adjncy);
     }
 
-    public List<Integer> hbgf(List<Integer> a, List<Integer> b) {
+    public PartitionSolution hbgf(PartitionSolution a, PartitionSolution b) {
         GraphCSR gcsr = convertToGraph(a, b);
-        int nvtxs = gcsr.getNvtxs(); // number of vertices
-        int k = JMetalRandom.getInstance().nextInt(a.get(a.size() - 1), b.get(b.size() - 1));
+        int nvtxs = gcsr.getNumberOfVertices(); // number of vertices
+        int k = JMetalRandom.getInstance().nextInt(a.getVariableValue(a.getNumberOfVariables() - 1), b.getVariableValue(b.getNumberOfVariables() - 1));
         int part[] = new int[nvtxs];
-        getPartition().partition(nvtxs, gcsr.getXadj(), gcsr.getAdjncy(), k, part);
-        List<Integer> consensus = new ArrayList<>(a.size());
-        for (int i = 0; consensus.size() < a.size() - 1; i++) {
-            consensus.add(part[i]);
+        getPartition().partition(nvtxs, gcsr.getAdjacencyIndexes(), gcsr.getAdacencies(), k, part);
+
+        PartitionSolution child = (PartitionSolution) a.copy();
+        for (int i = 0; i < a.getNumberOfVariables() - 1; i++) {
+            child.setVariableValue(i, part[i]);
         }
-        consensus.add(k);
-        return consensus;
+        child.setVariableValue(child.getNumberOfVariables() - 1, k);
+        return child;
+    }
+
+    @Override
+    public int getNumberOfRequiredParents() {
+        return numberOfRequiredParents;
+    }
+
+    @Override
+    public int getNumberOfGeneratedChildren() {
+        return numberOfGeneratedChildren;
+    }
+
+    @Override
+    public List<PartitionSolution> execute(List<PartitionSolution> source) {
+        if (null == source) {
+            throw new JMetalException("Null parameter");
+        } else if (source.size() != numberOfRequiredParents) {
+            throw new JMetalException("There must be " + numberOfRequiredParents + " parents instead of " + source.size());
+        }
+        return doCrossover(crossoverProbability, source.get(0), source.get(1));
+    }
+
+    public List<PartitionSolution> doCrossover(double probability, PartitionSolution parent1, PartitionSolution parent2) {
+        List<PartitionSolution> offspring = new ArrayList<>();
+        while (offspring.size() < numberOfGeneratedChildren) {
+            offspring.add(hbgf(parent1, parent2));
+        }
+        return offspring;
     }
 
 }

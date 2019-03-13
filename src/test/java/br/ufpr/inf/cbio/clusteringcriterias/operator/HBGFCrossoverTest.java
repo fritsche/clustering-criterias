@@ -16,7 +16,13 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.operator;
 
+import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.util.GraphCSR;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
+import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -36,7 +42,7 @@ public class HBGFCrossoverTest {
     private int nvtxs;
     private int[] xadj;
     private int[] adjncy;
-    private List<Integer> a, b;
+    private PartitionSolution a, b, c;
 
     public HBGFCrossoverTest() {
     }
@@ -51,6 +57,23 @@ public class HBGFCrossoverTest {
 
     @Before
     public void setUp() {
+
+        String dataSetPath = "clustering/test2/dataset.txt";
+        String initialPartitionsPath = "clustering/test2/initialPartitions/";
+        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        a = (PartitionSolution) problem.createSolution();
+        b = (PartitionSolution) problem.createSolution();
+        c = (PartitionSolution) a.copy();
+        c.setVariableValue(0, 1);
+        c.setVariableValue(1, 1);
+        c.setVariableValue(2, 0);
+        c.setVariableValue(3, 0);
+        c.setVariableValue(4, 0);
+        c.setVariableValue(5, 0);
+        c.setVariableValue(6, 1);
+        c.setVariableValue(7, 2);
+        
         nvtxs = 11;
         xadj = new int[]{0, 2, 4, 6, 8, 10, 12, 14, 17, 21, 25, 28};
         adjncy = new int[]{
@@ -66,24 +89,6 @@ public class HBGFCrossoverTest {
             0, 1, 2, 6,
             3, 4, 5
         };
-        a = new ArrayList<>();
-        a.add(0);
-        a.add(0);
-        a.add(1);
-        a.add(1);
-        a.add(1);
-        a.add(1);
-        a.add(0);
-        a.add(2);
-        b = new ArrayList<>();
-        b.add(0);
-        b.add(0);
-        b.add(0);
-        b.add(1);
-        b.add(1);
-        b.add(1);
-        b.add(0);
-        b.add(2);
     }
 
     @After
@@ -134,16 +139,61 @@ public class HBGFCrossoverTest {
     public void testHbgf() {
         System.out.println("hbgf");
         HBGFCrossover instance = new HBGFCrossover();
-        List<Integer> expResult = new ArrayList<>();
-        expResult.add(1);
-        expResult.add(1);
-        expResult.add(0);
-        expResult.add(0);
-        expResult.add(0);
-        expResult.add(0);
-        expResult.add(1);
-        expResult.add(2);
-        List<Integer> result = instance.hbgf(a, b);
+        PartitionSolution result = instance.hbgf(a, b);
+        assertEquals(c, result);
+    }
+
+    /**
+     * Test of getNumberOfRequiredParents method, of class HBGFCrossover.
+     */
+    @Test
+    public void testGetNumberOfRequiredParents() {
+        System.out.println("getNumberOfRequiredParents");
+        HBGFCrossover instance = new HBGFCrossover();
+        int expResult = 2; // default is two
+        int result = instance.getNumberOfRequiredParents();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getNumberOfGeneratedChildren method, of class HBGFCrossover.
+     */
+    @Test
+    public void testGetNumberOfGeneratedChildren() {
+        System.out.println("getNumberOfGeneratedChildren");
+        HBGFCrossover instance = new HBGFCrossover();
+        int expResult = 1; // default is one
+        int result = instance.getNumberOfGeneratedChildren();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of execute method, of class HBGFCrossover.
+     */
+    @Test
+    public void testExecute() {
+        System.out.println("execute");
+        List<PartitionSolution> source = new ArrayList<>();
+        source.add(a);
+        source.add(b);
+        HBGFCrossover instance = new HBGFCrossover();
+        List<PartitionSolution> expResult = new ArrayList<>();
+        expResult.add(c);
+        List<PartitionSolution> result = instance.execute(source);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of doCrossover method, of class HBGFCrossover.
+     */
+    @Test
+    public void testDoCrossover() {
+        System.out.println("doCrossover");
+        double probability = 1.0;
+        HBGFCrossover instance = new HBGFCrossover();
+        List<PartitionSolution> expResult = new ArrayList<>();
+        expResult.add(c);
+        List<PartitionSolution> result = instance.doCrossover(probability, a, b);
         assertEquals(expResult, result);
     }
 
