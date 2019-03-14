@@ -43,7 +43,7 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
     private double crossoverProbability;
 
     public HBGFCrossover() {
-        this(1.0, 1);
+        this(1.0, 2);
     }
 
     public HBGFCrossover(int numberOfGeneratedChildren) {
@@ -51,7 +51,7 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
     }
 
     public HBGFCrossover(double crossoverProbability) {
-        this(crossoverProbability, 1);
+        this(crossoverProbability, 2);
     }
 
     public HBGFCrossover(double crossoverProbability, int numberOfGeneratedChildren) {
@@ -151,8 +151,15 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
 
     public List<PartitionSolution> doCrossover(double probability, PartitionSolution parent1, PartitionSolution parent2) {
         List<PartitionSolution> offspring = new ArrayList<>();
-        while (offspring.size() < numberOfGeneratedChildren) {
-            offspring.add(hbgf(parent1, parent2));
+        if (JMetalRandom.getInstance().nextDouble() < probability) {
+            while (offspring.size() < numberOfGeneratedChildren) {
+                offspring.add(hbgf(parent1, parent2));
+            }
+        } else { // copy parents
+            offspring.add(parent1.copy());
+            if (numberOfGeneratedChildren == 2) {
+                offspring.add(parent2.copy());
+            }
         }
         return offspring;
     }
