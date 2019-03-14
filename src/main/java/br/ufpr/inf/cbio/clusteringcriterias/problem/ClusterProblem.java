@@ -42,7 +42,7 @@ public class ClusterProblem extends AbstractIntegerProblem {
         this.computeCentroids = computeCentroids;
         this.dataSet = dataSet;
         this.objectiveFunctions = objectiveFunctions;
-        this.setNumberOfVariables(dataSet.getDataPoints().size());
+        this.setNumberOfVariables(dataSet.getDataPoints().size() + 1);
         this.setNumberOfObjectives(objectiveFunctions.size());
         initialPopulation = this.parseInitialPopulation(initialPartitions);
     }

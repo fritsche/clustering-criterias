@@ -38,7 +38,7 @@ public class PartitionCentroids
         Map<Integer, Point> sum = new HashMap();
         Map<Integer, Integer> count = new HashMap();
 
-        for (int i = 0; i < s.getNumberOfVariables(); i++) {
+        for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
             Integer c = s.getVariableValue(i);
             Point o = new ArrayPoint(dataSet.getPoint(i));
             if (sum.containsKey(c)) {

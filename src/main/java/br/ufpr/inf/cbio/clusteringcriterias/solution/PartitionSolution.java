@@ -37,7 +37,6 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
 
     public PartitionSolution(IntegerProblem problem, File file, DataSet dataset) {
         super(problem);
-
         initializeIntegerVariables(file, dataset);
         initializeObjectiveValues();
     }
@@ -77,13 +76,28 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
     }
 
     private void initializeIntegerVariables(File file, DataSet dataset) {
+
         TsvParserSettings settings = new TsvParserSettings();
         TsvParser parser = new TsvParser(settings);
         List<String[]> rows = parser.parseAll(file);
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
         for (String[] row : rows) {
             int i = Collections.binarySearch(dataset.getDataPoints(), new DataPoint(row[0], null), new DataPointComparator());
-            int value = Integer.parseInt(row[1]) - 1;
+            int value = Integer.parseInt(row[1]);
+            if (value > max) {
+                max = value;
+            }
+            if (value < min) {
+                min = value;
+            }
             setVariableValue(i, value);
         }
+        if (min == 1) {
+            max--;
+            for (int i = 0; i < getNumberOfVariables() - 1; i++) {
+                setVariableValue(i, getVariableValue(i) - 1);
+            }
+        }
+        setVariableValue(getNumberOfVariables() - 1, max + 1);
     }
 }

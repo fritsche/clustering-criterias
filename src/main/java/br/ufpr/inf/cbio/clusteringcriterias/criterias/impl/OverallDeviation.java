@@ -58,7 +58,7 @@ public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
 
         Map<Integer, Point> centroids = (new PartitionCentroids()).getAttribute(s);
 
-        for (int i = 0; i < s.getNumberOfVariables(); i++) {
+        for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
             int cluster = s.getVariableValue(i);
             sum += distance.compute(centroids.get(cluster), dataSet.getPoint(i));
         }

@@ -85,8 +85,6 @@ public class OverallDeviationTest {
         PartitionCentroids partitionCentroids = new PartitionCentroids();
         partitionCentroids.computeCentroids(s, dataSet);
 
-        Map<Integer, Point> centroids = partitionCentroids.getAttribute(s);
-
         OverallDeviation instance = new OverallDeviation(dataSet, new EuclideanDistance());
         double expResult = 4.0;
         double result = instance.evaluate(s);

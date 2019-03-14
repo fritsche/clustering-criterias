@@ -76,6 +76,8 @@ public class PartitionCentroidsTest {
 
         s.setVariableValue(2, 1); // solution 'c' cluster 1
         s.setVariableValue(3, 1); // solution 'd' cluster 1
+        
+        s.setVariableValue(4, 2); // solution 'd' cluster 1
 
         PartitionCentroids instance = new PartitionCentroids();
         instance.computeCentroids(s, dataSet);
@@ -106,6 +108,7 @@ public class PartitionCentroidsTest {
         s.setVariableValue(1, 0); // solution 'b' cluster 0
         s.setVariableValue(2, 0); // solution 'c' cluster 0
         s.setVariableValue(3, 0); // solution 'd' cluster 0
+        s.setVariableValue(4, 1); // solution 'd' cluster 0
 
         PartitionCentroids instance = new PartitionCentroids();
         instance.computeCentroids(s, dataSet);
