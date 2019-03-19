@@ -16,17 +16,10 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
-import br.ufpr.inf.cbio.clusteringcriterias.runner.Runner;
-import java.io.File;
-import java.io.IOException;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
 
@@ -36,12 +29,12 @@ import org.uma.jmetal.util.point.util.distance.PointDistance;
  */
 public class Utils {
 
-    public static double[][] computeDistanceMatrix(DataSet dataSet, PointDistance distance) {
-        int n = dataSet.getDataPoints().size();
+    public static double[][] computeDistanceMatrix(Dataset dataset, PointDistance distance) {
+        int n = dataset.getDataPoints().size();
         double[][] distances = new double[n][n];
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
-                distances[j][i] = distances[i][j] = distance.compute(dataSet.getPoint(i), dataSet.getPoint(j));
+                distances[j][i] = distances[i][j] = distance.compute(dataset.getPoint(i), dataset.getPoint(j));
             }
         }
 
@@ -86,20 +79,6 @@ public class Utils {
         neighbors.remove(k);
         di.remove(n);
         return neighbors;
-    }
-
-    public static List<File> getInitialPartitionFiles(String path) {
-        List<File> files = new ArrayList<>();
-        List<String> paths = new ArrayList<>();
-        try {
-            paths = IOUtils.readLines(Utils.class.getClassLoader().getResourceAsStream(path), Charsets.UTF_8);
-        } catch (IOException ex) {
-            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, "Error reading [" + path + "] folder.", ex);
-        }
-        for (String file : paths) {
-            files.add(new File(Utils.class.getClassLoader().getResource(path + File.separator + file).getFile()));
-        }
-        return files;
     }
 
 }

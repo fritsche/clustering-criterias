@@ -17,9 +17,10 @@
 package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,13 +66,14 @@ public class ConnectivityTest {
         System.out.println("evaluate");
         
         // four points dataset (point values don't matter on this test)
-        DataSet dataSet = new DataSet();
-        dataSet.addDataPoint("a", new ArrayPoint());
-        dataSet.addDataPoint("b", new ArrayPoint());
-        dataSet.addDataPoint("c", new ArrayPoint());
-        dataSet.addDataPoint("d", new ArrayPoint());
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
+        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.addDataPoint("a", new ArrayPoint());
+        dataset.addDataPoint("b", new ArrayPoint());
+        dataset.addDataPoint("c", new ArrayPoint());
+        dataset.addDataPoint("d", new ArrayPoint());
         
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("datasets/test/test1/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         
         IntegerSolution s = problem.createSolution();
         s.setVariableValue(0, 0);

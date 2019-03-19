@@ -21,7 +21,8 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.io.File;
@@ -33,7 +34,6 @@ import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.operator.impl.crossover.IntegerSBXCrossover;
 import org.uma.jmetal.operator.impl.mutation.NullMutation;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
@@ -52,9 +52,7 @@ public class Runner {
 
     public void run() {
 
-        String dataSetPath = "clustering/iris/iris-dataset.txt";
-        String initialPartitionsPath = "clustering/iris/initialPartitions/";
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.iris.toString());
 
         int neighboors = 5;
         int popSize = 10;
@@ -67,10 +65,10 @@ public class Runner {
         SelectionOperator<List<PartitionSolution>, PartitionSolution> selection;
 
         List<ObjectiveFunction> functions = new ArrayList<>();
-        functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
-        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataSet, new EuclideanDistance()), neighboors)));
+        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
+        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()), neighboors)));
 
-        problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles(initialPartitionsPath));
+        problem = new ClusterProblem(true, dataset, functions);
 
         crossoverProbability = 1.0;
         int numberOfGeneratedChild = 2;

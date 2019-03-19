@@ -16,10 +16,12 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,17 +69,18 @@ public class ClusterProblemTest {
     public void testEvaluate() {
         System.out.println("evaluate");
 
-        DataSet dataSet = new DataSet();
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
 
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
-        dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
+        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
+        dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
+        dataset.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
-        functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
+        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
 
-        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles("datasets/test/test1/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -101,15 +104,15 @@ public class ClusterProblemTest {
     public void testEvaluateOverallDeviationAndConnectivity() {
         System.out.println("evaluateOverallDeviationAndConnectivity");
 
-        DataSet dataSet = new DataSet();
-
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 2.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 2.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
-        dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
+        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 2.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 2.0}));
+        dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
+        dataset.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
-        functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
+        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
 
         List<List<Integer>> neighborhood = new ArrayList<>(4);
         neighborhood.add(new ArrayList<>(Arrays.asList(1)));
@@ -118,7 +121,7 @@ public class ClusterProblemTest {
         neighborhood.add(new ArrayList<>(Arrays.asList(2)));
         functions.add(new Connectivity(neighborhood));
 
-        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles("datasets/test/test1/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -141,12 +144,9 @@ public class ClusterProblemTest {
     public void testCreateSolution() {
         System.out.println("createSolution");
 
-        String dataSetPath = "datasets/test/test1/dataset.txt";
-        String initialPartitionsPath = "datasets/test/test1/initialPartitions/";
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
 
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
-
-        ClusterProblem instance = new ClusterProblem(true, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        ClusterProblem instance = new ClusterProblem(true, dataset, new ArrayList<ObjectiveFunction>());
 
         IntegerSolution a = instance.createSolution();
         int[] resultA = new int[5];

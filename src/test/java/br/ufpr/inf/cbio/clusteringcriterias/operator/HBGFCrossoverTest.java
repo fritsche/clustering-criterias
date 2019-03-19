@@ -19,7 +19,8 @@ package br.ufpr.inf.cbio.clusteringcriterias.operator;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.util.GraphCSR;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import br.ufpr.inf.cbio.clusteringcriterias.utils.MockRandomNumberGenerator;
@@ -60,10 +61,8 @@ public class HBGFCrossoverTest {
     @Before
     public void setUp() {
 
-        String dataSetPath = "datasets/test/test2/dataset.txt";
-        String initialPartitionsPath = "datasets/test/test2/initialPartitions/";
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test2.toString());
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         a = (PartitionSolution) problem.createSolution();
         b = (PartitionSolution) problem.createSolution();
         c = (PartitionSolution) a.copy();
@@ -208,10 +207,8 @@ public class HBGFCrossoverTest {
     public void testExecuteScenario2() {
         System.out.println("executeScenario2");
         JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0, 3, 3}));
-        String dataSetPath = "datasets/test/test3/dataset.txt";
-        String initialPartitionsPath = "datasets/test/test3/initialPartitions/";
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test3.toString());
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
         PartitionSolution z = (PartitionSolution) x.copy();
@@ -244,10 +241,8 @@ public class HBGFCrossoverTest {
     public void testExecuteScenario3() {
         System.out.println("executeScenario3");
         JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0, 3, 3}));
-        String dataSetPath = "datasets/test/test4/dataset.txt";
-        String initialPartitionsPath = "datasets/test/test4/initialPartitions/";
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test4.toString());
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
         PartitionSolution z = (PartitionSolution) x.copy();
@@ -277,10 +272,8 @@ public class HBGFCrossoverTest {
     public void testWhenNumberOfGeneratedChildrenEqualsTwo() {
         System.out.println("executeScenario3");
         JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0, 2, 4}));
-        String dataSetPath = "datasets/test/test4/dataset.txt";
-        String initialPartitionsPath = "datasets/test/test4/initialPartitions/";
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test4.toString());
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
         PartitionSolution z1 = (PartitionSolution) x.copy();
@@ -322,10 +315,8 @@ public class HBGFCrossoverTest {
     public void testCrossoverProbability() {
         System.out.println("executeScenario3");
         JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0}));
-        String dataSetPath = "datasets/test/test4/dataset.txt";
-        String initialPartitionsPath = "datasets/test/test4/initialPartitions/";
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles(initialPartitionsPath));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test4.toString());
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
         PartitionSolution z1 = (PartitionSolution) x.copy();

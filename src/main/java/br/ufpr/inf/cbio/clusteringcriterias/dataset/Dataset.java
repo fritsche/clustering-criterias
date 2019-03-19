@@ -16,11 +16,18 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.dataset;
 
+import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
+import br.ufpr.inf.cbio.clusteringcriterias.runner.Runner;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.uma.jmetal.util.point.Point;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
 
@@ -28,16 +35,14 @@ import org.uma.jmetal.util.point.impl.ArrayPoint;
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class DataSet {
+public class Dataset {
 
     private List<DataPoint> dataPoints;
+    private final String initialPartitionsPath;
 
-    public DataSet() {
-        dataPoints = new ArrayList<>();
-    }
-
-    public DataSet(File file) {
-        this.dataPoints = parseFile(file);
+    public Dataset(String dataSetPath, String initialPartitionsPath) {
+        this.initialPartitionsPath = initialPartitionsPath;
+        this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
     }
 
     public static List<DataPoint> parseFile(File file) {
@@ -86,6 +91,20 @@ public class DataSet {
             string += point.toString() + "\n";
         }
         return string;
+    }
+
+    public List<File> getInitialPartitionFiles() {
+        List<File> files = new ArrayList<>();
+        List<String> paths = new ArrayList<>();
+        try {
+            paths = IOUtils.readLines(Utils.class.getClassLoader().getResourceAsStream(initialPartitionsPath), Charsets.UTF_8);
+        } catch (IOException ex) {
+            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, "Error reading [" + initialPartitionsPath + "] folder.", ex);
+        }
+        for (String file : paths) {
+            files.add(new File(Utils.class.getClassLoader().getResource(initialPartitionsPath + File.separator + file).getFile()));
+        }
+        return files;
     }
 
 }

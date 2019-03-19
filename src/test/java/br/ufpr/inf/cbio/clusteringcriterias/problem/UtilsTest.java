@@ -16,7 +16,9 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,15 +63,16 @@ public class UtilsTest {
     @Test
     public void testComputeDistanceMatrix() {
         System.out.println("computeDistanceMatrix");
-        DataSet dataSet = new DataSet();
-
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{0.0, 1.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{0.0, 2.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{0.0, 3.0}));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
+        
+        dataset.setDataPoints(new ArrayList<DataPoint>(3));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{0.0, 1.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{0.0, 2.0}));
+        dataset.addDataPoint("c", new ArrayPoint(new double[]{0.0, 3.0}));
 
         PointDistance distance = new EuclideanDistance();
         double[][] expResult = new double[][]{{0.0, 1.0, 2.0}, {1.0, 0.0, 1.0}, {2.0, 1.0, 0.0}};
-        double[][] result = Utils.computeDistanceMatrix(dataSet, distance);
+        double[][] result = Utils.computeDistanceMatrix(dataset, distance);
         assertArrayEquals(expResult, result);
     }
 

@@ -17,7 +17,7 @@
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPointComparator;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.io.File;
@@ -33,20 +33,20 @@ import org.uma.jmetal.solution.IntegerSolution;
 public class ClusterProblem extends AbstractIntegerProblem {
 
     private final boolean computeCentroids;
-    private final DataSet dataSet;
+    private final Dataset dataset;
     private final List<ObjectiveFunction> objectiveFunctions;
     private final List<IntegerSolution> initialPopulation;
     private int nextSolution = 0;
 
-    public ClusterProblem(boolean computeCentroids, DataSet dataSet,
-            List<ObjectiveFunction> objectiveFunctions, List<File> initialPartitions) {
+    public ClusterProblem(boolean computeCentroids, Dataset dataset,
+            List<ObjectiveFunction> objectiveFunctions) {
 
         this.computeCentroids = computeCentroids;
-        this.dataSet = dataSet;
+        this.dataset = dataset;
         this.objectiveFunctions = objectiveFunctions;
-        this.setNumberOfVariables(dataSet.getDataPoints().size() + 1);
+        this.setNumberOfVariables(dataset.getDataPoints().size() + 1);
         this.setNumberOfObjectives(objectiveFunctions.size());
-        initialPopulation = this.parseInitialPopulation(initialPartitions);
+        initialPopulation = this.parseInitialPopulation(dataset.getInitialPartitionFiles());
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ClusterProblem extends AbstractIntegerProblem {
     @Override
     public void evaluate(IntegerSolution solution) {
         if (computeCentroids) {
-            (new PartitionCentroids()).computeCentroids(solution, dataSet);
+            (new PartitionCentroids()).computeCentroids(solution, dataset);
         }
         for (int i = 0; i < objectiveFunctions.size(); i++) {
             solution.setObjective(i, objectiveFunctions.get(i).evaluate(solution));
@@ -68,9 +68,9 @@ public class ClusterProblem extends AbstractIntegerProblem {
 
     private List<IntegerSolution> parseInitialPopulation(List<File> initialPartitions) {
         List<IntegerSolution> population = new ArrayList<>(initialPartitions.size());
-        Collections.sort(dataSet.getDataPoints(), new DataPointComparator());
+        Collections.sort(dataset.getDataPoints(), new DataPointComparator());
         for (File file : initialPartitions) {
-            population.add(new PartitionSolution(this, file, dataSet));
+            population.add(new PartitionSolution(this, file, dataset));
         }
         return population;
     }
