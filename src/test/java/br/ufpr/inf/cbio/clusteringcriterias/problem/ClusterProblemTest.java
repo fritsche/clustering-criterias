@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;

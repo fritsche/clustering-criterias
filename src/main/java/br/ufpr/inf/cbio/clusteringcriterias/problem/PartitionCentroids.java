@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
 import java.util.HashMap;
 import java.util.Map;
 import org.uma.jmetal.solution.IntegerSolution;

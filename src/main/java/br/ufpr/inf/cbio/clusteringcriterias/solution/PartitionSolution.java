@@ -16,9 +16,9 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.solution;
 
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataPoint;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataPointComparator;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPointComparator;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;

@@ -16,6 +16,8 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
 import java.io.File;
 import java.util.List;
 import org.junit.After;

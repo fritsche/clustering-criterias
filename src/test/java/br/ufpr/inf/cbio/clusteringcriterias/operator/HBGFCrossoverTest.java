@@ -19,7 +19,7 @@ package br.ufpr.inf.cbio.clusteringcriterias.operator;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.util.GraphCSR;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import br.ufpr.inf.cbio.clusteringcriterias.utils.MockRandomNumberGenerator;

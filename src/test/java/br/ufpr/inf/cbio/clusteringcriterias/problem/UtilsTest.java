@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

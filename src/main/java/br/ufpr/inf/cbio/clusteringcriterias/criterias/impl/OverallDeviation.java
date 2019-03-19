@@ -17,7 +17,7 @@
 package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
 import java.util.Map;
 import org.uma.jmetal.solution.IntegerSolution;

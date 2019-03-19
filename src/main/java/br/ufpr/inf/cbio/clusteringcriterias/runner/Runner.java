@@ -21,7 +21,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataSet;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.io.File;
