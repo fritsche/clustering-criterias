@@ -68,7 +68,7 @@ public class PartitionCentroidsTest {
         dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
         dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("datasets/test/test1/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -101,7 +101,7 @@ public class PartitionCentroidsTest {
         dataSet.addDataPoint("c", new ArrayPoint(new double[]{0.0, 2.0}));
         dataSet.addDataPoint("d", new ArrayPoint(new double[]{0.0, 0.0}));
 
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("datasets/test/test1/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0

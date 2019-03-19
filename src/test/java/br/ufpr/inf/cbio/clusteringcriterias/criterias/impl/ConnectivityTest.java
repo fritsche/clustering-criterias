@@ -71,7 +71,7 @@ public class ConnectivityTest {
         dataSet.addDataPoint("c", new ArrayPoint());
         dataSet.addDataPoint("d", new ArrayPoint());
         
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("datasets/test/test1/initialPartitions"));
         
         IntegerSolution s = problem.createSolution();
         s.setVariableValue(0, 0);

@@ -76,7 +76,7 @@ public class ClusterProblemTest {
         List<ObjectiveFunction> functions = new ArrayList<>(1);
         functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
 
-        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles("datasets/test/test1/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -117,7 +117,7 @@ public class ClusterProblemTest {
         neighborhood.add(new ArrayList<>(Arrays.asList(2)));
         functions.add(new Connectivity(neighborhood));
 
-        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles("datasets/test/test1/initialPartitions"));
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -140,8 +140,8 @@ public class ClusterProblemTest {
     public void testCreateSolution() {
         System.out.println("createSolution");
 
-        String dataSetPath = "clustering/test/dataset.txt";
-        String initialPartitionsPath = "clustering/test/initialPartitions/";
+        String dataSetPath = "datasets/test/test1/dataset.txt";
+        String initialPartitionsPath = "datasets/test/test1/initialPartitions/";
 
         DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
 

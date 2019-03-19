@@ -57,7 +57,7 @@ public class DataSetTest {
     @Test
     public void testParseFile() {
         System.out.println("parseFile");
-        File file = new File(getClass().getClassLoader().getResource("clustering/test/dataset.txt").getFile());
+        File file = new File(getClass().getClassLoader().getResource("datasets/test/test1/dataset.txt").getFile());
         DataSet dataSet = new DataSet();
         dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
         dataSet.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
