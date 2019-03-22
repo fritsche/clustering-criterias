@@ -17,7 +17,7 @@
 package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
 import java.util.Map;
 import org.uma.jmetal.solution.IntegerSolution;
@@ -35,11 +35,11 @@ import org.uma.jmetal.util.point.util.distance.PointDistance;
  */
 public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
 
-    private final DataSet dataSet;
+    private final Dataset dataset;
     private final PointDistance distance;
 
-    public OverallDeviation(DataSet dataSet, PointDistance distance) {
-        this.dataSet = dataSet;
+    public OverallDeviation(Dataset dataset, PointDistance distance) {
+        this.dataset = dataset;
         this.distance = distance;
     }
 
@@ -60,7 +60,7 @@ public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
 
         for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
             int cluster = s.getVariableValue(i);
-            sum += distance.compute(centroids.get(cluster), dataSet.getPoint(i));
+            sum += distance.compute(centroids.get(cluster), dataset.getPoint(i));
         }
 
         return sum;

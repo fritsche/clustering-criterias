@@ -16,9 +16,9 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.solution;
 
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataPoint;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataPointComparator;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPointComparator;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;
@@ -35,7 +35,7 @@ import org.uma.jmetal.solution.impl.AbstractGenericSolution;
  */
 public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerProblem> implements IntegerSolution {
 
-    public PartitionSolution(IntegerProblem problem, File file, DataSet dataset) {
+    public PartitionSolution(IntegerProblem problem, File file, Dataset dataset) {
         super(problem);
         initializeIntegerVariables(file, dataset);
         initializeObjectiveValues();
@@ -75,7 +75,7 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
         return getVariableValue(index).toString();
     }
 
-    private void initializeIntegerVariables(File file, DataSet dataset) {
+    private void initializeIntegerVariables(File file, Dataset dataset) {
 
         TsvParserSettings settings = new TsvParserSettings();
         TsvParser parser = new TsvParser(settings);
@@ -100,4 +100,25 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
         }
         setVariableValue(getNumberOfVariables() - 1, max + 1);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PartitionSolution other = (PartitionSolution) obj;
+        return other.hashCode() == this.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
 }

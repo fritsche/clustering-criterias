@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import java.util.HashMap;
 import java.util.Map;
 import org.uma.jmetal.solution.IntegerSolution;
@@ -33,14 +34,14 @@ public class PartitionCentroids
     public PartitionCentroids() {
     }
 
-    public void computeCentroids(IntegerSolution s, DataSet dataSet) {
+    public void computeCentroids(IntegerSolution s, Dataset dataset) {
 
         Map<Integer, Point> sum = new HashMap();
         Map<Integer, Integer> count = new HashMap();
 
         for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
             Integer c = s.getVariableValue(i);
-            Point o = new ArrayPoint(dataSet.getPoint(i));
+            Point o = new ArrayPoint(dataset.getPoint(i));
             if (sum.containsKey(c)) {
                 Point p = sum.get(c);
                 count.put(c, count.get(c) + 1);

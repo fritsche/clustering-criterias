@@ -17,12 +17,13 @@
 package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import java.util.ArrayList;
-import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,7 +31,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.uma.jmetal.solution.IntegerSolution;
-import org.uma.jmetal.util.point.Point;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
 import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 
@@ -66,14 +66,14 @@ public class OverallDeviationTest {
     public void testEvaluate() {
         System.out.println("evaluate");
 
-        DataSet dataSet = new DataSet();
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
+        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
+        dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
+        dataset.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
-        dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
-
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -83,9 +83,9 @@ public class OverallDeviationTest {
         s.setVariableValue(3, 1); // solution 'd' cluster 1
 
         PartitionCentroids partitionCentroids = new PartitionCentroids();
-        partitionCentroids.computeCentroids(s, dataSet);
+        partitionCentroids.computeCentroids(s, dataset);
 
-        OverallDeviation instance = new OverallDeviation(dataSet, new EuclideanDistance());
+        OverallDeviation instance = new OverallDeviation(dataset, new EuclideanDistance());
         double expResult = 4.0;
         double result = instance.evaluate(s);
         System.out.println("Evaluate Overall Deviation, expected: " + expResult + ", actual: " + result);

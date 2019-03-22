@@ -16,6 +16,9 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,15 +63,16 @@ public class UtilsTest {
     @Test
     public void testComputeDistanceMatrix() {
         System.out.println("computeDistanceMatrix");
-        DataSet dataSet = new DataSet();
-
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{0.0, 1.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{0.0, 2.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{0.0, 3.0}));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
+        
+        dataset.setDataPoints(new ArrayList<DataPoint>(3));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{0.0, 1.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{0.0, 2.0}));
+        dataset.addDataPoint("c", new ArrayPoint(new double[]{0.0, 3.0}));
 
         PointDistance distance = new EuclideanDistance();
         double[][] expResult = new double[][]{{0.0, 1.0, 2.0}, {1.0, 0.0, 1.0}, {2.0, 1.0, 0.0}};
-        double[][] result = Utils.computeDistanceMatrix(dataSet, distance);
+        double[][] result = Utils.computeDistanceMatrix(dataset, distance);
         assertArrayEquals(expResult, result);
     }
 
@@ -86,14 +90,14 @@ public class UtilsTest {
             {15.0, 13.0, 10.0, 0.0}
         };
 
-        int k = 2;
         List<List<Integer>> expResult = new ArrayList<>(4);
         expResult.add(new ArrayList<>(Arrays.asList(1, 2)));
         expResult.add(new ArrayList<>(Arrays.asList(3, 2)));
         expResult.add(new ArrayList<>(Arrays.asList(1, 3)));
         expResult.add(new ArrayList<>(Arrays.asList(2, 1)));
 
-        List<List<Integer>> result = Utils.computeNeighborhood(distances, k);
+        double l = 0.5; // 50%
+        List<List<Integer>> result = Utils.computeNeighborhood(distances, l);
         assertEquals(expResult, result);
     }
 

@@ -21,23 +21,23 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.DataSet;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.operator.impl.crossover.IntegerSBXCrossover;
 import org.uma.jmetal.operator.impl.mutation.NullMutation;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.SolutionListUtils;
@@ -52,13 +52,8 @@ public class Runner {
 
     public void run() {
 
-        String dataSetPath = "clustering/iris/iris-dataset.txt";
-        String initialPartitionsPath = "clustering/iris/initialPartitions/";
-        DataSet dataSet = new DataSet(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.iris.toString());
 
-        int neighboors = 5;
-        int popSize = 10;
-        int maxFitnessEvaluations = popSize * 50;
 
         double crossoverProbability;
         Problem problem;
@@ -67,10 +62,10 @@ public class Runner {
         SelectionOperator<List<PartitionSolution>, PartitionSolution> selection;
 
         List<ObjectiveFunction> functions = new ArrayList<>();
-        functions.add(new OverallDeviation(dataSet, new EuclideanDistance()));
-        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataSet, new EuclideanDistance()), neighboors)));
+        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
+        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()))));
 
-        problem = new ClusterProblem(true, dataSet, functions, Utils.getInitialPartitionFiles(initialPartitionsPath));
+        problem = new ClusterProblem(true, dataset, functions);
 
         crossoverProbability = 1.0;
         int numberOfGeneratedChild = 2;
@@ -81,7 +76,11 @@ public class Runner {
         selection = new BinaryTournamentSelection<>(
                 new RankingAndCrowdingDistanceComparator<PartitionSolution>());
 
-        Algorithm<List<IntegerSolution>> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation)
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxFitnessEvaluations = popSize * 50;
+        System.out.println(popSize);
+
+        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation)
                 .setSelectionOperator(selection)
                 .setMaxEvaluations(maxFitnessEvaluations)
                 .setPopulationSize(popSize + (popSize % 2))
@@ -93,11 +92,17 @@ public class Runner {
         long computingTime = algorithmRunner.getComputingTime();
         JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
 
-        List<IntegerSolution> population = SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
-
-        for (IntegerSolution s : population) {
-            System.out.println(s);
+        List<PartitionSolution> population = SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
+        Set<PartitionSolution> set = new LinkedHashSet<>();
+        set.addAll(population);
+        population.clear();
+        population.addAll(set);
+        
+        for (PartitionSolution s : population) {
+            //System.out.println(Arrays.toString(s.getObjectives()));
+            System.out.println(s.hashCode());
         }
+        System.out.println(population.size());
 
     }
 

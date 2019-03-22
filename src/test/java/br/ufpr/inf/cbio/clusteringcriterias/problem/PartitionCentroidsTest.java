@@ -16,7 +16,10 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -61,14 +64,15 @@ public class PartitionCentroidsTest {
     @Test
     public void testComputeCentroidsWithNegativeValuesAndTwoClusters() {
         System.out.println("computeCentroidsWithNegativeValuesAndTwoClusters");
-        DataSet dataSet = new DataSet();
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
 
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
-        dataSet.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
+        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
+        dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
+        dataset.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -76,11 +80,11 @@ public class PartitionCentroidsTest {
 
         s.setVariableValue(2, 1); // solution 'c' cluster 1
         s.setVariableValue(3, 1); // solution 'd' cluster 1
-        
+
         s.setVariableValue(4, 2); // solution 'd' cluster 1
 
         PartitionCentroids instance = new PartitionCentroids();
-        instance.computeCentroids(s, dataSet);
+        instance.computeCentroids(s, dataset);
 
         Map<Integer, Point> centroids = instance.getAttribute(s);
 
@@ -94,14 +98,14 @@ public class PartitionCentroidsTest {
     @Test
     public void testComputeCentroids() {
         System.out.println("computeCentroids");
-        DataSet dataSet = new DataSet();
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
+        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{2.0, 2.0}));
+        dataset.addDataPoint("c", new ArrayPoint(new double[]{0.0, 2.0}));
+        dataset.addDataPoint("d", new ArrayPoint(new double[]{0.0, 0.0}));
 
-        dataSet.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
-        dataSet.addDataPoint("b", new ArrayPoint(new double[]{2.0, 2.0}));
-        dataSet.addDataPoint("c", new ArrayPoint(new double[]{0.0, 2.0}));
-        dataSet.addDataPoint("d", new ArrayPoint(new double[]{0.0, 0.0}));
-
-        ClusterProblem problem = new ClusterProblem(false, dataSet, new ArrayList<ObjectiveFunction>(), Utils.getInitialPartitionFiles("clustering/test/initialPartitions"));
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
@@ -111,7 +115,7 @@ public class PartitionCentroidsTest {
         s.setVariableValue(4, 1); // solution 'd' cluster 0
 
         PartitionCentroids instance = new PartitionCentroids();
-        instance.computeCentroids(s, dataSet);
+        instance.computeCentroids(s, dataset);
 
         Map<Integer, Point> centroids = instance.getAttribute(s);
 
