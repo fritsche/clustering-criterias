@@ -37,6 +37,7 @@ public class ClusterProblem extends AbstractIntegerProblem {
     private final List<ObjectiveFunction> objectiveFunctions;
     private final List<IntegerSolution> initialPopulation;
     private int nextSolution = 0;
+    private int populationSize;
 
     public ClusterProblem(boolean computeCentroids, Dataset dataset,
             List<ObjectiveFunction> objectiveFunctions) {
@@ -47,6 +48,7 @@ public class ClusterProblem extends AbstractIntegerProblem {
         this.setNumberOfVariables(dataset.getDataPoints().size() + 1);
         this.setNumberOfObjectives(objectiveFunctions.size());
         initialPopulation = this.parseInitialPopulation(dataset.getInitialPartitionFiles());
+        this.populationSize = initialPopulation.size();
     }
 
     @Override
@@ -73,6 +75,14 @@ public class ClusterProblem extends AbstractIntegerProblem {
             population.add(new PartitionSolution(this, file, dataset));
         }
         return population;
+    }
+
+    public int getPopulationSize() {
+        return populationSize;
+    }
+
+    public void setPopulationSize(int populationSize) {
+        this.populationSize = populationSize;
     }
 
 }

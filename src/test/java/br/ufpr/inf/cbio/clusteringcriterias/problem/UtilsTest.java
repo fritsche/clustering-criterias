@@ -90,14 +90,14 @@ public class UtilsTest {
             {15.0, 13.0, 10.0, 0.0}
         };
 
-        int k = 2;
         List<List<Integer>> expResult = new ArrayList<>(4);
         expResult.add(new ArrayList<>(Arrays.asList(1, 2)));
         expResult.add(new ArrayList<>(Arrays.asList(3, 2)));
         expResult.add(new ArrayList<>(Arrays.asList(1, 3)));
         expResult.add(new ArrayList<>(Arrays.asList(2, 1)));
 
-        List<List<Integer>> result = Utils.computeNeighborhood(distances, k);
+        double l = 0.5; // 50%
+        List<List<Integer>> result = Utils.computeNeighborhood(distances, l);
         assertEquals(expResult, result);
     }
 

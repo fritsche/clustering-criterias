@@ -100,4 +100,25 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
         }
         setVariableValue(getNumberOfVariables() - 1, max + 1);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PartitionSolution other = (PartitionSolution) obj;
+        return other.hashCode() == this.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
 }

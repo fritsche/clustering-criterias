@@ -20,7 +20,6 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
 
 /**
@@ -41,12 +40,15 @@ public class Utils {
         return distances;
     }
 
-    public static List<List<Integer>> computeNeighborhood(double[][] distances, int k) {
+    public static List<List<Integer>> computeNeighborhood(double[][] distances) {
+        double l = 0.05; // default L = 5%
+        return computeNeighborhood(distances, l);
+    }
+
+    public static List<List<Integer>> computeNeighborhood(double[][] distances, double l) {
         int n = distances.length;
         List<List<Integer>> neighborhood = new ArrayList<>(n);
-        if (k >= n) {
-            throw new JMetalException("The number of neighbors k should be smaller than the number of data points n.");
-        }
+        int k = (int) (n * l);
         for (int i = 0; i < n; i++) {
             List<Double> di = new ArrayList<>();
             for (double d : distances[i]) {
