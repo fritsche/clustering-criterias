@@ -121,10 +121,24 @@ public class UtilsTest {
     @Test
     public void testGetNeighborsAgain() {
         System.out.println("getNeighborsAgain");
-        List<Double> di = new ArrayList<>(Arrays.asList(40.0, 28.0, 20.0, 10.0, 5.0, 3.0, 1.0));
+        List<Double> di = new ArrayList<>(Arrays.asList(40.0, 28.0, 0.0, 10.0, 5.0, 3.0, 1.0));
         int i = 2;
         int k = 3;
         List<Integer> expResult = Arrays.asList(6, 5, 4);
+        List<Integer> result = Utils.getNeighbors(di, i, k);
+        assertEquals(expResult, result);
+    }
+
+        /**
+     * Test of getNeighbors method, of class Utils.
+     */
+    @Test
+    public void testGetNeighborsWithRepeatedDistances() {
+        System.out.println("getNeighborsWithRepeatedDistances");
+        List<Double> di = new ArrayList<>(Arrays.asList(1.0, 40.0, 0.0, 28.0, 1.0, 20.0, 1.0, 10.0, 1.0, 5.0, 1.0, 3.0, 1.0));
+        int i = 2;
+        int k = 3;
+        List<Integer> expResult = Arrays.asList(0, 4, 6);
         List<Integer> result = Utils.getNeighbors(di, i, k);
         assertEquals(expResult, result);
     }
