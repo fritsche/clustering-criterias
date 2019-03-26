@@ -48,7 +48,7 @@ public class Utils {
     public static List<List<Integer>> computeNeighborhood(double[][] distances, double l) {
         int n = distances.length;
         List<List<Integer>> neighborhood = new ArrayList<>(n);
-        int k = (int) Math.round(n * l);
+        int k = (int) Math.ceil(n * l);
         for (int i = 0; i < n; i++) {
             List<Double> di = new ArrayList<>();
             for (double d : distances[i]) {
