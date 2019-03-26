@@ -55,7 +55,7 @@ public class Connectivity implements ObjectiveFunction<IntegerSolution> {
             for (int l = 0; l < neighbors.size(); l++) {
                 int neighbor = neighbors.get(l);
                 if (c != s.getVariableValue(neighbor)) {
-                    connectivity += 1.0 / (double) neighbors.size();
+                    connectivity += 1.0 / (double) (l+1);
                 }
             }
         }
