@@ -22,6 +22,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
+import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,6 +165,35 @@ public class ClusterProblemTest {
 
         Assert.assertArrayEquals(expResultA, resultA);
         Assert.assertArrayEquals(expResultB, resultB);
+    }
+
+    /**
+     * Test of evaluate method.
+     */
+    @Test
+    public void testEvaluateIris() {
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.iris.toString());
+        List<ObjectiveFunction> functions = new ArrayList<>(2);
+        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
+        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()))));
+        ClusterProblem problem = new ClusterProblem(true, dataset, functions);
+        List<PartitionSolution> solutions = new ArrayList<>(27);
+        for (int i = 0; i < 27; i++) {
+            solutions.add(problem.createSolution());
+            problem.evaluate(solutions.get(i));
+        }
+        for (PartitionSolution s : solutions) {
+            System.out.print("[");
+            for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
+                System.out.print(s.getVariableValue(i) + ", ");
+            }
+            System.out.print(s.getVariableValue(s.getNumberOfVariables() - 1) + "]");
+            System.out.println(Arrays.toString(s.getObjectives()));
+        }
+        System.out.println(solutions.size());
+        // this test if not full implemented
+        // it should always fail
+        assertTrue(false);
     }
 
 }

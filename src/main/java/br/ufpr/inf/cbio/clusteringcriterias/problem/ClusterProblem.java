@@ -35,7 +35,7 @@ public class ClusterProblem extends AbstractIntegerProblem {
     private final boolean computeCentroids;
     private final Dataset dataset;
     private final List<ObjectiveFunction> objectiveFunctions;
-    private final List<IntegerSolution> initialPopulation;
+    private final List<PartitionSolution> initialPopulation;
     private int nextSolution = 0;
     private int populationSize;
 
@@ -52,8 +52,8 @@ public class ClusterProblem extends AbstractIntegerProblem {
     }
 
     @Override
-    public IntegerSolution createSolution() {
-        IntegerSolution solution = initialPopulation.get(nextSolution);
+    public PartitionSolution createSolution() {
+        PartitionSolution solution = initialPopulation.get(nextSolution);
         nextSolution = (nextSolution + 1) % initialPopulation.size();
         return solution;
     }
@@ -68,8 +68,8 @@ public class ClusterProblem extends AbstractIntegerProblem {
         }
     }
 
-    private List<IntegerSolution> parseInitialPopulation(List<File> initialPartitions) {
-        List<IntegerSolution> population = new ArrayList<>(initialPartitions.size());
+    private List<PartitionSolution> parseInitialPopulation(List<File> initialPartitions) {
+        List<PartitionSolution> population = new ArrayList<>(initialPartitions.size());
         Collections.sort(dataset.getDataPoints(), new DataPointComparator());
         for (File file : initialPartitions) {
             population.add(new PartitionSolution(this, file, dataset));
