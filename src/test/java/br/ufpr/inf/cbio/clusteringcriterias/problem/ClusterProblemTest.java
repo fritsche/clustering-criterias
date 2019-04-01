@@ -175,7 +175,13 @@ public class ClusterProblemTest {
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.iris.toString());
         List<ObjectiveFunction> functions = new ArrayList<>(2);
         functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
-        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()))));
+        double[][] distanceMatrix = Utils.computeDistanceMatrix(dataset, new EuclideanDistance());
+        for (double[] distances: distanceMatrix){
+            //Arrays.sort(distances);
+            System.out.println(Arrays.toString(distances));
+        }
+        List<List<Integer>> neighborhood = Utils.computeNeighborhood(distanceMatrix);
+        functions.add(new Connectivity(neighborhood));
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         List<PartitionSolution> solutions = new ArrayList<>(27);
         for (int i = 0; i < 27; i++) {

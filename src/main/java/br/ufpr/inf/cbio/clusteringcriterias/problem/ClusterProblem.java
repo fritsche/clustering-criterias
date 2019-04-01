@@ -71,7 +71,6 @@ public class ClusterProblem extends AbstractIntegerProblem {
 
     private List<PartitionSolution> parseInitialPopulation(List<File> initialPartitions) {
         List<PartitionSolution> population = new ArrayList<>(initialPartitions.size());
-        Collections.sort(dataset.getDataPoints(), new DataPointComparator());
         for (File file : initialPartitions) {
             population.add(new PartitionSolution(this, file, dataset));
         }
