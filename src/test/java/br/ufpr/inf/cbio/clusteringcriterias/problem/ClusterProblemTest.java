@@ -180,16 +180,20 @@ public class ClusterProblemTest {
         List<PartitionSolution> solutions = new ArrayList<>(27);
         for (int i = 0; i < 27; i++) {
             solutions.add(problem.createSolution());
-            problem.evaluate(solutions.get(i));
+            //problem.evaluate(solutions.get(i));
         }
-        for (PartitionSolution s : solutions) {
-            System.out.print("[");
-            for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
-                System.out.print(s.getVariableValue(i) + ", ");
-            }
-            System.out.print(s.getVariableValue(s.getNumberOfVariables() - 1) + "]");
-            System.out.println(Arrays.toString(s.getObjectives()));
+        //for (PartitionSolution s : solutions) {
+
+        PartitionSolution s = solutions.get(2);
+        System.out.print("[");
+        for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
+            System.out.print(s.getVariableValue(i) + ", ");
         }
+        System.out.print(s.getVariableValue(s.getNumberOfVariables() - 1) + "]");
+        problem.evaluate(solutions.get(2));// iris-Al-E-k2.clu
+        System.out.println(Arrays.toString(s.getObjectives()));
+        //}
+
         System.out.println(solutions.size());
         // this test if not full implemented
         // it should always fail
