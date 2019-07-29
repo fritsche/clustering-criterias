@@ -111,6 +111,23 @@ public class HBGFCrossoverTest {
      * Test of partition method, of class HBGFCrossover.
      */
     @Test
+    public void testPartitionWithDifferentNumberOfClusters() {
+        System.out.println("partitionWithDifferentNumberOfClusters");
+        int nparts = 3;
+        int nvtxs_ = 15;
+        int[] xadj_ = new int[]{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 23, 27, 29, 32, 34, 36};
+        int[] adjncy_ = new int[]{9, 11, 9, 12, 9, 12, 9, 11, 9, 12, 10, 13, 10, 14, 10, 14, 10, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 3, 1, 2, 4, 5, 8, 6, 7};
+        int[] part = new int[nvtxs_];
+        HBGFCrossover instance = new HBGFCrossover();
+        int[] expPart = new int[]{2,1,1,2,1,0,0,0,2,1,0,2,1,2,0};
+        instance.partition(nvtxs_, xadj_, adjncy_, nparts, part);
+        Assert.assertArrayEquals(expPart, part);
+    }
+
+    /**
+     * Test of partition method, of class HBGFCrossover.
+     */
+    @Test
     public void testPartition() {
         System.out.println("partition");
         int nparts = 2;
