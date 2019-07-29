@@ -246,15 +246,15 @@ public class HBGFCrossoverTest {
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
         PartitionSolution z = (PartitionSolution) x.copy();
-        z.setVariableValue(0, 2);
-        z.setVariableValue(1, 1);
-        z.setVariableValue(2, 1);
-        z.setVariableValue(3, 2);
-        z.setVariableValue(4, 1);
-        z.setVariableValue(5, 0);
-        z.setVariableValue(6, 0);
+        z.setVariableValue(0, 1);
+        z.setVariableValue(1, 0);
+        z.setVariableValue(2, 0);
+        z.setVariableValue(3, 1);
+        z.setVariableValue(4, 0);
+        z.setVariableValue(5, 2);
+        z.setVariableValue(6, 1);
         z.setVariableValue(7, 2);
-        z.setVariableValue(8, 0);
+        z.setVariableValue(8, 2);
         z.setVariableValue(9, 3);
 
         List<PartitionSolution> source = new ArrayList<>();
@@ -288,15 +288,15 @@ public class HBGFCrossoverTest {
         z1.setVariableValue(8, 1);
         z1.setVariableValue(9, 2);
         PartitionSolution z2 = (PartitionSolution) x.copy();
-        z2.setVariableValue(0, 0);
-        z2.setVariableValue(1, 1);
-        z2.setVariableValue(2, 1);
-        z2.setVariableValue(3, 0);
-        z2.setVariableValue(4, 1);
-        z2.setVariableValue(5, 3);
-        z2.setVariableValue(6, 2);
-        z2.setVariableValue(7, 2);
-        z2.setVariableValue(8, 3);
+        z2.setVariableValue(0, 1);
+        z2.setVariableValue(1, 0);
+        z2.setVariableValue(2, 0);
+        z2.setVariableValue(3, 1);
+        z2.setVariableValue(4, 0);
+        z2.setVariableValue(5, 2);
+        z2.setVariableValue(6, 3);
+        z2.setVariableValue(7, 3);
+        z2.setVariableValue(8, 2);
         z2.setVariableValue(9, 4);
 
         List<PartitionSolution> source = new ArrayList<>();

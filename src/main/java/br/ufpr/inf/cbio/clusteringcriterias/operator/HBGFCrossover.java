@@ -100,7 +100,7 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
             adjncyList.get(clu_id).add(i);
         }
         int xadj[] = new int[nvtxs + 1];
-        int adjncy[] = new int[n * (ka + kb)];
+        int adjncy[] = new int[n * 4];
         int j = 0;
         for (int i = 0; i < adjncyList.size(); i++) {
             xadj[i] = j;
@@ -108,7 +108,7 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
                 adjncy[j++] = integer;
             }
         }
-        xadj[nvtxs] = n * (ka + kb);
+        xadj[nvtxs] = n * 4;
         return new GraphCSR(nvtxs, xadj, adjncy);
     }
 
