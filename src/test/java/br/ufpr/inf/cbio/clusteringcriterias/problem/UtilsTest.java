@@ -64,7 +64,7 @@ public class UtilsTest {
     public void testComputeDistanceMatrix() {
         System.out.println("computeDistanceMatrix");
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
-        
+
         dataset.setDataPoints(new ArrayList<DataPoint>(3));
         dataset.addDataPoint("a", new ArrayPoint(new double[]{0.0, 1.0}));
         dataset.addDataPoint("b", new ArrayPoint(new double[]{0.0, 2.0}));
@@ -111,6 +111,34 @@ public class UtilsTest {
         int i = 2;
         int k = 2;
         List<Integer> expResult = Arrays.asList(3, 1);
+        List<Integer> result = Utils.getNeighbors(di, i, k);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getNeighbors method, of class Utils.
+     */
+    @Test
+    public void testGetNeighborsAgain() {
+        System.out.println("getNeighborsAgain");
+        List<Double> di = new ArrayList<>(Arrays.asList(40.0, 28.0, 0.0, 10.0, 5.0, 3.0, 1.0));
+        int i = 2;
+        int k = 3;
+        List<Integer> expResult = Arrays.asList(6, 5, 4);
+        List<Integer> result = Utils.getNeighbors(di, i, k);
+        assertEquals(expResult, result);
+    }
+
+        /**
+     * Test of getNeighbors method, of class Utils.
+     */
+    @Test
+    public void testGetNeighborsWithRepeatedDistances() {
+        System.out.println("getNeighborsWithRepeatedDistances");
+        List<Double> di = new ArrayList<>(Arrays.asList(1.0, 40.0, 0.0, 28.0, 1.0, 20.0, 1.0, 10.0, 1.0, 5.0, 1.0, 3.0, 1.0));
+        int i = 2;
+        int k = 3;
+        List<Integer> expResult = Arrays.asList(0, 4, 6);
         List<Integer> result = Utils.getNeighbors(di, i, k);
         assertEquals(expResult, result);
     }

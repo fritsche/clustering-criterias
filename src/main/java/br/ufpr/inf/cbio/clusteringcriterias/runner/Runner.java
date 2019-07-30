@@ -26,6 +26,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,7 +55,6 @@ public class Runner {
 
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.iris.toString());
 
-
         double crossoverProbability;
         Problem problem;
         CrossoverOperator<PartitionSolution> crossover;
@@ -63,7 +63,18 @@ public class Runner {
 
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
-        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()))));
+
+        double[][] distanceMatrix = Utils.computeDistanceMatrix(dataset, new EuclideanDistance());
+        for (double[] distances : distanceMatrix) {
+            System.out.println(Arrays.toString(distances));
+        }
+
+        List<List<Integer>> neighborhood = Utils.computeNeighborhood(distanceMatrix);
+        for (List<Integer> integers : neighborhood) {
+            System.out.println(integers);
+        }
+
+        functions.add(new Connectivity(neighborhood));
 
         problem = new ClusterProblem(true, dataset, functions);
 
@@ -97,10 +108,13 @@ public class Runner {
         set.addAll(population);
         population.clear();
         population.addAll(set);
-        
+
         for (PartitionSolution s : population) {
-            //System.out.println(Arrays.toString(s.getObjectives()));
-            System.out.println(s.hashCode());
+            for (int i = 0; i < s.getNumberOfVariables(); i++) {
+                System.out.print(s.getVariableValue(i) + " ");
+            }
+            System.out.println(Arrays.toString(s.getObjectives()));
+//            System.out.println(s.hashCode());
         }
         System.out.println(population.size());
 

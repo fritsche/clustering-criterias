@@ -51,13 +51,16 @@ public class Connectivity implements ObjectiveFunction<IntegerSolution> {
         double connectivity = 0.0;
         for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
             int c = s.getVariableValue(i);
+            double partial = 0.0;
             List<Integer> neighbors = neighborhood.get(i);
             for (int l = 0; l < neighbors.size(); l++) {
                 int neighbor = neighbors.get(l);
                 if (c != s.getVariableValue(neighbor)) {
-                    connectivity += 1.0 / (double) neighbors.size();
+                    partial += 1.0 / (double) (l + 1);
                 }
             }
+            //System.out.println(i + ": " + partial);
+            connectivity += partial;
         }
         return connectivity;
     }

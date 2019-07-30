@@ -26,10 +26,10 @@ import org.uma.jmetal.util.JMetalException;
  */
 public class DatasetFactory {
 
-    private List<DATASET> artificiais;
-    private List<DATASET> benchmarks;
-    private List<DATASET> reais;
-    private List<DATASET> test;
+    private final List<DATASET> artificiais;
+    private final List<DATASET> benchmarks;
+    private final List<DATASET> reais;
+    private final List<DATASET> test;
 
     public enum DATASET {
         ds2c2sc13,
@@ -93,7 +93,7 @@ public class DatasetFactory {
                 throw new JMetalException("There is no configuration for '" + dataset + "' dataset.");
             }
         }
-        return new Dataset(base + "/dataset/" + dataset + ".txt", base + "/partitions/AL_KM_SL_SNN/");
+        return new Dataset(base + "/dataset/" + dataset + ".txt", base + "/partitions/ALKMSLSNN/");
     }
 
     private boolean datasetEquals(String dataset, List<DATASET> values) {

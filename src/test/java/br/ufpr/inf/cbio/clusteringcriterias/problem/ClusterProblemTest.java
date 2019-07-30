@@ -22,6 +22,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
+import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,13 +73,14 @@ public class ClusterProblemTest {
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
 
         dataset.setDataPoints(new ArrayList<DataPoint>(4));
-        dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
-        dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 2.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 2.0}));
         dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
         dataset.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
         functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
+        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()), 0.5)));
 
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         IntegerSolution s = problem.createSolution();
@@ -91,10 +93,9 @@ public class ClusterProblemTest {
 
         problem.evaluate(s);
 
-        double expected = 4.0;
-        double actual = s.getObjective(0);
-        System.out.println("Evaluate Clustering Problem using Overall Deviation, expected: " + expected + ", actual: " + actual);
-        assertEquals(expected, actual, 0.0);
+        double expected[] = new double[]{4.0, 2.0};
+        double actual[] = s.getObjectives();
+        assertTrue(Arrays.equals(expected, actual));
     }
 
     /**
