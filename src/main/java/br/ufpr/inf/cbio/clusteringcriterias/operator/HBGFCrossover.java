@@ -81,79 +81,38 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         int ka = a.getVariableValue(n); // max cluster id of parent A
         int kb = b.getVariableValue(n); // max cluster id of parent B
         int nvtxs = n + ka + kb; // number of vertices in the graph.
+        int adjncy[] = new int[n * 2 * 2]; // n objects times 2 parents times 2 (each edge is represented twice, e.g. (a,b) and (b,a)).
+        int xadj[] = new int[nvtxs + 1];
+        int k = n, v, aj = n * 2, xj = n;
         PartitionSolution x = (PartitionSolution) a.copy(); // copy solutions
-        PartitionSolution y = (PartitionSolution) b.copy();
-        int k = n;
-        int v;
-        // update cluster id from x
-        for (int i = 0; i < x.getNumberOfVariables() - 1; i++) {
+        for (int i = 0; i < n; i++) {
             v = x.getVariableValue(i);
             if (v < n) {
-                for (int j = i; j < x.getNumberOfVariables() - 1; j++) {
+                xadj[xj++] = aj;
+                for (int j = i; j < n; j++) {
                     if (x.getVariableValue(j) == v) {
                         x.setVariableValue(j, k);
+                        xadj[j] = j * 2;
+                        adjncy[j * 2] = k;
+                        adjncy[aj++] = j;
                     }
                 }
                 k++;
             }
         }
-        // update cluster id from y
-        for (int i = 0; i < y.getNumberOfVariables() - 1; i++) {
+        PartitionSolution y = (PartitionSolution) b.copy();
+        for (int i = 0; i < n; i++) {
             v = y.getVariableValue(i);
             if (v < n) {
-                for (int j = i; j < y.getNumberOfVariables() - 1; j++) {
+                xadj[xj++] = aj;
+                for (int j = i; j < n; j++) {
                     if (y.getVariableValue(j) == v) {
                         y.setVariableValue(j, k);
+                        adjncy[(j * 2) + 1] = k;
+                        adjncy[aj++] = j;
                     }
                 }
                 k++;
-            }
-        }
-        k = 0;
-        v = 0;
-        int adjncy[] = new int[n * 4];
-        int xadj[] = new int[nvtxs + 1];
-        xadj[v++] = 0;
-        for (int i = 0; i < x.getNumberOfVariables() - 1; i++) {
-            adjncy[k++] = x.getVariableValue(i);
-            adjncy[k++] = y.getVariableValue(i);
-            xadj[v++] = k;
-        }
-        /**
-         * @TODO
-         */
-    }
-
-    public GraphCSR convertToGraph(PartitionSolution a, PartitionSolution b) {
-        int n = a.getNumberOfVariables() - 1; // number of objects
-        int ka = a.getVariableValue(n); // max cluster id of parent A
-        int kb = b.getVariableValue(n); // max cluster id of parent B
-        int nvtxs = n + ka + kb; // number of vertices in the graph.
-        List<List<Integer>> adjncyList = new ArrayList<>(nvtxs);
-        for (int i = 0; i < n; i++) {
-            adjncyList.add(new ArrayList<Integer>(2));
-        }
-        for (int i = n; i < nvtxs; i++) {
-            adjncyList.add(new ArrayList<Integer>());
-        }
-        for (int i = 0; i < n; i++) {
-            List<Integer> adjncy_i = adjncyList.get(i);
-            // parent A
-            int clu_id = a.getVariableValue(i) + n; // get j-th cluster id
-            adjncy_i.add(clu_id); // add to adjacency of j
-            adjncyList.get(clu_id).add(i); // add j as adjacency of clu_id
-            // parent B
-            clu_id = b.getVariableValue(i) + n + ka;
-            adjncy_i.add(clu_id);
-            adjncyList.get(clu_id).add(i);
-        }
-        int xadj[] = new int[nvtxs + 1];
-        int adjncy[] = new int[n * 4];
-        int j = 0;
-        for (int i = 0; i < adjncyList.size(); i++) {
-            xadj[i] = j;
-            for (Integer integer : adjncyList.get(i)) {
-                adjncy[j++] = integer;
             }
         }
         xadj[nvtxs] = n * 4;
