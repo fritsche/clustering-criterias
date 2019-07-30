@@ -79,4 +79,14 @@ public class GraphCSR {
         return hash;
     }
 
+    /*
+    private int numberOfVertices; // number of vertices
+    private int[] adjacencyIndexes; // indices
+    private int[] adacencies; // adjacencies
+     */
+    @Override
+    public String toString() {
+        return "[GraphCSR] numberOfVertices: " + numberOfVertices + ", adjacencyIndexes: " + Arrays.toString(adjacencyIndexes) + ", adacencies: " + Arrays.toString(adjacencyIndexes) + ".";
+    }
+
 }

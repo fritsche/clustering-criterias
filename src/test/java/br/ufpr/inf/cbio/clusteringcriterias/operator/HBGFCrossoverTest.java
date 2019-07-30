@@ -21,10 +21,8 @@ import br.ufpr.inf.cbio.clusteringcriterias.operator.util.GraphCSR;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import br.ufpr.inf.cbio.clusteringcriterias.utils.MockRandomNumberGenerator;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -105,6 +103,42 @@ public class HBGFCrossoverTest {
         HBGFCrossover instance = new HBGFCrossover();
         HBGFCrossover.Partition result = instance.getPartition();
         assertNotNull(result);
+    }
+
+    /**
+     * Test of partition method, of class HBGFCrossover.
+     */
+    @Test
+    public void testPartitionWithDifferentNumberOfClusters() {
+        System.out.println("partitionWithDifferentNumberOfClusters");
+        int nparts = 3;
+        int nvtxs_ = 15;
+        int[] xadj_ = new int[]{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 23, 27, 29, 32, 34, 36};
+        int[] adjncy_ = new int[]{9, 11, 9, 12, 9, 12, 9, 11, 9, 12, 10, 13, 10, 14, 10, 14, 10, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 3, 1, 2, 4, 5, 8, 6, 7};
+        int[] part = new int[nvtxs_];
+        HBGFCrossover instance = new HBGFCrossover();
+        int[] expPart = new int[]{2, 1, 1, 2, 1, 0, 0, 0, 2, 1, 0, 2, 1, 2, 0};
+        instance.partition(nvtxs_, xadj_, adjncy_, nparts, part);
+        Assert.assertArrayEquals(expPart, part);
+    }
+
+    /**
+     * Test of convertToGraph method, of class HBGFCrossover.
+     */
+    @Test
+    public void testConvertToGraph2() {
+        System.out.println("convertToGraph2");
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test4.toString());
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
+        PartitionSolution x = (PartitionSolution) problem.createSolution();
+        PartitionSolution y = (PartitionSolution) problem.createSolution();
+        int nvtxs_ = 15;
+        int[] xadj_ = new int[]{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 23, 27, 29, 32, 34, 36};
+        int[] adjncy_ = new int[]{9, 11, 9, 12, 9, 12, 9, 11, 9, 12, 10, 13, 10, 14, 10, 14, 10, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 3, 1, 2, 4, 5, 8, 6, 7};
+        HBGFCrossover instance = new HBGFCrossover();
+        GraphCSR expResult = new GraphCSR(nvtxs_, xadj_, adjncy_);
+        GraphCSR result = instance.convertToGraph(x, y);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -212,15 +246,15 @@ public class HBGFCrossoverTest {
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
         PartitionSolution z = (PartitionSolution) x.copy();
-        z.setVariableValue(0, 1);
-        z.setVariableValue(1, 1);
-        z.setVariableValue(2, 1);
-        z.setVariableValue(3, 2);
-        z.setVariableValue(4, 2);
-        z.setVariableValue(5, 2);
-        z.setVariableValue(6, 0);
-        z.setVariableValue(7, 0);
-        z.setVariableValue(8, 0);
+        z.setVariableValue(0, 0);
+        z.setVariableValue(1, 0);
+        z.setVariableValue(2, 0);
+        z.setVariableValue(3, 1);
+        z.setVariableValue(4, 1);
+        z.setVariableValue(5, 1);
+        z.setVariableValue(6, 2);
+        z.setVariableValue(7, 2);
+        z.setVariableValue(8, 2);
         z.setVariableValue(9, 3);
 
         List<PartitionSolution> source = new ArrayList<>();
@@ -246,14 +280,14 @@ public class HBGFCrossoverTest {
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
         PartitionSolution z = (PartitionSolution) x.copy();
-        z.setVariableValue(0, 1);
-        z.setVariableValue(1, 0);
-        z.setVariableValue(2, 0);
-        z.setVariableValue(3, 1);
-        z.setVariableValue(4, 0);
-        z.setVariableValue(5, 2);
-        z.setVariableValue(6, 1);
-        z.setVariableValue(7, 2);
+        z.setVariableValue(0, 2);
+        z.setVariableValue(1, 1);
+        z.setVariableValue(2, 1);
+        z.setVariableValue(3, 2);
+        z.setVariableValue(4, 1);
+        z.setVariableValue(5, 0);
+        z.setVariableValue(6, 0);
+        z.setVariableValue(7, 0);
         z.setVariableValue(8, 2);
         z.setVariableValue(9, 3);
 
@@ -293,10 +327,10 @@ public class HBGFCrossoverTest {
         z2.setVariableValue(2, 0);
         z2.setVariableValue(3, 1);
         z2.setVariableValue(4, 0);
-        z2.setVariableValue(5, 2);
-        z2.setVariableValue(6, 3);
-        z2.setVariableValue(7, 3);
-        z2.setVariableValue(8, 2);
+        z2.setVariableValue(5, 3);
+        z2.setVariableValue(6, 2);
+        z2.setVariableValue(7, 2);
+        z2.setVariableValue(8, 3);
         z2.setVariableValue(9, 4);
 
         List<PartitionSolution> source = new ArrayList<>();
