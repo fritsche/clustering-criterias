@@ -16,14 +16,11 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPointComparator;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.uma.jmetal.problem.impl.AbstractIntegerProblem;
 import org.uma.jmetal.solution.IntegerSolution;

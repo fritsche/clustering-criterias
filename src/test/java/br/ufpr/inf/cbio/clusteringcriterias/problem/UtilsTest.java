@@ -96,8 +96,7 @@ public class UtilsTest {
         expResult.add(new ArrayList<>(Arrays.asList(1, 3)));
         expResult.add(new ArrayList<>(Arrays.asList(2, 1)));
 
-        double l = 0.5; // 50%
-        List<List<Integer>> result = Utils.computeNeighborhood(distances, l);
+        List<List<Integer>> result = Utils.computeNeighborhood(distances, 2);
         assertEquals(expResult, result);
     }
 

@@ -81,8 +81,14 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
         TsvParser parser = new TsvParser(settings);
         List<String[]> rows = parser.parseAll(file);
         int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        List<DataPoint> datapoints = dataset.getDataPoints();
         for (String[] row : rows) {
-            int i = Collections.binarySearch(dataset.getDataPoints(), new DataPoint(row[0], null), new DataPointComparator());
+            int i;
+            for (i=0; i< datapoints.size(); i++) {
+                if (datapoints.get(i).getId().compareTo(row[0]) == 0) {
+                    break;
+                }
+            }
             int value = Integer.parseInt(row[1]);
             if (value > max) {
                 max = value;
