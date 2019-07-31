@@ -35,6 +35,12 @@ public class Connectivity implements ObjectiveFunction<IntegerSolution> {
 
     public Connectivity(List<List<Integer>> neighborhood) {
         this.neighborhood = neighborhood;
+        for (List<Integer> list: neighborhood) {
+            for (Integer i: list) {
+                System.out.print(i + "\t");
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -59,7 +65,7 @@ public class Connectivity implements ObjectiveFunction<IntegerSolution> {
                     partial += 1.0 / (double) (l + 1);
                 }
             }
-            //System.out.println(i + ": " + partial);
+            // System.out.println(i + ": " + partial);
             connectivity += partial;
         }
         return connectivity;

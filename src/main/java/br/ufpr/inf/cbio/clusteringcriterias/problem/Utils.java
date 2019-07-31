@@ -41,14 +41,13 @@ public class Utils {
     }
 
     public static List<List<Integer>> computeNeighborhood(double[][] distances) {
-        double l = 0.05; // default L = 5%
-        return computeNeighborhood(distances, l);
+        int k = 10; // https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8004483
+        return computeNeighborhood(distances, k);
     }
 
-    public static List<List<Integer>> computeNeighborhood(double[][] distances, double l) {
+    public static List<List<Integer>> computeNeighborhood(double[][] distances, int k) {
         int n = distances.length;
         List<List<Integer>> neighborhood = new ArrayList<>(n);
-        int k = (int) Math.ceil(n * l);
         for (int i = 0; i < n; i++) {
             List<Double> di = new ArrayList<>();
             for (double d : distances[i]) {
@@ -71,6 +70,7 @@ public class Utils {
                     int b = neighbors.get(l - 1);
                     // int da = (int) (di.get(a) * 1e6);
                     // int db = (int) (di.get(b) * 1e6);
+                    // if (da < db) { // to get the same results as MOCLE
                     if (di.get(a) < di.get(b)) {
                         neighbors.set(l, b);
                         neighbors.set(l - 1, a);

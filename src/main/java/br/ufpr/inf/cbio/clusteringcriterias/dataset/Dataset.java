@@ -23,7 +23,6 @@ import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,12 +43,12 @@ public class Dataset {
     public Dataset(String dataSetPath, String initialPartitionsPath) {
         this.initialPartitionsPath = initialPartitionsPath;
         this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
-        Collections.sort(dataPoints, new DataPointComparator());
     }
 
     public static List<DataPoint> parseFile(File file) {
         List<DataPoint> dps = new ArrayList<>();
         TsvParserSettings settings = new TsvParserSettings();
+        settings.setMaxColumns(3600);
         TsvParser parser = new TsvParser(settings);
         List<String[]> rows = parser.parseAll(file);
         rows.remove(0);

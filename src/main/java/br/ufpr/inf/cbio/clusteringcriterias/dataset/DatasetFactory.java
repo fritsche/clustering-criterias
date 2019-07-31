@@ -44,6 +44,7 @@ public class DatasetFactory {
         test2,
         test3,
         test4,
+        test5
     }
 
     private static DatasetFactory instance = null;
@@ -62,11 +63,12 @@ public class DatasetFactory {
         reais.add(DATASET.golub);
         reais.add(DATASET.lung);
 
-        test = new ArrayList<>(4);
+        test = new ArrayList<>(5);
         test.add(DATASET.test1);
         test.add(DATASET.test2);
         test.add(DATASET.test3);
         test.add(DATASET.test4);
+        test.add(DATASET.test5);
     }
 
     public static DatasetFactory getInstance() {

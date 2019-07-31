@@ -22,8 +22,9 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
+import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import java.io.File;
+import br.ufpr.inf.cbio.clusteringcriterias.utils.MockRandomNumberGenerator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +38,7 @@ import static org.junit.Assert.*;
 import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
 import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 /**
  *
@@ -80,7 +82,7 @@ public class ClusterProblemTest {
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
         functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
-        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()), 0.5)));
+        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()), 2)));
 
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         IntegerSolution s = problem.createSolution();
@@ -96,6 +98,28 @@ public class ClusterProblemTest {
         double expected[] = new double[]{4.0, 2.0};
         double actual[] = s.getObjectives();
         assertTrue(Arrays.equals(expected, actual));
+    }
+       /**
+     * Test of evaluate method, of class ClusteringProblem.
+     */
+    @Test
+    public void testEvaluateVersusMOCLE() {
+        System.out.println("evaluateVersusMOCLE");
+        JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0, 3, 3}));
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test5.toString());
+        List<ObjectiveFunction> functions = new ArrayList<>();
+        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
+        ClusterProblem problem = new ClusterProblem(true, dataset, functions);
+        PartitionSolution x = (PartitionSolution) problem.createSolution();
+        PartitionSolution y = (PartitionSolution) problem.createSolution();
+        HBGFCrossover crossover = new HBGFCrossover(1);
+        List<PartitionSolution> solutions = crossover.doCrossover(1.0, x, y);
+        for (PartitionSolution solution: solutions) {
+            problem.evaluate(solution);
+        }
+        double expected = 60.7341;
+        double actual = solutions.get(0).getObjectives()[0];
+        assertEquals(expected, actual, 1e-5);
     }
 
     /**
