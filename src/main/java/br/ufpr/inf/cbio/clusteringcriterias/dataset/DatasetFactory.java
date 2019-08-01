@@ -39,7 +39,16 @@ public class DatasetFactory {
         glass,
         iris,
         golub,
-        lung,
+        frogs_V1,
+        frogs_V2,
+        frogs_V3,
+        golub_V1,
+        golub_V3,
+        leukemia_V1,
+        leukemia_V2,
+        optdigits,
+        libras,
+        seeds,
         test1,
         test2,
         test3,
@@ -59,9 +68,18 @@ public class DatasetFactory {
         benchmarks.add(DATASET.glass);
         benchmarks.add(DATASET.iris);
 
-        reais = new ArrayList<>(2);
+        reais = new ArrayList<>(11);
         reais.add(DATASET.golub);
-        reais.add(DATASET.lung);
+        reais.add(DATASET.frogs_V1);
+        reais.add(DATASET.frogs_V2);
+        reais.add(DATASET.frogs_V3);
+        reais.add(DATASET.golub_V1);
+        reais.add(DATASET.golub_V3);
+        reais.add(DATASET.leukemia_V1);
+        reais.add(DATASET.leukemia_V2);
+        reais.add(DATASET.libras);
+        reais.add(DATASET.optdigits);
+        reais.add(DATASET.seeds);
 
         test = new ArrayList<>(5);
         test.add(DATASET.test1);
@@ -90,12 +108,15 @@ public class DatasetFactory {
         } else {
             if (datasetEquals(dataset, test)) {
                 base = "datasets/test/" + dataset;
-                return new Dataset(base + "/dataset.txt", base + "/initialPartitions/");
+                return new Dataset(base + "/dataset.txt", base + "/initialPartitions/",
+                        base + "/partitions/TP/");
             } else {
                 throw new JMetalException("There is no configuration for '" + dataset + "' dataset.");
             }
         }
-        return new Dataset(base + "/dataset/" + dataset + ".txt", base + "/partitions/ALKMSLSNN/");
+        return new Dataset(base + "/dataset/" + dataset + ".txt",
+                base + "/partitions/KMWLSNNHDBSCAN/",
+                base + "/partitions/TP/" + dataset + "_TP.clu");
     }
 
     private boolean datasetEquals(String dataset, List<DATASET> values) {

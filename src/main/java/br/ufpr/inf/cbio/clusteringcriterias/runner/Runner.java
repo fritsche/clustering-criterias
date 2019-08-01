@@ -53,7 +53,7 @@ public class Runner {
 
     public void run() {
 
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.iris.toString());
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.seeds.toString());
 
         double crossoverProbability;
         Problem problem;
@@ -66,12 +66,12 @@ public class Runner {
 
         double[][] distanceMatrix = Utils.computeDistanceMatrix(dataset, new EuclideanDistance());
         for (double[] distances : distanceMatrix) {
-            System.out.println(Arrays.toString(distances));
+//            System.out.println(Arrays.toString(distances));
         }
 
         List<List<Integer>> neighborhood = Utils.computeNeighborhood(distanceMatrix);
         for (List<Integer> integers : neighborhood) {
-            System.out.println(integers);
+//            System.out.println(integers);
         }
 
         functions.add(new Connectivity(neighborhood));

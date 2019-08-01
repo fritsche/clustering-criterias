@@ -39,9 +39,11 @@ public class Dataset {
 
     private List<DataPoint> dataPoints;
     private final String initialPartitionsPath;
+    private int[] truePartition;
 
-    public Dataset(String dataSetPath, String initialPartitionsPath) {
+    public Dataset(String dataSetPath, String initialPartitionsPath, String truePartitionPath) {
         this.initialPartitionsPath = initialPartitionsPath;
+//        this.truePartition = parseTruePartition(truePartitionPath); //todo: inserir a função para parse da TP
         this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
     }
 

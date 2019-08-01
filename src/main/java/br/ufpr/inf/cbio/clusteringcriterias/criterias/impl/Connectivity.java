@@ -37,9 +37,9 @@ public class Connectivity implements ObjectiveFunction<IntegerSolution> {
         this.neighborhood = neighborhood;
         for (List<Integer> list: neighborhood) {
             for (Integer i: list) {
-                System.out.print(i + "\t");
+//                System.out.print(i + "\t");
             }
-            System.out.println();
+//            System.out.println();
         }
     }
 
