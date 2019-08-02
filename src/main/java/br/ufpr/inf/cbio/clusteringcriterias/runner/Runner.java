@@ -31,6 +31,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+
+import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -55,7 +57,7 @@ public class Runner {
 
     public void run() {
 
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.libras.toString());
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.ds2c2sc13_V1.toString());
 
         double crossoverProbability;
         Problem problem;
@@ -66,10 +68,10 @@ public class Runner {
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
 
-        double[][] distanceMatrix = Utils.computeDistanceMatrix(dataset, new EuclideanDistance());
-        for (double[] distances : distanceMatrix) {
+        DoubleMatrix2D distanceMatrix = Utils.computeDistanceMatrix(dataset, new EuclideanDistance());
+//        for (double[] distances : distanceMatrix) {
 //            System.out.println(Arrays.toString(distances));
-        }
+//        }
 
         List<List<Integer>> neighborhood = Utils.computeNeighborhood(distanceMatrix);
         for (List<Integer> integers : neighborhood) {

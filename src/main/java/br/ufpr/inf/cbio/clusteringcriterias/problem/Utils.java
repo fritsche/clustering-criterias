@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import org.apache.commons.lang3.tuple.Pair;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
 import smile.validation.AdjustedRandIndex;
@@ -33,30 +35,40 @@ import smile.validation.AdjustedRandIndex;
  */
 public class Utils {
 
-    public static double[][] computeDistanceMatrix(Dataset dataset, PointDistance distance) {
+    public static DoubleMatrix2D computeDistanceMatrix(Dataset dataset, PointDistance distance) {
         int n = dataset.getDataPoints().size();
-        double[][] distances = new double[n][n];
+//		System.out.println(n);
+//		System.out.println(Runtime.getRuntime().maxMemory());
+        DoubleMatrix2D  distances = new DenseDoubleMatrix2D(n, n);
+//		double[][] distances = new double[n][n]; //implementação anterior
+
+
+
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
-                distances[j][i] = distances[i][j] = distance.compute(dataset.getPoint(i), dataset.getPoint(j));
+//				distances[j][i] = distances[i][j] = distance.compute(dataset.getPoint(i), dataset.getPoint(j));
+                distances.set(i,j, distance.compute(dataset.getPoint(i), dataset.getPoint(j)));
+                distances.set(j,i,distances.get(i,j));
             }
         }
+
+
 
         return distances;
     }
 
-    public static List<List<Integer>> computeNeighborhood(double[][] distances) {
+    public static List<List<Integer>> computeNeighborhood(DoubleMatrix2D distances) {
         int k = 10; // https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8004483
         return computeNeighborhood(distances, k);
     }
 
-    public static List<List<Integer>> computeNeighborhood(double[][] distances, int k) {
-        int n = distances.length;
+    public static List<List<Integer>> computeNeighborhood(DoubleMatrix2D distances, int k) {
+        int n = distances.rows();
         List<List<Integer>> neighborhood = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
             List<Double> di = new ArrayList<>();
-            for (double d : distances[i]) {
-                di.add(d);
+            for (int j = 0; j < n; j++) {
+                di.add(distances.getQuick(i,j));
             }
             neighborhood.add(getNeighbors(di, i, k));
         }
