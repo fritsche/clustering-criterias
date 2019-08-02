@@ -118,7 +118,7 @@ public class Dataset {
         TsvParserSettings settings = new TsvParserSettings();
         TsvParser parser = new TsvParser(settings);
         List<String[]> rows = parser.parseAll(file);
-        Collections.sort(rows, Comparator.comparing(o -> o[0]));
+//        Collections.sort(rows, Comparator.comparing(o -> o[0])); //todo: verificar se TPs estão na ordem do dataset
 
         int[] label = new int[rows.size()];
         int index = 0;

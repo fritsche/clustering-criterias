@@ -43,6 +43,8 @@ import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
+import org.uma.jmetal.util.fileoutput.SolutionListOutput;
+import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 
 /**
@@ -108,13 +110,21 @@ public class Runner {
         //remove as soluções repetidas
         Utils.removeRepeated(population);
 
-        for (PartitionSolution s : population) {
-            for (int i = 0; i < s.getNumberOfVariables(); i++) {
-                System.out.print(s.getVariableValue(i) + " ");
-            }
-            System.out.println(Arrays.toString(s.getObjectives()));
-        }
-        System.out.println(population.size());
+//        for (PartitionSolution s : population) {
+//            for (int i = 0; i < s.getNumberOfVariables(); i++) {
+//                System.out.print(s.getVariableValue(i) + " ");
+//            }
+//            System.out.println(Arrays.toString(s.getObjectives()));
+//        }
+        System.out.println("Result population size: "+population.size());
+
+        Utils.computeAdjustedRand(dataset,population);
+
+        new SolutionListOutput(population)
+                .setSeparator("\t")
+                .setVarFileOutputContext(new DefaultFileOutputContext("VAR.tsv"))
+                .setFunFileOutputContext(new DefaultFileOutputContext("FUN.tsv"))
+                .print();
 
     }
 

@@ -18,12 +18,14 @@ package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import org.apache.commons.lang3.tuple.Pair;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
+import smile.validation.AdjustedRandIndex;
 
 /**
  *
@@ -102,5 +104,25 @@ public class Utils {
         population.removeAll(repeated);
 
         return population;
+    }
+
+    public static void computeAdjustedRand(Dataset dataset, List<PartitionSolution> population) {
+
+        AdjustedRandIndex ari = new AdjustedRandIndex();
+
+        int[] label = dataset.getTruePartition();
+
+        for (PartitionSolution s : population){
+            int[] y = new int[s.getNumberOfVariables()-1];
+            for (int i = 0; i < s.getNumberOfVariables()-1; i++) {
+                y[i] = s.getVariableValue(i);
+            }
+            System.out.println(Arrays.toString(y));
+            double ar = ari.measure(y,label);
+            System.out.println("Adjusted Rand: "+ar);
+            System.out.println();
+        }
+
+
     }
 }
