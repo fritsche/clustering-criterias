@@ -63,7 +63,7 @@ public class DatasetFactory {
     private static DatasetFactory instance = null;
 
     private DatasetFactory() {
-        artificiais = new ArrayList<>(3);
+        artificiais = new ArrayList<>(8);
         artificiais.add(DATASET.D31);
         artificiais.add(DATASET.ds2c2sc13_V1);
         artificiais.add(DATASET.ds2c2sc13_V2);

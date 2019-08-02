@@ -55,7 +55,7 @@ public class Runner {
 
     public void run() {
 
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.frogs_V1.toString());
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.libras.toString());
 
         double crossoverProbability;
         Problem problem;
