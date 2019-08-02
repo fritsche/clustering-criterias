@@ -53,7 +53,7 @@ public class Runner {
 
     public void run() {
 
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.seeds.toString());
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.frogs_V1.toString());
 
         double crossoverProbability;
         Problem problem;
@@ -79,7 +79,7 @@ public class Runner {
         problem = new ClusterProblem(true, dataset, functions);
 
         crossoverProbability = 1.0;
-        int numberOfGeneratedChild = 2;
+        int numberOfGeneratedChild = 1;
         crossover = new HBGFCrossover(crossoverProbability, numberOfGeneratedChild);
 
         mutation = new NullMutation<>();
@@ -104,17 +104,15 @@ public class Runner {
         JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
 
         List<PartitionSolution> population = SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
-        Set<PartitionSolution> set = new LinkedHashSet<>();
-        set.addAll(population);
-        population.clear();
-        population.addAll(set);
+
+        //remove as soluções repetidas
+        Utils.removeRepeated(population);
 
         for (PartitionSolution s : population) {
             for (int i = 0; i < s.getNumberOfVariables(); i++) {
                 System.out.print(s.getVariableValue(i) + " ");
             }
             System.out.println(Arrays.toString(s.getObjectives()));
-//            System.out.println(s.hashCode());
         }
         System.out.println(population.size());
 

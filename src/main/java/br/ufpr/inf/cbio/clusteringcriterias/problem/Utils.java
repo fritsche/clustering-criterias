@@ -20,6 +20,9 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
+import org.apache.commons.lang3.tuple.Pair;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
 
 /**
@@ -85,4 +88,19 @@ public class Utils {
         return neighbors;
     }
 
+    public static List<PartitionSolution> removeRepeated(List<PartitionSolution> population) {
+
+        List<Pair<Double, Double>> list = new ArrayList<>();
+        List<PartitionSolution> repeated = new ArrayList<>();
+        for (PartitionSolution s : population) {
+            Pair<Double, Double> e = Pair.of(s.getObjective(0), s.getObjective(1));
+            if(list.contains(e)){
+                repeated.add(s);
+            }
+            list.add(e);
+        }
+        population.removeAll(repeated);
+
+        return population;
+    }
 }
