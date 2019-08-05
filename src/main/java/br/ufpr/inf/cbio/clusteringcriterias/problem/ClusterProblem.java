@@ -40,6 +40,7 @@ public class ClusterProblem extends AbstractIntegerProblem {
     public ClusterProblem(boolean computeCentroids, Dataset dataset,
             List<ObjectiveFunction> objectiveFunctions) {
 
+        setName("ClusterProblem");
         this.computeCentroids = computeCentroids;
         this.dataset = dataset;
         this.objectiveFunctions = objectiveFunctions;
