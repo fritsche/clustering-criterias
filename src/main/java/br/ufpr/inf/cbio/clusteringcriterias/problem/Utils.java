@@ -17,10 +17,22 @@
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
+import org.apache.commons.lang3.tuple.Pair;
+import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.util.fileoutput.FileOutputContext;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
+import smile.validation.AdjustedRandIndex;
 
 /**
  *
@@ -28,30 +40,40 @@ import org.uma.jmetal.util.point.util.distance.PointDistance;
  */
 public class Utils {
 
-    public static double[][] computeDistanceMatrix(Dataset dataset, PointDistance distance) {
+    public static DoubleMatrix2D computeDistanceMatrix(Dataset dataset, PointDistance distance) {
         int n = dataset.getDataPoints().size();
-        double[][] distances = new double[n][n];
+//		System.out.println(n);
+//		System.out.println(Runtime.getRuntime().maxMemory());
+        DoubleMatrix2D  distances = new DenseDoubleMatrix2D(n, n);
+//		double[][] distances = new double[n][n]; //implementação anterior
+
+
+
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
-                distances[j][i] = distances[i][j] = distance.compute(dataset.getPoint(i), dataset.getPoint(j));
+//				distances[j][i] = distances[i][j] = distance.compute(dataset.getPoint(i), dataset.getPoint(j));
+                distances.set(i,j, distance.compute(dataset.getPoint(i), dataset.getPoint(j)));
+                distances.set(j,i,distances.get(i,j));
             }
         }
+
+
 
         return distances;
     }
 
-    public static List<List<Integer>> computeNeighborhood(double[][] distances) {
+    public static List<List<Integer>> computeNeighborhood(DoubleMatrix2D distances) {
         int k = 10; // https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8004483
         return computeNeighborhood(distances, k);
     }
 
-    public static List<List<Integer>> computeNeighborhood(double[][] distances, int k) {
-        int n = distances.length;
+    public static List<List<Integer>> computeNeighborhood(DoubleMatrix2D distances, int k) {
+        int n = distances.rows();
         List<List<Integer>> neighborhood = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
             List<Double> di = new ArrayList<>();
-            for (double d : distances[i]) {
-                di.add(d);
+            for (int j = 0; j < n; j++) {
+                di.add(distances.getQuick(i,j));
             }
             neighborhood.add(getNeighbors(di, i, k));
         }
@@ -85,4 +107,46 @@ public class Utils {
         return neighbors;
     }
 
+    public static List<PartitionSolution> removeRepeated(List<PartitionSolution> population) {
+
+        List<Pair<Double, Double>> list = new ArrayList<>();
+        List<PartitionSolution> repeated = new ArrayList<>();
+        for (PartitionSolution s : population) {
+            Pair<Double, Double> e = Pair.of(s.getObjective(0), s.getObjective(1));
+            if(list.contains(e)){
+                repeated.add(s);
+            }
+            list.add(e);
+        }
+        population.removeAll(repeated);
+
+        return population;
+    }
+
+    public static void computeAdjustedRand(int[] label,List<PartitionSolution> population,
+                                           FileOutputContext context) {
+
+        BufferedWriter bufferedWriter = context.getFileWriter();
+
+        AdjustedRandIndex ari = new AdjustedRandIndex();
+
+        try {
+            if (population.size() > 0) {
+                for (PartitionSolution s : population){
+                    int[] y = new int[s.getNumberOfVariables()-1];
+                    for (int i = 0; i < s.getNumberOfVariables()-1; i++) {
+                        y[i] = s.getVariableValue(i);
+                    }
+                    double ar = ari.measure(y,label);
+                    bufferedWriter.write(String.valueOf(ar));
+                    bufferedWriter.newLine();
+                }
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            throw new JMetalException("Error writing data ", e) ;
+        }
+
+
+    }
 }

@@ -32,14 +32,27 @@ public class DatasetFactory {
     private final List<DATASET> test;
 
     public enum DATASET {
-        ds2c2sc13,
-        ds3c3sc6,
-        ds4c2sc8,
+        D31,
+        ds2c2sc13_V1,
+        ds2c2sc13_V2,
+        ds2c2sc13_V3,
+        ds3c3sc6_V1,
+        ds3c3sc6_V2,
         spiralsquare,
+        tevc_20_60_1,
         glass,
         iris,
-        golub,
-        lung,
+        frogs_V1,
+        frogs_V2,
+        frogs_V3,
+        golub_V1,
+        golub_V3,
+        leukemia_V1,
+        leukemia_V2,
+        optdigits,
+        libras,
+        seeds,
+        UKC1,
         test1,
         test2,
         test3,
@@ -50,18 +63,32 @@ public class DatasetFactory {
     private static DatasetFactory instance = null;
 
     private DatasetFactory() {
-        artificiais = new ArrayList<>(3);
-        artificiais.add(DATASET.ds2c2sc13);
-        artificiais.add(DATASET.ds3c3sc6);
-        artificiais.add(DATASET.ds4c2sc8);
+        artificiais = new ArrayList<>(8);
+        artificiais.add(DATASET.D31);
+        artificiais.add(DATASET.ds2c2sc13_V1);
+        artificiais.add(DATASET.ds2c2sc13_V2);
+        artificiais.add(DATASET.ds2c2sc13_V3);
+        artificiais.add(DATASET.ds3c3sc6_V1);
+        artificiais.add(DATASET.ds3c3sc6_V2);
+        artificiais.add(DATASET.spiralsquare);
+        artificiais.add(DATASET.tevc_20_60_1);
 
         benchmarks = new ArrayList<>(2);
         benchmarks.add(DATASET.glass);
         benchmarks.add(DATASET.iris);
 
-        reais = new ArrayList<>(2);
-        reais.add(DATASET.golub);
-        reais.add(DATASET.lung);
+        reais = new ArrayList<>(11);
+        reais.add(DATASET.frogs_V1);
+        reais.add(DATASET.frogs_V2);
+        reais.add(DATASET.frogs_V3);
+        reais.add(DATASET.golub_V1);
+        reais.add(DATASET.golub_V3);
+        reais.add(DATASET.leukemia_V1);
+        reais.add(DATASET.leukemia_V2);
+        reais.add(DATASET.libras);
+        reais.add(DATASET.optdigits);
+        reais.add(DATASET.seeds);
+        reais.add(DATASET.UKC1);
 
         test = new ArrayList<>(5);
         test.add(DATASET.test1);
@@ -95,7 +122,9 @@ public class DatasetFactory {
                 throw new JMetalException("There is no configuration for '" + dataset + "' dataset.");
             }
         }
-        return new Dataset(base + "/dataset/" + dataset + ".txt", base + "/partitions/ALKMSLSNN/");
+        return new Dataset(base + "/dataset/" + dataset + ".txt",
+                base + "/partitions/KMWLSNNHDBSCAN/",
+                base + "/partitions/TP/" + dataset + "_TP.clu");
     }
 
     private boolean datasetEquals(String dataset, List<DATASET> values) {

@@ -23,6 +23,8 @@ import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,8 +41,15 @@ public class Dataset {
 
     private List<DataPoint> dataPoints;
     private final String initialPartitionsPath;
+    private int[] truePartition;
 
-    public Dataset(String dataSetPath, String initialPartitionsPath) {
+    public Dataset(String dataSetPath, String initialPartitionsPath, String truePartitionPath) {
+        this.initialPartitionsPath = initialPartitionsPath;
+        this.truePartition = parseTruePartition(truePartitionPath);
+        this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+    }
+
+    public Dataset(String dataSetPath, String initialPartitionsPath){
         this.initialPartitionsPath = initialPartitionsPath;
         this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
     }
@@ -107,5 +116,25 @@ public class Dataset {
         }
         return files;
     }
+
+    public static int[] parseTruePartition(String truePartitionPath){
+
+        File file = new File(Dataset.class.getClassLoader().getResource(truePartitionPath).getFile());
+        TsvParserSettings settings = new TsvParserSettings();
+        TsvParser parser = new TsvParser(settings);
+        List<String[]> rows = parser.parseAll(file);
+//        Collections.sort(rows, Comparator.comparing(o -> o[0])); //todo: verificar se TPs estão na ordem do dataset
+
+        int[] label = new int[rows.size()];
+        int index = 0;
+        for (String[] row : rows) {
+            label[index] = Integer.parseInt(row[1]);
+            index++;
+        }
+        return label;
+    }
+
+    public int[] getTruePartition() {return truePartition;}
+
 
 }

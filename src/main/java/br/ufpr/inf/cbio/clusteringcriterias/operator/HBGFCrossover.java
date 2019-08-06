@@ -126,6 +126,7 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         int max = Math.max(a.getVariableValue(a.getNumberOfVariables() - 1), b.getVariableValue(b.getNumberOfVariables() - 1));
         int k = JMetalRandom.getInstance().nextInt(min, max);
         int part[] = new int[nvtxs];
+
         getPartition().partition(nvtxs, gcsr.getAdjacencyIndexes(), gcsr.getAdacencies(), k, part);
 
         PartitionSolution child = (PartitionSolution) a.copy();
