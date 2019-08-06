@@ -117,8 +117,7 @@ public class DatasetFactory {
         } else {
             if (datasetEquals(dataset, test)) {
                 base = "datasets/test/" + dataset;
-                return new Dataset(base + "/dataset.txt", base + "/initialPartitions/",
-                        base + "/partitions/TP/");
+                return new Dataset(base + "/dataset.txt", base + "/initialPartitions/");
             } else {
                 throw new JMetalException("There is no configuration for '" + dataset + "' dataset.");
             }

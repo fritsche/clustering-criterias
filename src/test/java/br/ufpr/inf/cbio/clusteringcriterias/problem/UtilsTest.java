@@ -22,6 +22,9 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -72,8 +75,12 @@ public class UtilsTest {
 
         PointDistance distance = new EuclideanDistance();
         double[][] expResult = new double[][]{{0.0, 1.0, 2.0}, {1.0, 0.0, 1.0}, {2.0, 1.0, 0.0}};
-//        double[][] result = Utils.computeDistanceMatrix(dataset, distance); //todo: fix tests using double
-//        assertArrayEquals(expResult, result);
+
+        DoubleMatrix2D res = Utils.computeDistanceMatrix(dataset, distance);
+
+        double[][] result = res.toArray();
+
+        assertArrayEquals(expResult, result);
     }
 
     /**
@@ -83,12 +90,14 @@ public class UtilsTest {
     public void testComputeNeighborhood() {
         System.out.println("computeNeighborhood");
 
-        double[][] distances = new double[][]{
+        double[][] dist = new double[][]{
             {0.0, 2.0, 3.0, 4.0},
             {8.0, 0.0, 6.0, 5.0},
             {14.0, 9.0, 0.0, 11.0},
             {15.0, 13.0, 10.0, 0.0}
         };
+
+        DoubleMatrix2D distances = new DenseDoubleMatrix2D(dist);
 
         List<List<Integer>> expResult = new ArrayList<>(4);
         expResult.add(new ArrayList<>(Arrays.asList(1, 2)));
@@ -96,8 +105,10 @@ public class UtilsTest {
         expResult.add(new ArrayList<>(Arrays.asList(1, 3)));
         expResult.add(new ArrayList<>(Arrays.asList(2, 1)));
 
-//        List<List<Integer>> result = Utils.computeNeighborhood(distances, 2); //todo: fix text compute neighborhood
-//        assertEquals(expResult, result);
+        List<List<Integer>> result = Utils.computeNeighborhood(distances, 2);
+        System.out.println(result);
+
+        assertEquals(expResult, result);
     }
 
     /**

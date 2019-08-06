@@ -21,6 +21,7 @@ public class ExperimentBuilderMOCLE<S extends Solution<?>, Result> {
 	private String referenceFrontDirectory;
 	private String experimentBaseDirectory;
 	private String outputParetoFrontFileName;
+	private String outputAdjustedRandFileName;
 	private String outputParetoSetFileName;
 	private int independentRuns;
 
@@ -72,6 +73,13 @@ public class ExperimentBuilderMOCLE<S extends Solution<?>, Result> {
 		return this ;
 	}
 
+	//used to print ARI files
+	public br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.ExperimentBuilderMOCLE<S, Result> setOutputAdjustedRandFileName(String outputAdjustedRandFileName) {
+		this.outputAdjustedRandFileName = outputAdjustedRandFileName ;
+
+		return this ;
+	}
+
 	public br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.ExperimentBuilderMOCLE<S, Result> setOutputParetoSetFileName(String outputParetoSetFileName) {
 		this.outputParetoSetFileName = outputParetoSetFileName ;
 
@@ -113,6 +121,10 @@ public class ExperimentBuilderMOCLE<S extends Solution<?>, Result> {
 
 	public String getOutputParetoFrontFileName() {
 		return outputParetoFrontFileName;
+	}
+
+	public String getOutputAdjustedRandFileName() {
+		return outputAdjustedRandFileName;
 	}
 
 	public String getOutputParetoSetFileName() {

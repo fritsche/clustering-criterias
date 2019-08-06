@@ -52,7 +52,7 @@ import java.util.List;
  */
 public class Experiment {
 
-  private static final int INDEPENDENT_RUNS = 30;
+  private static final int INDEPENDENT_RUNS = 5;
 
   public static void main(String[] args) throws IOException {
     if (args.length != 1) {
@@ -78,7 +78,7 @@ public class Experiment {
     problemList.add(new ExperimentProblem<>(problem));
 
     List<ExperimentAlgorithmMOCLE<PartitionSolution, List<PartitionSolution>>> algorithmList =
-            configureAlgorithmList(problemList);
+            configureAlgorithmList(problemList,dataset); //included dataset to calc Adjusted Rand
 
     ExperimentMOCLE<PartitionSolution, List<PartitionSolution>> experiment =
             new ExperimentBuilderMOCLE<PartitionSolution, List<PartitionSolution>>("Experiment0")
@@ -87,6 +87,7 @@ public class Experiment {
                     .setExperimentBaseDirectory(experimentBaseDirectory)
                     .setOutputParetoFrontFileName("FUN")
                     .setOutputParetoSetFileName("VAR")
+                    .setOutputAdjustedRandFileName("ARI")
                     .setReferenceFrontDirectory(experimentBaseDirectory + "/Experiment0/referenceFronts")
                     .setIndicatorList(Arrays.asList(
                             new PISAHypervolume<PartitionSolution>(referenceParetoFront)))
@@ -97,14 +98,14 @@ public class Experiment {
 
 //    new GenerateReferenceParetoFront(experiment).run();
 //    necessário para calcular os indicadores
-//    new GenerateFronts(experiment).run();
+//    new GenerateFronts(experiment).run(); //todo: incluir a geração da Fronts necessarias para indicadores
 
 //    new ComputeQualityIndicatorsMOCLE<>(experiment).run();
 
   }
 
   static List<ExperimentAlgorithmMOCLE<PartitionSolution, List<PartitionSolution>>> configureAlgorithmList(
-          List<ExperimentProblem<PartitionSolution>> problemList) throws IOException {
+          List<ExperimentProblem<PartitionSolution>> problemList, Dataset dataset) throws IOException {
     List<ExperimentAlgorithmMOCLE<PartitionSolution, List<PartitionSolution>>> algorithms = new ArrayList<>();
 
     double crossoverProbability;
@@ -113,7 +114,7 @@ public class Experiment {
 
     //verify neighborhood % on problem.utils
     crossoverProbability = 1.0;
-    int numberOfGeneratedChild = 2;
+    int numberOfGeneratedChild = 1;
     crossover = new HBGFCrossover(crossoverProbability, numberOfGeneratedChild);
     mutation = new NullMutation<>();
     SelectionOperator<List<PartitionSolution>, PartitionSolution> selection;
@@ -235,14 +236,15 @@ public class Experiment {
 
         Problem problem = problemList.get(i).getProblem();
         int popSize = ((ClusterProblem) problem).getPopulationSize();
-        int maxFitnessEvaluations = popSize * 50;
+        int maxFitnessEvaluations = popSize * 51;
 
         Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation)
                 .setSelectionOperator(selection)
                 .setMaxEvaluations(maxFitnessEvaluations)
-                .setPopulationSize(popSize + (popSize % 2))
+//                .setPopulationSize(popSize + (popSize % 2))
+                .setPopulationSize(popSize)
                 .build();
-        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "NSGAIIa", problemList.get(i), run));
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "NSGAIIa", problemList.get(i), dataset, run));
 
       }
 //

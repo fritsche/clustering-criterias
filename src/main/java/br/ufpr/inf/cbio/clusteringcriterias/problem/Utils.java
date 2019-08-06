@@ -17,6 +17,9 @@
 package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +29,8 @@ import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import org.apache.commons.lang3.tuple.Pair;
+import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.util.fileoutput.FileOutputContext;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
 import smile.validation.AdjustedRandIndex;
 
@@ -118,21 +123,28 @@ public class Utils {
         return population;
     }
 
-    public static void computeAdjustedRand(Dataset dataset, List<PartitionSolution> population) {
+    public static void computeAdjustedRand(int[] label,List<PartitionSolution> population,
+                                           FileOutputContext context) {
+
+        BufferedWriter bufferedWriter = context.getFileWriter();
 
         AdjustedRandIndex ari = new AdjustedRandIndex();
 
-        int[] label = dataset.getTruePartition();
-
-        for (PartitionSolution s : population){
-            int[] y = new int[s.getNumberOfVariables()-1];
-            for (int i = 0; i < s.getNumberOfVariables()-1; i++) {
-                y[i] = s.getVariableValue(i);
+        try {
+            if (population.size() > 0) {
+                for (PartitionSolution s : population){
+                    int[] y = new int[s.getNumberOfVariables()-1];
+                    for (int i = 0; i < s.getNumberOfVariables()-1; i++) {
+                        y[i] = s.getVariableValue(i);
+                    }
+                    double ar = ari.measure(y,label);
+                    bufferedWriter.write(String.valueOf(ar));
+                    bufferedWriter.newLine();
+                }
             }
-            System.out.println(Arrays.toString(y));
-            double ar = ari.measure(y,label);
-            System.out.println("Adjusted Rand: "+ar);
-            System.out.println();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            throw new JMetalException("Error writing data ", e) ;
         }
 
 

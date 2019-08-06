@@ -20,6 +20,7 @@ public class ExperimentMOCLE<S extends Solution<?>, Result> {
 
 	private String outputParetoFrontFileName;
 	private String outputParetoSetFileName;
+	private String outputAdjustedRandFileName;
 	private int independentRuns;
 
 	private String referenceFrontDirectory;
@@ -37,6 +38,7 @@ public class ExperimentMOCLE<S extends Solution<?>, Result> {
 		this.independentRuns = builder.getIndependentRuns() ;
 		this.outputParetoFrontFileName = builder.getOutputParetoFrontFileName() ;
 		this.outputParetoSetFileName = builder.getOutputParetoSetFileName() ;
+		this.outputAdjustedRandFileName = builder.getOutputAdjustedRandFileName() ;
 		this.numberOfCores = builder.getNumberOfCores() ;
 		this.referenceFrontDirectory = builder.getReferenceFrontDirectory() ;
 		this.indicatorList = builder.getIndicatorList() ;
@@ -61,6 +63,10 @@ public class ExperimentMOCLE<S extends Solution<?>, Result> {
 
 	public String getOutputParetoFrontFileName() {
 		return outputParetoFrontFileName;
+	}
+
+	public String getOutputAdjustedRandFileName() {
+		return outputAdjustedRandFileName;
 	}
 
 	public String getOutputParetoSetFileName() {

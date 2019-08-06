@@ -49,6 +49,11 @@ public class Dataset {
         this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
     }
 
+    public Dataset(String dataSetPath, String initialPartitionsPath){
+        this.initialPartitionsPath = initialPartitionsPath;
+        this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+    }
+
     public static List<DataPoint> parseFile(File file) {
         List<DataPoint> dps = new ArrayList<>();
         TsvParserSettings settings = new TsvParserSettings();
@@ -130,5 +135,6 @@ public class Dataset {
     }
 
     public int[] getTruePartition() {return truePartition;}
+
 
 }

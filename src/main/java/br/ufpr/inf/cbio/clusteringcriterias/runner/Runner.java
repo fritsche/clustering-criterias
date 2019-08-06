@@ -45,6 +45,7 @@ import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
+import org.uma.jmetal.util.fileoutput.FileOutputContext;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
@@ -92,13 +93,18 @@ public class Runner {
                 new RankingAndCrowdingDistanceComparator<PartitionSolution>());
 
         int popSize = ((ClusterProblem) problem).getPopulationSize();
-        int maxFitnessEvaluations = popSize * 50;
+        int maxFitnessEvaluations = popSize * 51;
         System.out.println(popSize);
+
+        //gera os vetores de peso para utilizar quando necessário
+//        new GenerateWeightVector(popSize).run(); //todo: gerar os vetores de peso necessarios para os demais algoritmos
+
 
         Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation)
                 .setSelectionOperator(selection)
                 .setMaxEvaluations(maxFitnessEvaluations)
-                .setPopulationSize(popSize + (popSize % 2))
+//                .setPopulationSize(popSize + (popSize % 2))
+                .setPopulationSize(popSize)
                 .build();
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
@@ -118,9 +124,10 @@ public class Runner {
 //            }
 //            System.out.println(Arrays.toString(s.getObjectives()));
 //        }
+
         System.out.println("Result population size: "+population.size());
 
-        Utils.computeAdjustedRand(dataset,population);
+        Utils.computeAdjustedRand(dataset.getTruePartition(),population, new DefaultFileOutputContext("ARI.tsv"));
 
         new SolutionListOutput(population)
                 .setSeparator("\t")

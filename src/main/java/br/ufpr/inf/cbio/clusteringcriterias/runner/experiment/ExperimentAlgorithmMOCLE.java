@@ -1,6 +1,7 @@
 package br.ufpr.inf.cbio.clusteringcriterias.runner.experiment;
 
 
+import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import org.uma.jmetal.algorithm.Algorithm;
@@ -23,6 +24,7 @@ public class ExperimentAlgorithmMOCLE<S extends Solution<?>, Result>  {
 	private String algorithmTag;
 	private String problemTag;
 	private String referenceParetoFront;
+	private Dataset dataset;
 	private int runId ;
 
 	/**
@@ -32,20 +34,23 @@ public class ExperimentAlgorithmMOCLE<S extends Solution<?>, Result>  {
 			Algorithm<Result> algorithm,
 			String algorithmTag,
 			ExperimentProblem<S> problem,
+			Dataset dataset,
 			int runId) {
 		this.algorithm = algorithm;
 		this.algorithmTag = algorithmTag;
 		this.problemTag = problem.getTag();
 		this.referenceParetoFront = problem.getReferenceFront();
+		this.dataset = dataset;
 		this.runId = runId ;
 	}
 
 	public ExperimentAlgorithmMOCLE(
 			Algorithm<Result> algorithm,
 			ExperimentProblem<S> problem,
+			Dataset dataset,
 			int runId) {
 
-		this(algorithm,algorithm.getName(),problem,runId);
+		this(algorithm,algorithm.getName(),problem, dataset, runId);
 
 	}
 
@@ -68,6 +73,7 @@ public class ExperimentAlgorithmMOCLE<S extends Solution<?>, Result>  {
 
 		String funFile = outputDirectoryName + "/FUN" + runId + ".tsv";
 		String varFile = outputDirectoryName + "/VAR" + runId + ".tsv";
+		String ariFile = outputDirectoryName + "/ARI" + runId + ".tsv";
 		JMetalLogger.logger.info(
 				" Running algorithm: " + algorithmTag +
 						", problem: " + problemTag +
@@ -88,6 +94,8 @@ public class ExperimentAlgorithmMOCLE<S extends Solution<?>, Result>  {
 		Result population = algorithm.getResult();
 
 		Utils.removeRepeated((List<PartitionSolution>) population);
+
+		Utils.computeAdjustedRand(dataset.getTruePartition(), (List<PartitionSolution>) population, new DefaultFileOutputContext(ariFile));
 
 		new SolutionListOutput((List<S>) population)
 				.setSeparator("\t")
