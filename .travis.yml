@@ -3,7 +3,7 @@ language: java
 jdk:
   - openjdk8
 
-install: mvn compile
+install: mvn package
 
 script: "mvn cobertura:cobertura"
 
