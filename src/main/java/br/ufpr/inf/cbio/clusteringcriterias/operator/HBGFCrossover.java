@@ -38,25 +38,9 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         int partition(int nvtxs, int[] xadj, int[] adjncy, int nparts, int[] part);
     }
     private Partition partition;
-    private int numberOfGeneratedChildren;
     private final int numberOfRequiredParents;
-    private double crossoverProbability;
 
     public HBGFCrossover() {
-        this(1.0, 2);
-    }
-
-    public HBGFCrossover(int numberOfGeneratedChildren) {
-        this(1.0, numberOfGeneratedChildren);
-    }
-
-    public HBGFCrossover(double crossoverProbability) {
-        this(crossoverProbability, 2);
-    }
-
-    public HBGFCrossover(double crossoverProbability, int numberOfGeneratedChildren) {
-        this.crossoverProbability = crossoverProbability;
-        this.numberOfGeneratedChildren = numberOfGeneratedChildren;
         this.numberOfRequiredParents = 2;
     }
 
@@ -133,7 +117,22 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         for (int i = 0; i < a.getNumberOfVariables() - 1; i++) {
             child.setVariableValue(i, part[i]);
         }
-        child.setVariableValue(child.getNumberOfVariables() - 1, k);
+        PartitionSolution copy = child.copy();
+        int v, n = copy.getNumberOfVariables() - 1, aux = 0;
+        for (int i = 0; i < n; i++) {
+            v = copy.getVariableValue(i);
+            if (v >= 0) {
+                aux++;
+                copy.setVariableValue(i, -1);
+                for (int j = i; j < n; j++) {
+                    if (copy.getVariableValue(j) == v) {
+                        copy.setVariableValue(j, -1);
+                    }
+                }
+            }
+        }
+        child.setVariableValue(child.getNumberOfVariables() - 1, aux);
+
         return child;
     }
 
@@ -144,7 +143,7 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
 
     @Override
     public int getNumberOfGeneratedChildren() {
-        return numberOfGeneratedChildren;
+        return 1;
     }
 
     @Override
@@ -154,21 +153,12 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         } else if (source.size() != numberOfRequiredParents) {
             throw new JMetalException("There must be " + numberOfRequiredParents + " parents instead of " + source.size());
         }
-        return doCrossover(crossoverProbability, source.get(0), source.get(1));
+        return doCrossover(source.get(0), source.get(1));
     }
 
-    public List<PartitionSolution> doCrossover(double probability, PartitionSolution parent1, PartitionSolution parent2) {
+    public List<PartitionSolution> doCrossover(PartitionSolution parent1, PartitionSolution parent2) {
         List<PartitionSolution> offspring = new ArrayList<>();
-        if (JMetalRandom.getInstance().nextDouble() < probability) {
-            while (offspring.size() < numberOfGeneratedChildren) {
-                offspring.add(hbgf(parent1, parent2));
-            }
-        } else { // copy parents
-            offspring.add(parent1.copy());
-            if (numberOfGeneratedChildren == 2) {
-                offspring.add(parent2.copy());
-            }
-        }
+        offspring.add(hbgf(parent1, parent2));
         return offspring;
     }
 

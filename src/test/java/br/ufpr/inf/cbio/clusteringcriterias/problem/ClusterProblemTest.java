@@ -74,7 +74,7 @@ public class ClusterProblemTest {
 
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
 
-        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.setDataPoints(new ArrayList<>(4));
         dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 2.0}));
         dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 2.0}));
         dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
@@ -105,18 +105,18 @@ public class ClusterProblemTest {
     @Test
     public void testEvaluateVersusMOCLE() {
         System.out.println("evaluateVersusMOCLE");
-        JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0, 3, 3}));
+        JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{3}));
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test5.toString());
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
-        HBGFCrossover crossover = new HBGFCrossover(1);
-        List<PartitionSolution> solutions = crossover.doCrossover(1.0, x, y);
-        for (PartitionSolution solution: solutions) {
+        HBGFCrossover crossover = new HBGFCrossover();
+        List<PartitionSolution> solutions = crossover.doCrossover(x, y);
+        solutions.forEach((solution) -> {
             problem.evaluate(solution);
-        }
+        });
         double expected = 60.7341;
         double actual = solutions.get(0).getObjectives()[0];
         assertEquals(expected, actual, 1e-5);
@@ -130,7 +130,7 @@ public class ClusterProblemTest {
         System.out.println("evaluateOverallDeviationAndConnectivity");
 
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
-        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.setDataPoints(new ArrayList<>(4));
         dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 2.0}));
         dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 2.0}));
         dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
@@ -171,7 +171,7 @@ public class ClusterProblemTest {
 
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
 
-        ClusterProblem instance = new ClusterProblem(true, dataset, new ArrayList<ObjectiveFunction>());
+        ClusterProblem instance = new ClusterProblem(true, dataset, new ArrayList<>());
 
         IntegerSolution a = instance.createSolution();
         int[] resultA = new int[5];

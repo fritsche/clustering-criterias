@@ -26,10 +26,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 
 import cern.colt.matrix.DoubleMatrix2D;
@@ -45,7 +42,6 @@ import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
-import org.uma.jmetal.util.fileoutput.FileOutputContext;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
@@ -83,14 +79,12 @@ public class Runner {
 
         problem = new ClusterProblem(true, dataset, functions);
 
-        crossoverProbability = 1.0;
-        int numberOfGeneratedChild = 1;
-        crossover = new HBGFCrossover(crossoverProbability, numberOfGeneratedChild);
+        crossover = new HBGFCrossover();
 
         mutation = new NullMutation<>();
 
         selection = new BinaryTournamentSelection<>(
-                new RankingAndCrowdingDistanceComparator<PartitionSolution>());
+                new RankingAndCrowdingDistanceComparator<>());
 
         int popSize = ((ClusterProblem) problem).getPopulationSize();
         int maxFitnessEvaluations = popSize * 51;
