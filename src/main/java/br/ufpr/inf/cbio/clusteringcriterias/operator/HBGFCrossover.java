@@ -22,6 +22,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.util.JMetalException;
@@ -84,6 +85,7 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         int adjncy[] = new int[n * 2 * 2]; // n objects times 2 parents times 2 (each edge is represented twice, e.g. (a,b) and (b,a)).
         int xadj[] = new int[nvtxs + 1];
         int k = n, v, aj = n * 2, xj = n;
+
         PartitionSolution x = (PartitionSolution) a.copy(); // copy solutions
         for (int i = 0; i < n; i++) {
             v = x.getVariableValue(i);
@@ -133,7 +135,23 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         for (int i = 0; i < a.getNumberOfVariables() - 1; i++) {
             child.setVariableValue(i, part[i]);
         }
-        child.setVariableValue(child.getNumberOfVariables() - 1, k);
+
+        PartitionSolution copy = child.copy();
+        int v, n = copy.getNumberOfVariables() - 1, aux = 0;
+        for (int i = 0; i < n; i++) {
+            v = copy.getVariableValue(i);
+            if (v >= 0) {
+                aux++;
+                copy.setVariableValue(i, -1);
+                for (int j = i; j < n; j++) {
+                    if (copy.getVariableValue(j) == v) {
+                        copy.setVariableValue(j, -1);
+                    }
+                }
+            }
+        }
+
+        child.setVariableValue(child.getNumberOfVariables() - 1, aux);
         return child;
     }
 

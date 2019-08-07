@@ -19,19 +19,12 @@ package br.ufpr.inf.cbio.clusteringcriterias.runner;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
-import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
+import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
+import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-
 import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
@@ -45,10 +38,14 @@ import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
-import org.uma.jmetal.util.fileoutput.FileOutputContext;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  *
@@ -56,9 +53,9 @@ import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
  */
 public class Runner {
 
-    public void run() {
+    public void run() throws FileNotFoundException {
 
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.ds2c2sc13_V1.toString());
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.libras.toString());
 
         double crossoverProbability;
         Problem problem;
@@ -70,14 +67,8 @@ public class Runner {
         functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
 
         DoubleMatrix2D distanceMatrix = Utils.computeDistanceMatrix(dataset, new EuclideanDistance());
-//        for (double[] distances : distanceMatrix) {
-//            System.out.println(Arrays.toString(distances));
-//        }
 
         List<List<Integer>> neighborhood = Utils.computeNeighborhood(distanceMatrix);
-        for (List<Integer> integers : neighborhood) {
-//            System.out.println(integers);
-        }
 
         functions.add(new Connectivity(neighborhood));
 
@@ -97,14 +88,13 @@ public class Runner {
         System.out.println(popSize);
 
         //gera os vetores de peso para utilizar quando necessário
-//        new GenerateWeightVector(popSize).run(); //todo: gerar os vetores de peso necessarios para os demais algoritmos
+        Utils.generateWeightVector(3); //todo: gerar os vetores de peso necessarios para os demais algoritmos
 
 
         Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation)
                 .setSelectionOperator(selection)
                 .setMaxEvaluations(maxFitnessEvaluations)
-//                .setPopulationSize(popSize + (popSize % 2))
-                .setPopulationSize(popSize)
+                .setPopulationSize(popSize + (popSize % 2))
                 .build();
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
@@ -115,15 +105,7 @@ public class Runner {
 
         List<PartitionSolution> population = SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
 
-        //remove as soluções repetidas
         Utils.removeRepeated(population);
-
-//        for (PartitionSolution s : population) {
-//            for (int i = 0; i < s.getNumberOfVariables(); i++) {
-//                System.out.print(s.getVariableValue(i) + " ");
-//            }
-//            System.out.println(Arrays.toString(s.getObjectives()));
-//        }
 
         System.out.println("Result population size: "+population.size());
 
@@ -137,7 +119,7 @@ public class Runner {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         (new Runner()).run();
     }
 

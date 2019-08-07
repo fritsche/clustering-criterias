@@ -52,7 +52,7 @@ import java.util.List;
  */
 public class Experiment {
 
-  private static final int INDEPENDENT_RUNS = 5;
+  private static final int INDEPENDENT_RUNS = 30;
 
   public static void main(String[] args) throws IOException {
     if (args.length != 1) {
@@ -241,8 +241,7 @@ public class Experiment {
         Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation)
                 .setSelectionOperator(selection)
                 .setMaxEvaluations(maxFitnessEvaluations)
-//                .setPopulationSize(popSize + (popSize % 2))
-                .setPopulationSize(popSize)
+                .setPopulationSize(popSize + (popSize % 2))
                 .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "NSGAIIa", problemList.get(i), dataset, run));
 
