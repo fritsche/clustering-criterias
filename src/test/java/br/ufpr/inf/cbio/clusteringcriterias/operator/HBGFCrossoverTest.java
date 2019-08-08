@@ -250,7 +250,7 @@ public class HBGFCrossoverTest {
     public void testGetNumberOfGeneratedChildren() {
         System.out.println("getNumberOfGeneratedChildren");
         HBGFCrossover instance = new HBGFCrossover();
-        int expResult = 2; // default is two
+        int expResult = 1; // always generate one child
         int result = instance.getNumberOfGeneratedChildren();
         assertEquals(expResult, result);
     }
@@ -290,7 +290,7 @@ public class HBGFCrossoverTest {
     @Test
     public void testExecuteScenario2() {
         System.out.println("executeScenario2");
-        JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0, 3, 3}));
+        JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{3}));
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test3.toString());
         ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<>());
         PartitionSolution x = (PartitionSolution) problem.createSolution();
@@ -313,7 +313,6 @@ public class HBGFCrossoverTest {
         HBGFCrossover instance = new HBGFCrossover();
         List<PartitionSolution> expResult = new ArrayList<>();
         expResult.add(z);
-        expResult.add(z);
         List<PartitionSolution> result = instance.execute(source);
         assertEquals(expResult, result);
     }
@@ -324,7 +323,7 @@ public class HBGFCrossoverTest {
     @Test
     public void testExecuteScenario3() {
         System.out.println("executeScenario3");
-        JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0, 3, 3}));
+        JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{3}));
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test4.toString());
         ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<>());
         PartitionSolution x = (PartitionSolution) problem.createSolution();
@@ -347,29 +346,8 @@ public class HBGFCrossoverTest {
         HBGFCrossover instance = new HBGFCrossover();
         List<PartitionSolution> expResult = new ArrayList<>();
         expResult.add(z);
-        expResult.add(z);
         List<PartitionSolution> result = instance.execute(source);
         assertEquals(expResult, result);
     }
 
-    @Test
-    public void testCrossoverProbability() {
-        System.out.println("executeScenario3");
-        JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{0.0}));
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test4.toString());
-        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<>());
-        PartitionSolution x = (PartitionSolution) problem.createSolution();
-        PartitionSolution y = (PartitionSolution) problem.createSolution();
-        PartitionSolution z1 = (PartitionSolution) x.copy();
-        PartitionSolution z2 = (PartitionSolution) y.copy();
-        List<PartitionSolution> source = new ArrayList<>();
-        source.add(x);
-        source.add(y);
-        HBGFCrossover instance = new HBGFCrossover();
-        List<PartitionSolution> expResult = new ArrayList<>();
-        expResult.add(z1);
-        expResult.add(z2);
-        List<PartitionSolution> result = instance.execute(source);
-        assertEquals(expResult, result);
-    }
 }
