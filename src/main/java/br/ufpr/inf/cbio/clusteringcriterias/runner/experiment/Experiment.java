@@ -8,14 +8,10 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
-import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.ExperimentAlgorithmMOCLE;
-import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.ExperimentBuilderMOCLE;
-import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.ExperimentMOCLE;
 import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.ExecuteAlgorithmsMOCLE;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
@@ -90,7 +86,7 @@ public class Experiment {
                     .setOutputAdjustedRandFileName("ARI")
                     .setReferenceFrontDirectory(experimentBaseDirectory + "/Experiment0/referenceFronts")
                     .setIndicatorList(Arrays.asList(
-                            new PISAHypervolume<PartitionSolution>(referenceParetoFront)))
+                            new PISAHypervolume<>(referenceParetoFront)))
                     .setIndependentRuns(INDEPENDENT_RUNS)
                     .build();
 
@@ -112,10 +108,7 @@ public class Experiment {
     CrossoverOperator<PartitionSolution> crossover;
     MutationOperator<PartitionSolution> mutation;
 
-    //verify neighborhood % on problem.utils
-    crossoverProbability = 1.0;
-    int numberOfGeneratedChild = 1;
-    crossover = new HBGFCrossover(crossoverProbability, numberOfGeneratedChild);
+    crossover = new HBGFCrossover();
     mutation = new NullMutation<>();
     SelectionOperator<List<PartitionSolution>, PartitionSolution> selection;
     selection = new BinaryTournamentSelection<>(

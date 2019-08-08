@@ -36,13 +36,11 @@ public class CLUIBEABuilder implements AlgorithmBuilder<IBEA<PartitionSolution>>
 		archiveSize = 100;
 		maxEvaluations = 25000;
 
-		double crossoverProbability = 1.0;
-		int numberOfGeneratedChild = 2;
-		crossover = new HBGFCrossover(crossoverProbability, numberOfGeneratedChild);
+		crossover = new HBGFCrossover();
 
 		mutation = new NullMutation<>();
 
-		selection = new BinaryTournamentSelection<PartitionSolution>();
+		selection = new BinaryTournamentSelection<>();
 	}
 
 	/* Getters */
@@ -107,8 +105,9 @@ public class CLUIBEABuilder implements AlgorithmBuilder<IBEA<PartitionSolution>>
 		return this;
 	}
 
+        @Override
 	public IBEA<PartitionSolution> build() {
-		return new IBEA<PartitionSolution>(problem, populationSize, archiveSize, maxEvaluations, selection, crossover,
+		return new IBEA<>(problem, populationSize, archiveSize, maxEvaluations, selection, crossover,
 				mutation);
 	}
 }
