@@ -42,10 +42,12 @@ public class Dataset {
     private List<DataPoint> dataPoints;
     private final String initialPartitionsPath;
     private int[] truePartition;
+    private String dataSetPath;
 
     public Dataset(String dataSetPath, String initialPartitionsPath, String truePartitionPath) {
         this.initialPartitionsPath = initialPartitionsPath;
         this.truePartition = parseTruePartition(truePartitionPath);
+        this.dataSetPath = dataSetPath;
         this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
     }
 
@@ -135,6 +137,8 @@ public class Dataset {
     }
 
     public int[] getTruePartition() {return truePartition;}
+
+    public String getDatasetPath(){return dataSetPath;}
 
 
 }
