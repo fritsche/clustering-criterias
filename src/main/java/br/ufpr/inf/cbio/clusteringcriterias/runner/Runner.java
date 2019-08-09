@@ -74,14 +74,12 @@ public class Runner {
 
         problem = new ClusterProblem(true, dataset, functions);
 
-        crossoverProbability = 1.0;
-        int numberOfGeneratedChild = 1;
-        crossover = new HBGFCrossover(crossoverProbability, numberOfGeneratedChild);
+        crossover = new HBGFCrossover();
 
         mutation = new NullMutation<>();
 
         selection = new BinaryTournamentSelection<>(
-                new RankingAndCrowdingDistanceComparator<PartitionSolution>());
+                new RankingAndCrowdingDistanceComparator<>());
 
         int popSize = ((ClusterProblem) problem).getPopulationSize();
         int maxFitnessEvaluations = popSize * 51;

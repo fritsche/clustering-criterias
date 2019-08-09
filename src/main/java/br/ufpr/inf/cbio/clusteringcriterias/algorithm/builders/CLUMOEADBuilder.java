@@ -49,7 +49,7 @@ public class CLUMOEADBuilder implements AlgorithmBuilder<AbstractMOEAD<Partition
 		populationSize = 300 ;
 		resultPopulationSize = 300 ;
 		maxEvaluations = 150000 ;
-		crossover = new HBGFCrossover(1, 2) ;
+		crossover = new HBGFCrossover() ;
 		mutation = new NullMutation<>();
 		functionType = MOEAD.FunctionType.TCHE ;
 		neighborhoodSelectionProbability = 0.1 ;
