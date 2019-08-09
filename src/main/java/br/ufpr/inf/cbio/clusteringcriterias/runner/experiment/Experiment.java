@@ -2,6 +2,8 @@ package br.ufpr.inf.cbio.clusteringcriterias.runner.experiment;
 
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUIBEABuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.HypE.HypEBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.NSGAIII.CLUNSGAIIIBuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.SPEA2SDE.CLUSPEA2SDEBuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.thetaDEA.ThetaDEABuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
@@ -9,15 +11,17 @@ import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
-import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.ComputeQualityIndicatorsMOCLE;
-import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.GenerateFronts;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
+import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.ComputeQualityIndicatorsMOCLE;
 import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.ExecuteAlgorithmsMOCLE;
+import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.GenerateFronts;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.mombi.MOMBI2;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
@@ -65,7 +69,7 @@ public class Experiment {
     String referenceParetoFront = "";
 
     Problem problem;
-    Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.tevc_20_60_1.toString());
+    Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.ds2c2sc13_V2.toString());
 //    referenceParetoFront = NSGAII.class.getClassLoader().getResource("pareto_fronts/ZDT1.pf").getFile();
 
     List<ObjectiveFunction> functions = new ArrayList<>();
@@ -93,6 +97,7 @@ public class Experiment {
                     .setReferenceFrontDirectory(experimentBaseDirectory + "/Experiment0/referenceFronts")
                     .setIndicatorList(Arrays.asList(
                             new PISAHypervolume<>(referenceParetoFront)))
+                    .setNumberOfCores(3)
                     .setIndependentRuns(INDEPENDENT_RUNS)
                     .build();
 
@@ -125,38 +130,6 @@ public class Experiment {
 
     for (int run = 0; run < INDEPENDENT_RUNS; run++) {
 
-//      for (int i = 0; i < problemList.size(); i++) {
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxFitnessEvaluations = popSize * 51;
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation)
-//                .setSelectionOperator(selection)
-//                .setMaxEvaluations(maxFitnessEvaluations)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "NSGAII", problemList.get(i), dataset, run));
-//
-//      }
-
-//      for (int i = 0; i < problemList.size(); i++){
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxIterations = 51;
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIIBuilder<>(problemList.get(i).getProblem())
-//                .setCrossoverOperator(crossover)
-//                .setMutationOperator(mutation)
-//                .setSelectionOperator(selection)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .setMaxIterations(maxIterations)
-//                .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"NSGAIII",problemList.get(i), dataset, run));
-//
-//      } //todo:alterar para trabalhar com apenas um filho, implementação do NSGAIII que tem no hhco
-
 //
 //      for (int i = 0; i < problemList.size(); i++){
 //
@@ -165,29 +138,61 @@ public class Experiment {
 //        int maxIterations = 51;
 //
 //
-//        Algorithm<List<PartitionSolution>> algorithm = new MOMBI2<>(problem,maxIterations,crossover,mutation,selection,new SequentialSolutionListEvaluator<PartitionSolution>(),
+//        Algorithm<List<PartitionSolution>> algorithm = new MOMBI2<>(problem,maxIterations,crossover,mutation,selection, new SequentialSolutionListEvaluator<>(),
 //                "weight_vectors/a.sld");
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOMBI2a",problemList.get(i), dataset, run));
+//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOMBI2",problemList.get(i), dataset, run));
 //
 //      } //todo: alterar para trabalhar com apenas um filho
-//
-//      for (int i = 0; i < problemList.size(); i++) {
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxFitnessEvaluations = popSize * 51;
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new HypEBuilder<>(problem)
-//                .setCrossoverOperator(crossover)
-//                .setMaxEvaluations(maxFitnessEvaluations)
-//                .setMutationOperator(mutation)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .setSelectionOperator(selection)
-//                .build();
-//        algorithms.add(new ExperimentAlgorithm<>(algorithm, "HypEa", problemList.get(i), run));
-//
-//      }
-//
+
+      for (int i = 0; i < problemList.size(); i++) {
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxFitnessEvaluations = popSize * 51;
+
+        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation)
+                .setSelectionOperator(selection)
+                .setMaxEvaluations(maxFitnessEvaluations)
+                .setPopulationSize(popSize + (popSize % 2))
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "NSGAII", problemList.get(i), dataset, run));
+
+      }
+
+
+
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxEvaluations = popSize * 51;
+
+        Algorithm<List<PartitionSolution>> algorithm = new CLUNSGAIIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation)
+                .setSelection(selection)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setMaxEvaluations(maxEvaluations)
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"NSGAIII",problemList.get(i), dataset, run));
+
+      }
+
+      for (int i = 0; i < problemList.size(); i++) {
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxFitnessEvaluations = popSize * 51;
+
+        Algorithm<List<PartitionSolution>> algorithm = new HypEBuilder<>(problem)
+                .setCrossoverOperator(crossover)
+                .setMaxEvaluations(maxFitnessEvaluations)
+                .setMutationOperator(mutation)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setSelectionOperator(selection)
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "HypE", problemList.get(i), dataset,run));
+
+      }
+
       for (int i = 0; i < problemList.size(); i++){
 
         Problem problem = problemList.get(i).getProblem();
