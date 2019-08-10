@@ -126,7 +126,7 @@ public class HypE<S extends Solution<?>> implements Algorithm<List<S>> {
 			offspringPopulation = new ArrayList<>(populationSize);
 
 			fs.setHypEFitness(population, reference, populationSize, samples);
-			for (int i = 0; i < (populationSize / 2); i++) {
+			for (int i = 0; i < populationSize; i++) {
 				if (evaluations < maxEvaluations) {
 					List<S> parents = new ArrayList<>();
 

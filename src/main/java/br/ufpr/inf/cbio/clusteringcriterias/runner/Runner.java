@@ -55,9 +55,8 @@ public class Runner {
 
     public void run() throws FileNotFoundException {
 
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.libras.toString());
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.golub_V1.toString());
 
-        double crossoverProbability;
         Problem problem;
         CrossoverOperator<PartitionSolution> crossover;
         MutationOperator<PartitionSolution> mutation;
@@ -86,7 +85,7 @@ public class Runner {
         System.out.println(popSize);
 
         //gera os vetores de peso para utilizar quando necessário
-        Utils.generateWeightVector(3); //todo: gerar os vetores de peso necessarios para os demais algoritmos
+        Utils.generateWeightVector(popSize + (popSize % 2)); //todo: gerar os vetores de peso necessarios para os demais algoritmos
 
 
         Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation)
