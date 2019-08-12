@@ -71,7 +71,7 @@ public class Experiment {
     System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); //used for TimSort bug on HypE and(or) MOMBI running parallel -> (Experiment) -> https://stackoverflow.com/questions/13575224/comparison-method-violates-its-general-contract-timsort-and-gridlayout
 
     Problem problem;
-    Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.optdigits.toString());
+    Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.ds2c2sc13_V1.toString());
 //    referenceParetoFront = NSGAII.class.getClassLoader().getResource("pareto_fronts/ZDT1.pf").getFile();
 
     List<ObjectiveFunction> functions = new ArrayList<>();
@@ -261,6 +261,7 @@ public class Experiment {
                 .setMaxEvaluations(maxFitnessEvaluations)
                 .setCrossover(crossover)
                 .setMutation(mutation)
+                        .setNeighborSize(Math.round((20/popSize)*100)) //todo:verificar esse parâmetro
                 .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEAD",problemList.get(i),dataset,run));
 
@@ -277,6 +278,7 @@ public class Experiment {
                 .setMaxEvaluations(maxFitnessEvaluations)
                 .setCrossover(crossover)
                 .setMutation(mutation)
+                .setNeighborSize(Math.round((20/popSize)*100))
                 .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEADD",problemList.get(i),dataset,run));
 

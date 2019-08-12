@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class ExperimentBuilderMOCLE<S extends Solution<?>, Result> {
+public class ExperimentBuilderMOCLE<S extends Solution<?>, Result extends List<S>> {
 	private final String experimentName ;
 	private List<ExperimentAlgorithmMOCLE<S, Result>> algorithmList;
 	private List<ExperimentProblem<S>> problemList;
