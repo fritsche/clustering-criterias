@@ -261,7 +261,7 @@ public class Experiment {
                 .setMaxEvaluations(maxFitnessEvaluations)
                 .setCrossover(crossover)
                 .setMutation(mutation)
-                        .setNeighborSize(Math.round((20/popSize)*100)) //todo:verificar esse parâmetro
+                        .setNeighborSize(Math.toIntExact(Math.round((popSize * 0.2)))) //todo:verificar esse parâmetro
                 .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEAD",problemList.get(i),dataset,run));
 
@@ -278,7 +278,7 @@ public class Experiment {
                 .setMaxEvaluations(maxFitnessEvaluations)
                 .setCrossover(crossover)
                 .setMutation(mutation)
-                .setNeighborSize(Math.round((20/popSize)*100))
+                .setNeighborSize(Math.toIntExact(Math.round((popSize * 0.2))))
                 .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEADD",problemList.get(i),dataset,run));
 
