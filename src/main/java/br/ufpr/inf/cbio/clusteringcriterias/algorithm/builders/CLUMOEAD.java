@@ -62,7 +62,7 @@ public class CLUMOEAD extends AbstractMOEAD<PartitionSolution> {
 				NeighborType neighborType = chooseNeighborType() ;
 				List<PartitionSolution> parents = parentSelection(subProblemId, neighborType) ;
 
-				parents.remove(0); //removido o ppopulation.get(subProblemId)
+				parents.remove(2); //removed ppopulation.get(subProblemId)
 
 //				hbgfCrossover.setCurrentSolution(population.get(subProblemId)); //todo: verificar o que essa linha faz
 				List<PartitionSolution> children = hbgfCrossover.execute(parents);
