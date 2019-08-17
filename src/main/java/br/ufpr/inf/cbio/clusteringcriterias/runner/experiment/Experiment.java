@@ -21,6 +21,8 @@ import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.Generate
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
+import org.uma.jmetal.algorithm.multiobjective.moead.MOEAD;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -71,7 +73,7 @@ public class Experiment {
     System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); //used for TimSort bug on HypE and(or) MOMBI running parallel -> (Experiment) -> https://stackoverflow.com/questions/13575224/comparison-method-violates-its-general-contract-timsort-and-gridlayout
 
     Problem problem;
-    Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.ds2c2sc13_V1.toString());
+    Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.ds2c2sc13_V3.toString());
 //    referenceParetoFront = NSGAII.class.getClassLoader().getResource("pareto_fronts/ZDT1.pf").getFile();
 
     List<ObjectiveFunction> functions = new ArrayList<>();
@@ -98,8 +100,8 @@ public class Experiment {
                     .setOutputAdjustedRandFileName("ARI")
                     .setReferenceFrontDirectory(experimentBaseDirectory + "/Experiment0/referenceFronts")
                     .setIndicatorList(Arrays.asList(
-                            new PISAHypervolume<>(referenceParetoFront)))
-                    .setNumberOfCores(2)
+                            new PISAHypervolume<>()))
+                    .setNumberOfCores(3)
                     .setIndependentRuns(INDEPENDENT_RUNS)
                     .build();
 
@@ -166,10 +168,9 @@ public class Experiment {
         int popSize = ((ClusterProblem) problem).getPopulationSize();
         int maxFitnessEvaluations = popSize * 51;
 
-        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation)
+        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation, popSize + (popSize % 2))
                 .setSelectionOperator(selection)
                 .setMaxEvaluations(maxFitnessEvaluations)
-                .setPopulationSize(popSize + (popSize % 2))
                 .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "NSGAII", problemList.get(i), dataset, run));
 
@@ -257,12 +258,15 @@ public class Experiment {
         int maxFitnessEvaluations = popSize * 51;
 
                 Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEAD)
-                .setPopulationSize(popSize + (popSize % 2))
-                .setMaxEvaluations(maxFitnessEvaluations)
-                .setCrossover(crossover)
-                .setMutation(mutation)
-                        .setNeighborSize(Math.toIntExact(Math.round((popSize * 0.2)))) //todo:verificar esse parâmetro
-                .build();
+                        .setPopulationSize(popSize + (popSize % 2))
+                        .setMaxEvaluations(maxFitnessEvaluations)
+                        .setCrossover(crossover)
+                        .setMutation(mutation)
+                        .setNeighborSize(Math.toIntExact(Math.round((popSize * 0.2))))
+                        .setFunctionType(MOEAD.FunctionType.AGG)
+                        .setMaximumNumberOfReplacedSolutions(1)
+                        .setResultPopulationSize(popSize + (popSize % 2))
+                        .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEAD",problemList.get(i),dataset,run));
 
       }

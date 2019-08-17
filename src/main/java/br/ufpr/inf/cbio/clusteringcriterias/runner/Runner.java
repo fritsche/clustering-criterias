@@ -88,10 +88,9 @@ public class Runner {
         Utils.generateWeightVector(popSize + (popSize % 2)); //todo: gerar os vetores de peso necessarios para os demais algoritmos
 
 
-        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation)
+        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem,crossover,mutation,popSize + (popSize % 2))
                 .setSelectionOperator(selection)
                 .setMaxEvaluations(maxFitnessEvaluations)
-                .setPopulationSize(popSize + (popSize % 2))
                 .build();
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)

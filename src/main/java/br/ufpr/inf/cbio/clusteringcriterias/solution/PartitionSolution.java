@@ -25,6 +25,8 @@ import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.uma.jmetal.problem.IntegerProblem;
 import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.solution.impl.AbstractGenericSolution;
@@ -68,6 +70,11 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
     @Override
     public PartitionSolution copy() {
         return new PartitionSolution(this);
+    }
+
+    @Override
+    public Map<Object, Object> getAttributes() {
+        return null;
     }
 
     @Override
