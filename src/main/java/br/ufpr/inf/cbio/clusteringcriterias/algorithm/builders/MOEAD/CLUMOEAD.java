@@ -1,8 +1,7 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
 
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
 import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
@@ -20,7 +19,7 @@ public class CLUMOEAD extends AbstractMOEAD<PartitionSolution> {
 					int maxEvaluations,
 					MutationOperator<PartitionSolution> mutation,
 					CrossoverOperator<PartitionSolution> crossover,
-					AbstractMOEAD.FunctionType functionType,
+					FunctionType functionType,
 					String dataDirectory,
 					double neighborhoodSelectionProbability,
 					int maximumNumberOfReplacedSolutions,

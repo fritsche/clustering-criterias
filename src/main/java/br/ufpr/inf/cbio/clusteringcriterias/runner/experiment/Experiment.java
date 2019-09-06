@@ -1,7 +1,9 @@
 package br.ufpr.inf.cbio.clusteringcriterias.runner.experiment;
 
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUIBEABuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.AbstractMOEAD;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEAD;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEADBuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.HypE.HypEBuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOMBI2.CLUMOMBI2;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.NSGAIII.CLUNSGAIIIBuilder;
@@ -21,7 +23,6 @@ import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.Generate
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
 import org.uma.jmetal.algorithm.multiobjective.moead.MOEAD;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
@@ -64,16 +65,13 @@ public class Experiment {
   private static final int INDEPENDENT_RUNS = 30;
 
 
-  public static void main(String[] args) throws IOException {
-    if (args.length != 1) {
-      throw new JMetalException("Needed arguments: experimentBaseDirectory");
-    }
-    String experimentBaseDirectory = args[0];
+  public void execute(String datasetName, String experimentBaseDirectory) throws IOException {
+
     String referenceParetoFront = "";
     System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); //used for TimSort bug on HypE and(or) MOMBI running parallel -> (Experiment) -> https://stackoverflow.com/questions/13575224/comparison-method-violates-its-general-contract-timsort-and-gridlayout
 
     Problem problem;
-    Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.ds2c2sc13_V3.toString());
+    Dataset dataset = DatasetFactory.getInstance().getDataset(datasetName);
 //    referenceParetoFront = NSGAII.class.getClassLoader().getResource("pareto_fronts/ZDT1.pf").getFile();
 
     List<ObjectiveFunction> functions = new ArrayList<>();
@@ -107,9 +105,9 @@ public class Experiment {
 
     new ExecuteAlgorithmsMOCLE<>(experiment).run();
 
-    new GenerateFronts(experiment).run();
+//    new GenerateFronts(experiment).run();
 
-    new ComputeQualityIndicatorsMOCLE<>(experiment).run();
+//    new ComputeQualityIndicatorsMOCLE<>(experiment).run();
 
   }
 
@@ -133,6 +131,7 @@ public class Experiment {
     for (int run = 0; run < INDEPENDENT_RUNS; run++) {
 
 
+
       for (int i = 0; i < problemList.size(); i++){
 
         Problem problem = problemList.get(i).getProblem();
@@ -146,7 +145,7 @@ public class Experiment {
 
       }
 
-      for (int i = 0; i < problemList.size(); i++) {
+       for (int i = 0; i < problemList.size(); i++) {
 
         Problem problem = problemList.get(i).getProblem();
         int popSize = ((ClusterProblem) problem).getPopulationSize();
@@ -162,6 +161,7 @@ public class Experiment {
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "HypE", problemList.get(i), dataset,run));
 
       }
+
       for (int i = 0; i < problemList.size(); i++) {
 
         Problem problem = problemList.get(i).getProblem();
@@ -257,16 +257,38 @@ public class Experiment {
         int popSize = ((ClusterProblem) problem).getPopulationSize();
         int maxFitnessEvaluations = popSize * 51;
 
-                Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEAD)
+                Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEADSTM)
                         .setPopulationSize(popSize + (popSize % 2))
                         .setMaxEvaluations(maxFitnessEvaluations)
                         .setCrossover(crossover)
                         .setMutation(mutation)
-                        .setNeighborSize(Math.toIntExact(Math.round((popSize * 0.2))))
-                        .setFunctionType(MOEAD.FunctionType.AGG)
+                        .setNeighborSize(2)
+                        .setFunctionType(CLUMOEAD.FunctionType.AGG)
                         .setMaximumNumberOfReplacedSolutions(1)
+                        .setNeighborhoodSelectionProbability(1)
                         .setResultPopulationSize(popSize + (popSize % 2))
                         .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEADSTM",problemList.get(i),dataset,run));
+
+      }
+
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxFitnessEvaluations = popSize * 51;
+
+        Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEAD)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setMaxEvaluations(maxFitnessEvaluations)
+                .setCrossover(crossover)
+                .setMutation(mutation)
+                .setNeighborSize(2)
+                .setFunctionType(CLUMOEAD.FunctionType.AGG)
+                .setMaximumNumberOfReplacedSolutions(1)
+                .setNeighborhoodSelectionProbability(1)
+                .setResultPopulationSize(popSize + (popSize % 2))
+                .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEAD",problemList.get(i),dataset,run));
 
       }
@@ -283,6 +305,7 @@ public class Experiment {
                 .setCrossover(crossover)
                 .setMutation(mutation)
                 .setNeighborSize(Math.toIntExact(Math.round((popSize * 0.2))))
+                .setResultPopulationSize(popSize + (popSize % 2))
                 .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEADD",problemList.get(i),dataset,run));
 
@@ -291,6 +314,32 @@ public class Experiment {
     }
 
     return algorithms;
+  }
+
+  public static void main(String[] args) throws IOException {
+    if (args.length != 1) {
+      throw new JMetalException("Needed arguments: experimentBaseDirectory");
+    }
+
+//    (new Experiment()).execute("D31", args[0]);
+//    (new Experiment()).execute("ds2c2sc13_V1", args[0]);
+//    (new Experiment()).execute("ds2c2sc13_V2", args[0]);
+//    (new Experiment()).execute("ds2c2sc13_V3", args[0]);
+//    (new Experiment()).execute("ds3c3sc6_V1", args[0]);
+//    (new Experiment()).execute("ds3c3sc6_V2", args[0]);
+//    (new Experiment()).execute("frogs_V1", args[0]);
+//    (new Experiment()).execute("frogs_V2", args[0]);
+//    (new Experiment()).execute("frogs_V3", args[0]);
+//    (new Experiment()).execute("golub_V1", args[0]);
+//    (new Experiment()).execute("golub_V3", args[0]);
+//    (new Experiment()).execute("leukemia_V1", args[0]);
+//    (new Experiment()).execute("leukemia_V2", args[0]);
+//    (new Experiment()).execute("libras", args[0]);
+//    (new Experiment()).execute("optdigits", args[0]);
+//    (new Experiment()).execute("seeds", args[0]);
+//    (new Experiment()).execute("spiralsquare", args[0]);
+//    (new Experiment()).execute("tevc_20_60_1", args[0]);
+//    (new Experiment()).execute("UKC1", args[0]);
   }
 
 }

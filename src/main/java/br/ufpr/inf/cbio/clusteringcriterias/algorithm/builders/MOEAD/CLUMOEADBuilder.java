@@ -1,9 +1,7 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
 
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
-import org.uma.jmetal.algorithm.multiobjective.moead.MOEAD;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.impl.mutation.NullMutation;
@@ -28,7 +26,7 @@ public class CLUMOEADBuilder implements AlgorithmBuilder<AbstractMOEAD<Partition
 	/** nr in Zhang & Li paper */
 	protected int maximumNumberOfReplacedSolutions;
 
-	protected MOEAD.FunctionType functionType;
+	protected CLUMOEAD.FunctionType functionType;
 
 	protected CrossoverOperator<PartitionSolution> crossover;
 	protected MutationOperator<PartitionSolution> mutation;
@@ -41,19 +39,18 @@ public class CLUMOEADBuilder implements AlgorithmBuilder<AbstractMOEAD<Partition
 
 	protected int numberOfThreads ;
 
-	protected br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder.Variant moeadVariant ;
+	protected Variant moeadVariant ;
 
 	/** Constructor */
-	public CLUMOEADBuilder(Problem<PartitionSolution> problem, br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder.Variant variant) {
+	public CLUMOEADBuilder(Problem<PartitionSolution> problem, Variant variant) {
 		this.problem = problem ;
-		populationSize = 300 ;
 		resultPopulationSize = 300 ;
 		maxEvaluations = 150000 ;
 		crossover = new HBGFCrossover() ;
 		mutation = new NullMutation<>();
-		functionType = MOEAD.FunctionType.TCHE ;
+		functionType = CLUMOEAD.FunctionType.AGG ;
 		neighborhoodSelectionProbability = 0.1 ;
-		maximumNumberOfReplacedSolutions = 2 ;
+		maximumNumberOfReplacedSolutions = 1 ;
 		dataDirectory = "" ;
 		neighborSize = 20 ;
 		numberOfThreads = 1 ;
@@ -89,7 +86,7 @@ public class CLUMOEADBuilder implements AlgorithmBuilder<AbstractMOEAD<Partition
 		return crossover;
 	}
 
-	public MOEAD.FunctionType getFunctionType() {
+	public CLUMOEAD.FunctionType getFunctionType() {
 		return functionType;
 	}
 
@@ -105,67 +102,67 @@ public class CLUMOEADBuilder implements AlgorithmBuilder<AbstractMOEAD<Partition
 		return numberOfThreads ;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setPopulationSize(int populationSize) {
+	public CLUMOEADBuilder setPopulationSize(int populationSize) {
 		this.populationSize = populationSize;
 
 		return this;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setResultPopulationSize(int resultPopulationSize) {
+	public CLUMOEADBuilder setResultPopulationSize(int resultPopulationSize) {
 		this.resultPopulationSize = resultPopulationSize;
 
 		return this;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setMaxEvaluations(int maxEvaluations) {
+	public CLUMOEADBuilder setMaxEvaluations(int maxEvaluations) {
 		this.maxEvaluations = maxEvaluations;
 
 		return this;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setNeighborSize(int neighborSize) {
+	public CLUMOEADBuilder setNeighborSize(int neighborSize) {
 		this.neighborSize = neighborSize ;
 
 		return this ;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setNeighborhoodSelectionProbability(double neighborhoodSelectionProbability) {
+	public CLUMOEADBuilder setNeighborhoodSelectionProbability(double neighborhoodSelectionProbability) {
 		this.neighborhoodSelectionProbability = neighborhoodSelectionProbability ;
 
 		return this ;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setFunctionType(MOEAD.FunctionType functionType) {
+	public CLUMOEADBuilder setFunctionType(CLUMOEAD.FunctionType functionType) {
 		this.functionType = functionType ;
 
 		return this ;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setMaximumNumberOfReplacedSolutions(int maximumNumberOfReplacedSolutions) {
+	public CLUMOEADBuilder setMaximumNumberOfReplacedSolutions(int maximumNumberOfReplacedSolutions) {
 		this.maximumNumberOfReplacedSolutions = maximumNumberOfReplacedSolutions ;
 
 		return this ;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setCrossover(CrossoverOperator<PartitionSolution> crossover) {
+	public CLUMOEADBuilder setCrossover(CrossoverOperator<PartitionSolution> crossover) {
 		this.crossover = crossover ;
 
 		return this ;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setMutation(MutationOperator<PartitionSolution> mutation) {
+	public CLUMOEADBuilder setMutation(MutationOperator<PartitionSolution> mutation) {
 		this.mutation = mutation ;
 
 		return this ;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setDataDirectory(String dataDirectory) {
+	public CLUMOEADBuilder setDataDirectory(String dataDirectory) {
 		this.dataDirectory = dataDirectory ;
 
 		return this ;
 	}
 
-	public br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder setNumberOfThreads(int numberOfThreads) {
+	public CLUMOEADBuilder setNumberOfThreads(int numberOfThreads) {
 		this.numberOfThreads = numberOfThreads ;
 
 		return this ;
@@ -173,23 +170,15 @@ public class CLUMOEADBuilder implements AlgorithmBuilder<AbstractMOEAD<Partition
 
 	public AbstractMOEAD<PartitionSolution> build() {
 		AbstractMOEAD<PartitionSolution> algorithm = null ;
-		if (moeadVariant.equals(br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder.Variant.MOEAD)) {
+		if (moeadVariant.equals(Variant.MOEAD)) {
 			algorithm = new CLUMOEAD(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
 					crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
 					maximumNumberOfReplacedSolutions, neighborSize);
-		} /*else if (moeadVariant.equals(br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder.Variant.ConstraintMOEAD)) {
-			algorithm =  new ConstraintMOEAD(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
+		}else if (moeadVariant.equals(br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEADBuilder.Variant.MOEADSTM)) {
+			algorithm =  new CLUMOEADSTM(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
 					crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
 					maximumNumberOfReplacedSolutions, neighborSize);
-		} else if (moeadVariant.equals(br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder.Variant.MOEADDRA)) {
-			algorithm =  new MOEADDRA(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
-					crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
-					maximumNumberOfReplacedSolutions, neighborSize);
-		} else if (moeadVariant.equals(br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder.Variant.MOEADSTM)) {
-			algorithm =  new MOEADSTM(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
-					crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
-					maximumNumberOfReplacedSolutions, neighborSize);
-		} */else if (moeadVariant.equals(br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUMOEADBuilder.Variant.MOEADD)) {
+		} else if (moeadVariant.equals(Variant.MOEADD)) {
 			algorithm = new CLUMOEADD(problem, populationSize, resultPopulationSize, maxEvaluations, crossover, mutation,
 					functionType, dataDirectory, neighborhoodSelectionProbability,
 					maximumNumberOfReplacedSolutions, neighborSize);
