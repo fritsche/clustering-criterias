@@ -23,8 +23,6 @@ import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,14 +43,13 @@ public class Dataset {
     private String dataSetPath;
 
     public Dataset(String dataSetPath, String initialPartitionsPath, String truePartitionPath) {
-        this.initialPartitionsPath = initialPartitionsPath;
+        this(dataSetPath, initialPartitionsPath);
         this.truePartition = parseTruePartition(truePartitionPath);
-        this.dataSetPath = dataSetPath;
-        this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
     }
 
     public Dataset(String dataSetPath, String initialPartitionsPath){
         this.initialPartitionsPath = initialPartitionsPath;
+        this.dataSetPath = dataSetPath;
         this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
     }
 

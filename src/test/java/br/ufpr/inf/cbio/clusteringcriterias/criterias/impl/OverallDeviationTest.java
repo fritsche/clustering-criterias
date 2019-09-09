@@ -67,13 +67,13 @@ public class OverallDeviationTest {
         System.out.println("evaluate");
 
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
-        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.setDataPoints(new ArrayList<>(4));
         dataset.addDataPoint("a", new ArrayPoint(new double[]{1.0, 1.0}));
         dataset.addDataPoint("b", new ArrayPoint(new double[]{-1.0, 1.0}));
         dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, -1.0}));
         dataset.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
-        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<>());
         IntegerSolution s = problem.createSolution();
 
         s.setVariableValue(0, 0); // solution 'a' cluster 0
