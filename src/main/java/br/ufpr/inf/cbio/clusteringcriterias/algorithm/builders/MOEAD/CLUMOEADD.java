@@ -1,9 +1,7 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
 
 
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
-import org.uma.jmetal.algorithm.multiobjective.moead.MOEAD;
 import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
@@ -1429,10 +1427,10 @@ public class CLUMOEADD<S extends PartitionSolution> extends AbstractMOEAD<S> {
 
 
 	//brought here that function because it is not public on Abstract MOEAD
-	double fitnessFunction(S individual, double[] lambda) throws JMetalException {
+	public double fitnessFunction(S individual, double[] lambda) throws JMetalException {
 		double fitness;
 
-		if (MOEAD.FunctionType.TCHE.equals(functionType)) {
+		if (CLUMOEAD.FunctionType.TCHE.equals(functionType)) {
 			double maxFun = -1.0e+30;
 
 			for (int n = 0; n < problem.getNumberOfObjectives(); n++) {
@@ -1450,7 +1448,7 @@ public class CLUMOEADD<S extends PartitionSolution> extends AbstractMOEAD<S> {
 			}
 
 			fitness = maxFun;
-		} else if (MOEAD.FunctionType.AGG.equals(functionType)) {
+		} else if (CLUMOEAD.FunctionType.AGG.equals(functionType)) {
 			double sum = 0.0;
 			for (int n = 0; n < problem.getNumberOfObjectives(); n++) {
 				sum += (lambda[n]) * individual.getObjective(n);
@@ -1458,7 +1456,7 @@ public class CLUMOEADD<S extends PartitionSolution> extends AbstractMOEAD<S> {
 
 			fitness = sum;
 
-		} else if (MOEAD.FunctionType.PBI.equals(functionType)) {
+		} else if (CLUMOEAD.FunctionType.PBI.equals(functionType)) {
 			double d1, d2, nl;
 			double theta = 5.0;
 

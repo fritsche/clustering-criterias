@@ -36,11 +36,13 @@ public class ClusterProblem extends AbstractIntegerProblem {
     private final List<PartitionSolution> initialPopulation;
     private int nextSolution = 0;
     private int populationSize;
+    private String name;
 
     public ClusterProblem(boolean computeCentroids, Dataset dataset,
             List<ObjectiveFunction> objectiveFunctions) {
 
-        setName("ClusterProblem");
+        File file = new File(getClass().getClassLoader().getResource(dataset.getDatasetPath()).getFile());
+        setName(file.getName().substring(0,file.getName().length()-4));
         this.computeCentroids = computeCentroids;
         this.dataset = dataset;
         this.objectiveFunctions = objectiveFunctions;
@@ -84,4 +86,5 @@ public class ClusterProblem extends AbstractIntegerProblem {
         this.populationSize = populationSize;
     }
 
+    public void setProblemName(String name) {this.name = name;}
 }

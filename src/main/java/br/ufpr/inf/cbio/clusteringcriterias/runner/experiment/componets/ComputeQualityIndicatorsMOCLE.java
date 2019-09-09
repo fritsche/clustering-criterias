@@ -42,7 +42,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class ComputeQualityIndicatorsMOCLE<S extends Solution<?>, Result> implements ExperimentComponent {
+public class ComputeQualityIndicatorsMOCLE<S extends Solution<?>, Result extends List<S>> implements ExperimentComponent {
 	private final ExperimentMOCLE<S, Result> experiment;
 
 	public ComputeQualityIndicatorsMOCLE(ExperimentMOCLE<S, Result> experiment) {

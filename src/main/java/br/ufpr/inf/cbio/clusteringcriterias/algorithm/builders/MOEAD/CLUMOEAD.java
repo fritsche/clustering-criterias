@@ -1,8 +1,7 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
 
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
 import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
@@ -11,41 +10,29 @@ import org.uma.jmetal.problem.Problem;
 import java.util.ArrayList;
 import java.util.List;
 
-//import org.uma.jmetal.operator.impl.crossover.DifferentialEvolutionCrossover;
-
-/**
- * Class implementing the MOEA/D-DE algorithm described in :
- * Hui Li; Qingfu Zhang, "Multiobjective Optimization Problems With Complicated Pareto Sets,
- * MOEA/D and NSGA-II," Evolutionary Computation, IEEE Transactions on , vol.13, no.2, pp.284,302,
- * April 2009. doi: 10.1109/TEVC.2008.925798
- *
- * @author Antonio J. Nebro
- * @version 1.0
- */
-@SuppressWarnings("serial")
 public class CLUMOEAD extends AbstractMOEAD<PartitionSolution> {
-	protected HBGFCrossover hbgfCrossover;
+	protected HBGFCrossover hbgfCrossover ;
 
 	public CLUMOEAD(Problem<PartitionSolution> problem,
-				 int populationSize,
-				 int resultPopulationSize,
-				 int maxEvaluations,
-				 MutationOperator<PartitionSolution> mutation,
-				 CrossoverOperator<PartitionSolution> crossover,
-				 FunctionType functionType,
-				 String dataDirectory,
-				 double neighborhoodSelectionProbability,
-				 int maximumNumberOfReplacedSolutions,
-				 int neighborSize) {
+					int populationSize,
+					int resultPopulationSize,
+					int maxEvaluations,
+					MutationOperator<PartitionSolution> mutation,
+					CrossoverOperator<PartitionSolution> crossover,
+					FunctionType functionType,
+					String dataDirectory,
+					double neighborhoodSelectionProbability,
+					int maximumNumberOfReplacedSolutions,
+					int neighborSize) {
 		super(problem, populationSize, resultPopulationSize, maxEvaluations, crossover, mutation, functionType,
 				dataDirectory, neighborhoodSelectionProbability, maximumNumberOfReplacedSolutions,
 				neighborSize);
 
-		hbgfCrossover = (HBGFCrossover) crossoverOperator ;
+		hbgfCrossover = (HBGFCrossover) crossoverOperator;
 	}
 
 	@Override
-    public void run() {
+	public void run() {
 		initializePopulation() ;
 		initializeUniformWeight();
 		initializeNeighborhood();
@@ -62,10 +49,8 @@ public class CLUMOEAD extends AbstractMOEAD<PartitionSolution> {
 				NeighborType neighborType = chooseNeighborType() ;
 				List<PartitionSolution> parents = parentSelection(subProblemId, neighborType) ;
 
-//				System.out.println(parents);
-				parents.remove(0); //removido o ppopulation.get(subProblemId)
+				parents.remove(2);
 
-//				hbgfCrossover.setCurrentSolution(population.get(subProblemId)); //todo: verificar o que essa linha faz
 				List<PartitionSolution> children = hbgfCrossover.execute(parents);
 
 				PartitionSolution child = children.get(0) ;
@@ -81,23 +66,20 @@ public class CLUMOEAD extends AbstractMOEAD<PartitionSolution> {
 
 	}
 
-	protected void initializePopulation() {
-		population = new ArrayList<>(populationSize);
+	private void initializePopulation() {    population = new ArrayList<>(populationSize);
 		for (int i = 0; i < populationSize; i++) {
-			PartitionSolution newSolution = (PartitionSolution)problem.createSolution();
+			PartitionSolution newSolution = (PartitionSolution) problem.createSolution();
 
 			problem.evaluate(newSolution);
 			population.add(newSolution);
 		}
 	}
 
-	@Override
-    public String getName() {
+	@Override public String getName() {
 		return "MOEAD" ;
 	}
 
-	@Override
-    public String getDescription() {
+	@Override public String getDescription() {
 		return "Multi-Objective Evolutionary Algorithm based on Decomposition" ;
 	}
 }

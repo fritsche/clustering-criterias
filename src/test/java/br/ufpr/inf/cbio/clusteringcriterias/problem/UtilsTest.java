@@ -19,9 +19,13 @@ package br.ufpr.inf.cbio.clusteringcriterias.problem;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
@@ -152,5 +156,48 @@ public class UtilsTest {
         List<Integer> result = Utils.getNeighbors(di, i, k);
         assertEquals(expResult, result);
     }
+
+    @Test
+    public void testgenerateWeightVector() throws FileNotFoundException {
+        System.out.println("generateWeightVector");
+        double[][] expResult = new double[][]{
+                {1.0, 0.0},
+                {0.8888888888888888, 0.11111111111111116},
+                {0.7777777777777777, 0.22222222222222232},
+                {0.6666666666666665, 0.3333333333333335},
+                {0.5555555555555554, 0.44444444444444464},
+                {0.44444444444444425, 0.5555555555555558},
+                {0.33333333333333315, 0.6666666666666669},
+                {0.22222222222222204, 0.7777777777777779},
+                {0.11111111111111094, 0.8888888888888891},
+                {-1.6653345369377348E-16, 1.0000000000000002} };
+
+        Utils.generateWeightVector(10);
+
+        Scanner input = null;
+        try {
+            input = new Scanner(new FileInputStream("/home/kultzak/Documents/clustering-criterias/target/classes/weight_vectors/a.sld")); //todo: salvar e ler relativo
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File Not Found.");
+            System.exit(0);
+        }
+        int rows = 10;
+        int columns = 2;
+        double [][] result = new double[rows][columns];
+        input.nextLine();
+        while(input.hasNextLine()) {
+            for (int i=0; i<result.length; i++) {
+                String[] line = input.nextLine().trim().split(" ");
+                for (int j=0; j<line.length; j++) {
+                    result[i][j] = Double.parseDouble(line[j]);
+                }
+            }
+        }
+        System.out.println(Arrays.deepToString(result));
+
+        assertEquals(expResult, result);
+    }
+
 
 }

@@ -22,6 +22,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.util.JMetalException;
@@ -68,6 +69,7 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         int adjncy[] = new int[n * 2 * 2]; // n objects times 2 parents times 2 (each edge is represented twice, e.g. (a,b) and (b,a)).
         int xadj[] = new int[nvtxs + 1];
         int k = n, v, aj = n * 2, xj = n;
+
         PartitionSolution x = (PartitionSolution) a.copy(); // copy solutions
         for (int i = 0; i < n; i++) {
             v = x.getVariableValue(i);

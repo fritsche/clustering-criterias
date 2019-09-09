@@ -9,13 +9,13 @@
         <dependency>
             <groupId>org.uma.jmetal</groupId>
             <artifactId>jmetal</artifactId>
-            <version>5.6</version>
+            <version>5.7</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.uma.jmetal</groupId>
             <artifactId>jmetal-core</artifactId>
-            <version>5.6</version>
+            <version>5.7</version>
             <classifier>jar-with-dependencies</classifier>
         </dependency>
         <dependency>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.uma.jmetal</groupId>
             <artifactId>jmetal-algorithm</artifactId>
-            <version>5.6</version>
+            <version>5.7</version>
             <classifier>jar-with-dependencies</classifier>
         </dependency>
         <dependency>

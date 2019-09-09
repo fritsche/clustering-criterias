@@ -18,17 +18,18 @@ package br.ufpr.inf.cbio.clusteringcriterias.problem;
 
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import br.ufpr.inf.cbio.clusteringcriterias.runner.Runner;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import org.apache.commons.lang3.tuple.Pair;
+import org.uma.jmetal.algorithm.multiobjective.wasfga.util.WeightVectors;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.fileoutput.FileOutputContext;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
@@ -111,19 +112,23 @@ public class Utils {
 
         List<Pair<Double, Double>> list = new ArrayList<>();
         List<PartitionSolution> repeated = new ArrayList<>();
+        List<PartitionSolution> unique = new ArrayList<>();
         for (PartitionSolution s : population) {
             Pair<Double, Double> e = Pair.of(s.getObjective(0), s.getObjective(1));
             if(list.contains(e)){
                 repeated.add(s);
+            } else {
+                unique.add(s);
             }
             list.add(e);
         }
-        population.removeAll(repeated);
+        population.clear();
+        population.addAll(unique);
 
         return population;
     }
 
-    public static void computeAdjustedRand(int[] label,List<PartitionSolution> population,
+    public static void computeAdjustedRand(int[] label,List<PartitionSolution> population, //todo: teste do adjusted Rand
                                            FileOutputContext context) {
 
         BufferedWriter bufferedWriter = context.getFileWriter();
@@ -146,7 +151,32 @@ public class Utils {
         } catch (IOException e) {
             throw new JMetalException("Error writing data ", e) ;
         }
+    }
 
+    public static void generateWeightVector(Integer div_numb) throws FileNotFoundException {
+
+        double[][] weights = WeightVectors.initializeUniformlyInTwoDimensions(1, div_numb);
+
+//		weights = WeightVectors.invert(weights,true);
+
+        File file = new File(Runner.class.getClassLoader().getResource("weight_vectors/").getFile()+ "/a.sld");
+
+        System.out.println("Saving weight vetor at: "+file.getAbsolutePath());
+
+        PrintWriter writer = new PrintWriter(file.getAbsolutePath());
+
+        writer.write("# "+div_numb+" 2\n");
+
+        for (int i = 0; i < div_numb; i++){
+            for (int j = 0; j < 2; j++) {
+                writer.write(weights[i][j] +" ");
+            }
+            writer.write("\n");
+        }
+
+        writer.flush();
+        writer.close();
 
     }
+
 }

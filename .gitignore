@@ -294,3 +294,13 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,linux,macos,maven,cloud9,windows,eclipse,netbeans,intellij+all
+/FUN.tsv
+/ARI.tsv
+/VAR.tsv
+/experimentResults/
+/src/main/c/metis-5.1.0/
+/PISA/
+/experimentResults_V1/
+/ARI.py
+/src/main/resources/META-INF/
+/src/main/resources/META-INF/

@@ -7,6 +7,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalLogger;
+import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
@@ -19,7 +20,7 @@ import java.util.List;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class ExperimentAlgorithmMOCLE<S extends Solution<?>, Result>  {
+public class ExperimentAlgorithmMOCLE<S extends Solution<?>, Result extends List<S>>  {
 	private Algorithm<Result> algorithm;
 	private String algorithmTag;
 	private String problemTag;
@@ -91,7 +92,7 @@ public class ExperimentAlgorithmMOCLE<S extends Solution<?>, Result>  {
 //		JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
 
 
-		Result population = algorithm.getResult();
+		Result population = (Result) SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
 
 		Utils.removeRepeated((List<PartitionSolution>) population);
 
