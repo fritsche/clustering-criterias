@@ -3,6 +3,9 @@ language: java
 jdk:
   - openjdk8
 
+before_script:
+  - python -m pip install jep scikit-learn
+
 install: mvn -q package
 
 script: "mvn cobertura:cobertura"
