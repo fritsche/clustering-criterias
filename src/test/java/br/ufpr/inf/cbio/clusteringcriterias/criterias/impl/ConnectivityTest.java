@@ -67,13 +67,13 @@ public class ConnectivityTest {
         
         // four points dataset (point values don't matter on this test)
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
-        dataset.setDataPoints(new ArrayList<DataPoint>(4));
+        dataset.setDataPoints(new ArrayList<>(4));
         dataset.addDataPoint("a", new ArrayPoint());
         dataset.addDataPoint("b", new ArrayPoint());
         dataset.addDataPoint("c", new ArrayPoint());
         dataset.addDataPoint("d", new ArrayPoint());
         
-        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<ObjectiveFunction>());
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<>());
         
         IntegerSolution s = problem.createSolution();
         s.setVariableValue(0, 0);
