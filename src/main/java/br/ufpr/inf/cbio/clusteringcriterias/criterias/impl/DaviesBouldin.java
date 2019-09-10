@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
+import br.ufpr.inf.cbio.clusteringcriterias.criterias.JepUtils;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
@@ -39,7 +40,7 @@ public class DaviesBouldin implements ObjectiveFunction<IntegerSolution> {
     private final NDArray<double[]> featureArray;
 
     public DaviesBouldin(Dataset dataset) throws JepException {
-        MainInterpreter.setJepLibraryPath(this.getClass().getClassLoader().getResource("lib/jep.so").getFile());
+        JepUtils.initializePythonInterpreter();
         this.featureArray = datsetToFeatureArray(dataset);
     }
 

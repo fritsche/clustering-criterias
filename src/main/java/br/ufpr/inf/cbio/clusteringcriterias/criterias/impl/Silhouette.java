@@ -16,10 +16,10 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
+import br.ufpr.inf.cbio.clusteringcriterias.criterias.JepUtils;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +29,6 @@ import jep.MainInterpreter;
 import jep.NDArray;
 import jep.SharedInterpreter;
 import org.uma.jmetal.solution.IntegerSolution;
-import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.point.Point;
 
 /**
@@ -41,7 +40,7 @@ public class Silhouette implements ObjectiveFunction<IntegerSolution> {
     private final NDArray<double[]> featureArray;
 
     public Silhouette(Dataset dataset) throws JepException {
-        MainInterpreter.setJepLibraryPath(this.getClass().getClassLoader().getResource("lib/jep.so").getFile());
+        JepUtils.initializePythonInterpreter();
         this.featureArray = datsetToFeatureArray(dataset);
     }
 

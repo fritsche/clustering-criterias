@@ -19,10 +19,7 @@ package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
-import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import jep.JepException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,7 +29,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
-import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 
 /**
  *
