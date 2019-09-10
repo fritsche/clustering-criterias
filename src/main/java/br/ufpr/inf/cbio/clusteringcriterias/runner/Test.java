@@ -32,7 +32,7 @@ public class Test {
         MainInterpreter.setJepLibraryPath(Test.class.getClassLoader().getResource("lib/jep.so").getFile());
         try (Interpreter interp = new SharedInterpreter()) {
 
-            interp.exec("from sklearn.metrics import silhouette_score");
+            interp.exec("from sklearn.metrics import silhouette_score, davies_bouldin_score");
 
             double[] X = new double[]{
                 0.0, 0.0,
@@ -46,10 +46,12 @@ public class Test {
             NDArray<int[]> np_labels = new NDArray<>(labels, 4);
             interp.set("labels", np_labels);
 
-            interp.exec("silhouette = silhouette_score(X, labels)");
+            Double silhouette_score = interp.getValue("silhouette_score(X, labels)", Double.class);
+            Double davies_bouldin_score = interp.getValue("davies_bouldin_score(X, labels)", Double.class);
+
+            System.out.println(silhouette_score);
+            System.out.println(davies_bouldin_score);
             
-            Double silhouette = interp.getValue("silhouette", Double.class);
-            System.out.println(silhouette);
         }
     }
 }

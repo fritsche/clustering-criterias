@@ -13,5 +13,5 @@ python -m pip install jep
 **scikit-learn**
 
 ```bash
-python -m pip install sklearn
+python -m pip install scikit-learn
 ```
