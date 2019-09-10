@@ -4,7 +4,7 @@ jdk:
   - openjdk8
 
 install:
-  - python -m pip install jep scikit-learn
+  - python -m pip install jep scikit-learn --user
   - mvn -q package
 
 script: "mvn cobertura:cobertura"
