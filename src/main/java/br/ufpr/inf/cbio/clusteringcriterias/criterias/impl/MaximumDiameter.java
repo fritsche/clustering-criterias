@@ -43,7 +43,19 @@ public class MaximumDiameter implements ObjectiveFunction<IntegerSolution> {
 
     @Override
     public double evaluate(IntegerSolution s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int size = s.getNumberOfVariables() - 1;
+        double max = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                // i and j belong to the same cluster?
+                if (s.getVariableValue(i).equals(s.getVariableValue(j))) {
+                    if (max < distances.get(i).get(j)) {
+                        max = distances.get(i).get(j);
+                    }
+                }
+            }
+        }
+        return max;
     }
 
     private List<List<Double>> initDistances(Dataset dataset, PointDistance distance) {
