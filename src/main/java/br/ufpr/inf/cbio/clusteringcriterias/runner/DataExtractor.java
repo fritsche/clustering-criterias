@@ -43,13 +43,13 @@ public class DataExtractor {
     public static void main(String[] args) throws JepException {
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.D31.toString());
         List<ObjectiveFunction> functions = new ArrayList<>();
-        functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix())));
-        functions.add(new DaviesBouldin(dataset));
-        functions.add(new InvertedMinimumCentroidDistance(dataset));
-        functions.add(new MaximumDiameter(dataset));
+//        functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix())));
+//        functions.add(new DaviesBouldin(dataset));
+//        functions.add(new InvertedMinimumCentroidDistance(dataset));
+//        functions.add(new MaximumDiameter(dataset));
         functions.add(new MinimizationSeparation(dataset));
-        functions.add(new MinimizationSilhouette(dataset));
-        functions.add(new OverallDeviation(dataset));
+//        functions.add(new MinimizationSilhouette(dataset));
+//        functions.add(new OverallDeviation(dataset));
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         int popSize = problem.getPopulationSize();
         for (int i = 0; i < popSize; i++) {
