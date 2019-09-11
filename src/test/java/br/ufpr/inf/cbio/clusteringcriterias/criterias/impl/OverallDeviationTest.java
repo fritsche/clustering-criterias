@@ -29,7 +29,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
-import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 
 /**
  *
@@ -82,7 +81,7 @@ public class OverallDeviationTest {
         PartitionCentroids partitionCentroids = new PartitionCentroids();
         partitionCentroids.computeCentroids(s, dataset);
 
-        OverallDeviation instance = new OverallDeviation(dataset, new EuclideanDistance());
+        OverallDeviation instance = new OverallDeviation(dataset);
         double expResult = 4.0;
         double result = instance.evaluate(s);
         System.out.println("Evaluate Overall Deviation, expected: " + expResult + ", actual: " + result);

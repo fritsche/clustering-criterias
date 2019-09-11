@@ -18,6 +18,7 @@ package br.ufpr.inf.cbio.clusteringcriterias.dataset;
 
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.runner.Runner;
+import cern.colt.matrix.DoubleMatrix2D;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jep.NDArray;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.uma.jmetal.util.point.Point;
@@ -44,6 +46,8 @@ public class Dataset {
     private int[] truePartition;
     private String dataSetPath;
     private double maxDist = Double.NEGATIVE_INFINITY;
+    private DoubleMatrix2D distanceMatrix = null;
+    private NDArray<double[]> featureArray = null;
 
     public Dataset(String dataSetPath, String initialPartitionsPath, String truePartitionPath) {
         this(dataSetPath, initialPartitionsPath);
@@ -159,4 +163,27 @@ public class Dataset {
         }
         return maxDist;
     }
+
+    public DoubleMatrix2D getDistanceMatrix() {
+        if (distanceMatrix == null) {
+            distanceMatrix = Utils.computeDistanceMatrix(this, new EuclideanDistance());
+        }
+        return distanceMatrix;
+    }
+
+    public NDArray<double[]> getFeatureArray() {
+        if (featureArray == null) {
+            double[] array = new double[dataPoints.size() * dataPoints.get(0).getPoint().getDimension()];
+            int count = 0;
+            for (DataPoint dp : dataPoints) {
+                Point p = dp.getPoint();
+                for (int i = 0; i < p.getDimension(); i++) {
+                    array[count++] = p.getValue(i);
+                }
+            }
+            featureArray = new NDArray<>(array, dataPoints.size(), dataPoints.get(0).getPoint().getDimension());
+        }
+        return featureArray;
+    }
+
 }

@@ -73,7 +73,7 @@ public class UtilsTest {
         System.out.println("computeDistanceMatrix");
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
 
-        dataset.setDataPoints(new ArrayList<DataPoint>(3));
+        dataset.setDataPoints(new ArrayList<>(3));
         dataset.addDataPoint("a", new ArrayPoint(new double[]{0.0, 1.0}));
         dataset.addDataPoint("b", new ArrayPoint(new double[]{0.0, 2.0}));
         dataset.addDataPoint("c", new ArrayPoint(new double[]{0.0, 3.0}));

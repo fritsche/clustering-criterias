@@ -25,7 +25,6 @@ import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -40,7 +39,6 @@ import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
-import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -63,11 +61,9 @@ public class Runner {
         SelectionOperator<List<PartitionSolution>, PartitionSolution> selection;
 
         List<ObjectiveFunction> functions = new ArrayList<>();
-        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
+        functions.add(new OverallDeviation(dataset));
 
-        DoubleMatrix2D distanceMatrix = Utils.computeDistanceMatrix(dataset, new EuclideanDistance());
-
-        List<List<Integer>> neighborhood = Utils.computeNeighborhood(distanceMatrix);
+        List<List<Integer>> neighborhood = Utils.computeNeighborhood(dataset.getDistanceMatrix());
 
         functions.add(new Connectivity(neighborhood));
 
