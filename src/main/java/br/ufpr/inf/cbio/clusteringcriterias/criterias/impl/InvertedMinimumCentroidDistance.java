@@ -26,17 +26,15 @@ import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
 
 /**
- * Cluster Separation. Cluster separation Sep or intercluster distance [Ripon et
- * al. 2006a] is computed as the average distance among the cluster centers.
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class MinimizationSeparation implements ObjectiveFunction<IntegerSolution> {
+public class InvertedMinimumCentroidDistance implements ObjectiveFunction<IntegerSolution> {
 
     private final double maximumDistanceInDataset;
     private final PointDistance distanceMeasure;
 
-    public MinimizationSeparation(Dataset dataset) {
+    public InvertedMinimumCentroidDistance(Dataset dataset) {
         this.distanceMeasure = new EuclideanDistance();
         maximumDistanceInDataset = dataset.getMaximumDistanceInDataset();
     }
@@ -44,8 +42,7 @@ public class MinimizationSeparation implements ObjectiveFunction<IntegerSolution
     @Override
     public double evaluate(IntegerSolution s) {
         Map<Integer, Point> centroids = (new PartitionCentroids()).getAttribute(s);
-        int k = centroids.size();
-        double sum = 0.0;
+        double min = Double.POSITIVE_INFINITY;
         for (Map.Entry<Integer, Point> i : centroids.entrySet()) {
             int key_i = i.getKey();
             Point center_i = i.getValue();
@@ -53,15 +50,17 @@ public class MinimizationSeparation implements ObjectiveFunction<IntegerSolution
                 int key_j = j.getKey();
                 Point center_j = j.getValue();
                 if (key_i != key_j) {
-                    sum += distanceMeasure.compute(center_i, center_j);
+                    double dist = distanceMeasure.compute(center_i, center_j);
+                    if (min > dist) {
+                        min = dist;
+                    }
                 }
             }
         }
-        double separation = (2.0 / k * (k - 1)) * sum;
         // normalize
-        separation = separation / (maximumDistanceInDataset * 2.0);
+        min = min / maximumDistanceInDataset;
         // invert
-        separation = (1.0 - separation);
-        return separation;
+        min = (1.0 - min);
+        return min;
     }
 }

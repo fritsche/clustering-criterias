@@ -60,7 +60,7 @@ public class MinimizationSilhouette implements ObjectiveFunction<IntegerSolution
             // normalize
             result = (result + 1.0) / 2.0;
             // invert
-            result = (1 - result);
+            result = (1.0 - result);
         } catch (JepException ex) {
             Logger.getLogger(MinimizationSilhouette.class.getName()).log(Level.SEVERE, "Error to execute python script!", ex);
         }

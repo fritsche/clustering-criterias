@@ -30,6 +30,8 @@ import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.uma.jmetal.util.point.Point;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
+import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
+import org.uma.jmetal.util.point.util.distance.PointDistance;
 
 /**
  *
@@ -41,13 +43,14 @@ public class Dataset {
     private final String initialPartitionsPath;
     private int[] truePartition;
     private String dataSetPath;
+    private double maxDist = Double.NEGATIVE_INFINITY;
 
     public Dataset(String dataSetPath, String initialPartitionsPath, String truePartitionPath) {
         this(dataSetPath, initialPartitionsPath);
         this.truePartition = parseTruePartition(truePartitionPath);
     }
 
-    public Dataset(String dataSetPath, String initialPartitionsPath){
+    public Dataset(String dataSetPath, String initialPartitionsPath) {
         this.initialPartitionsPath = initialPartitionsPath;
         this.dataSetPath = dataSetPath;
         this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
@@ -116,7 +119,7 @@ public class Dataset {
         return files;
     }
 
-    public static int[] parseTruePartition(String truePartitionPath){
+    public static int[] parseTruePartition(String truePartitionPath) {
 
         File file = new File(Dataset.class.getClassLoader().getResource(truePartitionPath).getFile());
         TsvParserSettings settings = new TsvParserSettings();
@@ -133,9 +136,27 @@ public class Dataset {
         return label;
     }
 
-    public int[] getTruePartition() {return truePartition;}
+    public int[] getTruePartition() {
+        return truePartition;
+    }
 
-    public String getDatasetPath(){return dataSetPath;}
+    public String getDatasetPath() {
+        return dataSetPath;
+    }
 
-
+    public double getMaximumDistanceInDataset() {
+        if (maxDist == Double.NEGATIVE_INFINITY) {
+            PointDistance distance = new EuclideanDistance();
+            List<DataPoint> datapoints = this.getDataPoints();
+            for (int i = 0; i < datapoints.size(); i++) {
+                for (int j = 0; j < datapoints.size(); j++) {
+                    double dist = distance.compute(datapoints.get(i).getPoint(), datapoints.get(j).getPoint());
+                    if (maxDist < dist) {
+                        maxDist = dist;
+                    }
+                }
+            }
+        }
+        return maxDist;
+    }
 }

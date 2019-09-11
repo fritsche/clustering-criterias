@@ -29,7 +29,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
-import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 
 /**
  *
