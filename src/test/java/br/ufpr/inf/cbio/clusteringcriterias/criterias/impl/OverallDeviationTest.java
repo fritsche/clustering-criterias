@@ -86,7 +86,7 @@ public class OverallDeviationTest {
         double expResult = 4.0;
         double result = instance.evaluate(s);
         System.out.println("Evaluate Overall Deviation, expected: " + expResult + ", actual: " + result);
-        assertEquals(expResult, result, 0.0);
+        assertEquals(expResult, result, 10e-6);
     }
 
 }
