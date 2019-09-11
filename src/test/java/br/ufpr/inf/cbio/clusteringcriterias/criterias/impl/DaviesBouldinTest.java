@@ -87,4 +87,31 @@ public class DaviesBouldinTest {
         assertEquals(expResult, result, 10e-6);
     }
 
+    @Test
+    public void testBestValue() throws JepException {
+        System.out.println("evaluate");
+
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test1.toString());
+        dataset.setDataPoints(new ArrayList<>(4));
+        dataset.addDataPoint("a", new ArrayPoint(new double[]{0.0, 0.0}));
+        dataset.addDataPoint("b", new ArrayPoint(new double[]{0.0, 0.0}));
+        dataset.addDataPoint("c", new ArrayPoint(new double[]{1.0, 1.0}));
+        dataset.addDataPoint("d", new ArrayPoint(new double[]{1.0, 1.0}));
+
+        ClusterProblem problem = new ClusterProblem(false, dataset, new ArrayList<>());
+        IntegerSolution s = problem.createSolution();
+
+        s.setVariableValue(0, 0); // solution 'a' cluster 0
+        s.setVariableValue(1, 0); // solution 'b' cluster 0
+
+        s.setVariableValue(2, 1); // solution 'c' cluster 1
+        s.setVariableValue(3, 1); // solution 'd' cluster 1
+
+        DaviesBouldin instance = new DaviesBouldin(dataset);
+        double expResult = 0.0;
+        double result = instance.evaluate(s);
+        System.out.println("DaviesBouldin score expected: " + expResult + ", actual: " + result);
+        assertEquals(expResult, result, 10e-6);
+    }
+
 }

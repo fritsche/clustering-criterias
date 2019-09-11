@@ -25,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jep.Interpreter;
 import jep.JepException;
-import jep.MainInterpreter;
 import jep.NDArray;
 import jep.SharedInterpreter;
 import org.uma.jmetal.solution.IntegerSolution;
@@ -35,17 +34,18 @@ import org.uma.jmetal.util.point.Point;
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class Silhouette implements ObjectiveFunction<IntegerSolution> {
+public class MinimizationSilhouette implements ObjectiveFunction<IntegerSolution> {
 
     private final NDArray<double[]> featureArray;
 
-    public Silhouette(Dataset dataset) throws JepException {
+    public MinimizationSilhouette(Dataset dataset) throws JepException {
         JepUtils.initializePythonInterpreter();
         this.featureArray = datsetToFeatureArray(dataset);
     }
 
     @Override
     public double evaluate(IntegerSolution s) {
+        double result = Double.NaN;
         int[] array = new int[s.getNumberOfVariables() - 1];
         for (int i = 0; i < s.getNumberOfVariables() - 1; i++) {
             array[i] = s.getVariableValue(i);
@@ -56,11 +56,15 @@ public class Silhouette implements ObjectiveFunction<IntegerSolution> {
             interp.exec("from sklearn.metrics import silhouette_score");
             interp.set("X", featureArray);
             interp.set("labels", labels);
-            return (double) interp.getValue("silhouette_score(X, labels)");
+            result = (double) interp.getValue("silhouette_score(X, labels)");
+            // normalize
+            result = (result + 1.0) / 2.0;
+            // invert
+            result = (1 - result);
         } catch (JepException ex) {
-            Logger.getLogger(Silhouette.class.getName()).log(Level.SEVERE, "Error to execute python script!", ex);
+            Logger.getLogger(MinimizationSilhouette.class.getName()).log(Level.SEVERE, "Error to execute python script!", ex);
         }
-        return Double.NaN;
+        return result;
     }
 
     private NDArray<double[]> datsetToFeatureArray(Dataset dataset) {
