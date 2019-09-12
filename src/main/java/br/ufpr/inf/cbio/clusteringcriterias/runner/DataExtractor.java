@@ -31,7 +31,9 @@ import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import jep.JepException;
 
 /**
@@ -42,6 +44,8 @@ public class DataExtractor {
 
     public static void main(String[] args) throws JepException {
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.D31.toString());
+        int[] truePartition = dataset.getTruePartition();
+
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix())));
         functions.add(new DaviesBouldin(dataset));
@@ -50,13 +54,41 @@ public class DataExtractor {
         functions.add(new MinimizationSeparation(dataset));
         functions.add(new MinimizationSilhouette(dataset));
         functions.add(new OverallDeviation(dataset));
+
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
+        PartitionSolution trueSolution = problem.createSolution();
+        Set set = new HashSet<Integer>();
+        for (int i = 0; i < trueSolution.getNumberOfVariables() - 1; i++) {
+            trueSolution.setVariableValue(i, truePartition[i]);
+            set.add(truePartition[i]);
+        }
+        trueSolution.setVariableValue(trueSolution.getNumberOfVariables() - 1, set.size());
+        problem.evaluate(trueSolution);
+        double[] trueObjectives = trueSolution.getObjectives();
+        System.out.println(Arrays.toString(trueObjectives));
+
+        int[] trueSolutionIsBetter = new int[functions.size()];
+        int[] trueSolutionIsWorse = new int[functions.size()];
+        int[] trueSolutionIsEqual = new int[functions.size()];
+        int trueSolutionDominates = 0;
+        int trueSolutionIsDominated = 0;
+        int trueSolutionIsNonDominated = 0;
+
         int popSize = problem.getPopulationSize();
         for (int i = 0; i < popSize; i++) {
             PartitionSolution solution = problem.createSolution();
             problem.evaluate(solution);
             double[] objectives = solution.getObjectives();
             System.out.println(Arrays.toString(objectives));
+            int countWorse = 0;
+            int countBetter = 0;
+            int countEqual = 0;
+            for (int j = 0; j < objectives.length; j++) {
+                if (trueObjectives[j] < objectives[j]) {
+                    countBetter++;
+                    trueSolutionIsBetter[j]++;
+                }
+            }
         }
     }
 }
