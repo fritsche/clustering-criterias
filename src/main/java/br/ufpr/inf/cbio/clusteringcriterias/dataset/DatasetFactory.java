@@ -19,6 +19,8 @@ package br.ufpr.inf.cbio.clusteringcriterias.dataset;
 import java.util.ArrayList;
 import java.util.List;
 import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.util.point.Point;
+import org.uma.jmetal.util.point.impl.ArrayPoint;
 
 /**
  *
@@ -127,6 +129,42 @@ public class DatasetFactory {
         return new Dataset(base + "/dataset/" + dataset + ".txt",
                 base + "/partitions/KMWLSNNHDBSCAN/",
                 base + "/partitions/TP/" + dataset + "_TP.clu");
+    }
+
+    public Dataset getNormalizedDataset(String datasetName) {
+        Dataset dataset = getDataset(datasetName);
+        int dimension = dataset.getDimension();
+        Point max = new ArrayPoint(dimension);
+        Point min = new ArrayPoint(dimension);
+        for (int i = 0; i < dimension; i++) {
+            max.setValue(i, Double.NEGATIVE_INFINITY);
+            min.setValue(i, Double.POSITIVE_INFINITY);
+        }
+        List<DataPoint> dataPoints = dataset.getDataPoints();
+        for (DataPoint dp : dataPoints) {
+            Point point = dp.getPoint();
+            for (int i = 0; i < dimension; i++) {
+                double value = point.getValue(i);
+                if (value < min.getValue(i)) {
+                    min.setValue(i, value);
+                }
+                if (value > max.getValue(i)) {
+                    max.setValue(i, value);
+                }
+            }
+        }
+        for (DataPoint dp : dataPoints) {
+            Point point = dp.getPoint();
+            for (int i = 0; i < dimension; i++) {
+                double value = point.getValue(i);
+                double minvalue = min.getValue(i);
+                double maxvalue = max.getValue(i);
+                double diff = (maxvalue - minvalue);
+                value = (value - minvalue) / diff;
+                point.setValue(i, value);
+            }
+        }
+        return dataset;
     }
 
     private boolean datasetEquals(String dataset, List<DATASET> values) {

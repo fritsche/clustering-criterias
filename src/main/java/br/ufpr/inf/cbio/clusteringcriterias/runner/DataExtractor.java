@@ -44,8 +44,7 @@ public class DataExtractor {
 
     public static void dataExtractor(String datasetName, OutputWriter ow) throws JepException {
         System.out.println(datasetName);
-        Dataset dataset = DatasetFactory.getInstance().getDataset(datasetName);
-        int[] truePartition = dataset.getTruePartition();
+        Dataset dataset = DatasetFactory.getInstance().getNormalizedDataset(datasetName);
         
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix())));
@@ -59,6 +58,8 @@ public class DataExtractor {
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         PartitionSolution trueSolution = problem.createSolution();
         Set set = new HashSet<Integer>();
+
+        int[] truePartition = dataset.getTruePartition();
         for (int i = 0; i < trueSolution.getNumberOfVariables() - 1; i++) {
             trueSolution.setVariableValue(i, truePartition[i]);
             set.add(truePartition[i]);
@@ -153,7 +154,7 @@ public class DataExtractor {
         dataExtractor(DatasetFactory.DATASET.libras.toString(), ow);
         dataExtractor(DatasetFactory.DATASET.optdigits.toString(), ow);
         dataExtractor(DatasetFactory.DATASET.seeds.toString(), ow);
-        dataExtractor(DatasetFactory.DATASET.UKC1.toString(), ow);
+        // dataExtractor(DatasetFactory.DATASET.UKC1.toString(), ow);
         ow.close();
     }
 }
