@@ -29,8 +29,8 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
+import br.ufpr.inf.cbio.hhco.util.output.OutputWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,10 +42,11 @@ import jep.JepException;
  */
 public class DataExtractor {
 
-    public static void main(String[] args) throws JepException {
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.D31.toString());
+    public static void dataExtractor(String datasetName, OutputWriter ow) throws JepException {
+        System.out.println(datasetName);
+        Dataset dataset = DatasetFactory.getInstance().getDataset(datasetName);
         int[] truePartition = dataset.getTruePartition();
-
+        
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix())));
         functions.add(new DaviesBouldin(dataset));
@@ -54,7 +55,7 @@ public class DataExtractor {
         functions.add(new MinimizationSeparation(dataset));
         functions.add(new MinimizationSilhouette(dataset));
         functions.add(new OverallDeviation(dataset));
-
+        
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         PartitionSolution trueSolution = problem.createSolution();
         Set set = new HashSet<Integer>();
@@ -65,7 +66,6 @@ public class DataExtractor {
         trueSolution.setVariableValue(trueSolution.getNumberOfVariables() - 1, set.size());
         problem.evaluate(trueSolution);
         double[] trueObjectives = trueSolution.getObjectives();
-        System.out.println(Arrays.toString(trueObjectives));
 
         int[] trueSolutionIsBetter = new int[functions.size()];
         int[] trueSolutionIsWorse = new int[functions.size()];
@@ -79,16 +79,81 @@ public class DataExtractor {
             PartitionSolution solution = problem.createSolution();
             problem.evaluate(solution);
             double[] objectives = solution.getObjectives();
-            System.out.println(Arrays.toString(objectives));
             int countWorse = 0;
             int countBetter = 0;
-            int countEqual = 0;
             for (int j = 0; j < objectives.length; j++) {
                 if (trueObjectives[j] < objectives[j]) {
                     countBetter++;
                     trueSolutionIsBetter[j]++;
+                } else if (trueObjectives[j] > objectives[j]) {
+                    countWorse++;
+                    trueSolutionIsWorse[j]++;
+                } else {
+                    trueSolutionIsEqual[j]++;
                 }
             }
+            if (countWorse == 0) {
+                trueSolutionDominates++;
+            } else if (countBetter == 0) {
+                trueSolutionIsDominated++;
+            } else {
+                trueSolutionIsNonDominated++;
+            }
         }
+
+        String better = "";
+        better += datasetName + ", ";
+        better += "better, ";
+        for (int i = 0; i < trueObjectives.length; i++) {
+            better += trueSolutionIsBetter[i] + ", ";
+        }
+        better += "dominates, ";
+        better += trueSolutionDominates;
+        ow.writeLine(better);
+
+        String worse = "";
+        worse += datasetName + ", ";
+        worse += "worse, ";
+        for (int i = 0; i < trueObjectives.length; i++) {
+            worse += trueSolutionIsWorse[i] + ", ";
+        }
+        worse += "dominated, ";
+        worse += trueSolutionIsDominated;
+        ow.writeLine(worse);
+
+        String equal = "";
+        equal += datasetName + ", ";
+        equal += "equal, ";
+        for (int i = 0; i < trueObjectives.length; i++) {
+            equal += trueSolutionIsEqual[i] + ", ";
+        }
+        equal += "nondominated, ";
+        equal += trueSolutionIsNonDominated;
+        ow.writeLine(equal);
+
+    }
+
+    public static void main(String[] args) throws JepException {
+        OutputWriter ow = new OutputWriter("experiment/", "metricsanalysis.csv");
+        dataExtractor(DatasetFactory.DATASET.D31.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.ds2c2sc13_V1.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.ds2c2sc13_V2.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.ds2c2sc13_V3.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.ds3c3sc6_V1.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.ds3c3sc6_V2.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.spiralsquare.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.tevc_20_60_1.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.frogs_V1.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.frogs_V2.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.frogs_V3.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.golub_V1.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.golub_V3.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.leukemia_V1.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.leukemia_V2.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.libras.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.optdigits.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.seeds.toString(), ow);
+//        dataExtractor(DatasetFactory.DATASET.UKC1.toString(), ow);
+        ow.close();
     }
 }
