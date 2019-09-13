@@ -44,7 +44,7 @@ public class DataExtractor {
 
     public static void dataExtractor(String datasetName, OutputWriter ow) throws JepException {
         System.out.println(datasetName);
-        Dataset dataset = DatasetFactory.getInstance().getDataset(datasetName);
+        Dataset dataset = DatasetFactory.getInstance().getNormalizedDataset(datasetName);
         int[] truePartition = dataset.getTruePartition();
         
         List<ObjectiveFunction> functions = new ArrayList<>();
@@ -153,7 +153,7 @@ public class DataExtractor {
         dataExtractor(DatasetFactory.DATASET.libras.toString(), ow);
         dataExtractor(DatasetFactory.DATASET.optdigits.toString(), ow);
         dataExtractor(DatasetFactory.DATASET.seeds.toString(), ow);
-        dataExtractor(DatasetFactory.DATASET.UKC1.toString(), ow);
+        // dataExtractor(DatasetFactory.DATASET.UKC1.toString(), ow);
         ow.close();
     }
 }
