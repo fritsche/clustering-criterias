@@ -45,7 +45,6 @@ public class DataExtractor {
     public static void dataExtractor(String datasetName, OutputWriter ow) throws JepException {
         System.out.println(datasetName);
         Dataset dataset = DatasetFactory.getInstance().getNormalizedDataset(datasetName);
-        int[] truePartition = dataset.getTruePartition();
         
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix())));
@@ -59,6 +58,8 @@ public class DataExtractor {
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         PartitionSolution trueSolution = problem.createSolution();
         Set set = new HashSet<Integer>();
+
+        int[] truePartition = dataset.getTruePartition();
         for (int i = 0; i < trueSolution.getNumberOfVariables() - 1; i++) {
             trueSolution.setVariableValue(i, truePartition[i]);
             set.add(truePartition[i]);
