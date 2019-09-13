@@ -153,7 +153,7 @@ public class DataExtractor {
         dataExtractor(DatasetFactory.DATASET.libras.toString(), ow);
         dataExtractor(DatasetFactory.DATASET.optdigits.toString(), ow);
         dataExtractor(DatasetFactory.DATASET.seeds.toString(), ow);
-//        dataExtractor(DatasetFactory.DATASET.UKC1.toString(), ow);
+        dataExtractor(DatasetFactory.DATASET.UKC1.toString(), ow);
         ow.close();
     }
 }
