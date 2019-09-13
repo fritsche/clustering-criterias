@@ -1,7 +1,6 @@
 package br.ufpr.inf.cbio.clusteringcriterias.runner.experiment;
 
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUIBEABuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.AbstractMOEAD;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEAD;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEADBuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.HypE.HypEBuilder;
@@ -17,13 +16,10 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
-import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.ComputeQualityIndicatorsMOCLE;
 import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.ExecuteAlgorithmsMOCLE;
-import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.componets.GenerateFronts;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.moead.MOEAD;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -75,9 +71,8 @@ public class Experiment {
 //    referenceParetoFront = NSGAII.class.getClassLoader().getResource("pareto_fronts/ZDT1.pf").getFile();
 
     List<ObjectiveFunction> functions = new ArrayList<>();
-    functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
-    DoubleMatrix2D distanceMatrix = Utils.computeDistanceMatrix(dataset, new EuclideanDistance());
-    List<List<Integer>> neighborhood = Utils.computeNeighborhood(distanceMatrix);
+    functions.add(new OverallDeviation(dataset));
+    List<List<Integer>> neighborhood = Utils.computeNeighborhood(dataset.getDistanceMatrix());
     functions.add(new Connectivity(neighborhood));
 
     problem = new ClusterProblem(true, dataset, functions);

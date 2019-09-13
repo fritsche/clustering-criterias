@@ -57,7 +57,8 @@ public class DatasetFactory {
         test2,
         test3,
         test4,
-        test5
+        test5,
+        test3D,
     }
 
     private static DatasetFactory instance = null;
@@ -96,6 +97,7 @@ public class DatasetFactory {
         test.add(DATASET.test3);
         test.add(DATASET.test4);
         test.add(DATASET.test5);
+        test.add(DATASET.test3D);
     }
 
     public static DatasetFactory getInstance() {

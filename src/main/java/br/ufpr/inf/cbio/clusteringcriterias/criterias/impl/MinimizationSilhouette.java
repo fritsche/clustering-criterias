@@ -18,9 +18,7 @@ package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.JepUtils;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jep.Interpreter;
@@ -28,7 +26,6 @@ import jep.JepException;
 import jep.NDArray;
 import jep.SharedInterpreter;
 import org.uma.jmetal.solution.IntegerSolution;
-import org.uma.jmetal.util.point.Point;
 
 /**
  *
@@ -40,7 +37,7 @@ public class MinimizationSilhouette implements ObjectiveFunction<IntegerSolution
 
     public MinimizationSilhouette(Dataset dataset) throws JepException {
         JepUtils.initializePythonInterpreter();
-        this.featureArray = datsetToFeatureArray(dataset);
+        this.featureArray = dataset.getFeatureArray();
     }
 
     @Override
@@ -65,19 +62,6 @@ public class MinimizationSilhouette implements ObjectiveFunction<IntegerSolution
             Logger.getLogger(MinimizationSilhouette.class.getName()).log(Level.SEVERE, "Error to execute python script!", ex);
         }
         return result;
-    }
-
-    private NDArray<double[]> datsetToFeatureArray(Dataset dataset) {
-        List<DataPoint> dataPoints = dataset.getDataPoints();
-        double[] array = new double[dataPoints.size() * dataPoints.get(0).getPoint().getDimension()];
-        int count = 0;
-        for (DataPoint dp : dataPoints) {
-            Point p = dp.getPoint();
-            for (int i = 0; i < p.getDimension(); i++) {
-                array[count++] = p.getValue(i);
-            }
-        }
-        return new NDArray<>(array, dataPoints.size(), dataPoints.get(0).getPoint().getDimension());
     }
 
 }

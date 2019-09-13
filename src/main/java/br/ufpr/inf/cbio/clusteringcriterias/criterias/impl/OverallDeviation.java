@@ -22,6 +22,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.problem.PartitionCentroids;
 import java.util.Map;
 import org.uma.jmetal.solution.IntegerSolution;
 import org.uma.jmetal.util.point.Point;
+import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
 import org.uma.jmetal.util.point.util.distance.PointDistance;
 
 /**
@@ -38,9 +39,9 @@ public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
     private final Dataset dataset;
     private final PointDistance distance;
 
-    public OverallDeviation(Dataset dataset, PointDistance distance) {
+    public OverallDeviation(Dataset dataset) {
         this.dataset = dataset;
-        this.distance = distance;
+        this.distance = new EuclideanDistance();
     }
 
     /**

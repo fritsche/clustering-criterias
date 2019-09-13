@@ -20,7 +20,6 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
@@ -81,8 +80,8 @@ public class ClusterProblemTest {
         dataset.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
-        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
-        functions.add(new Connectivity(Utils.computeNeighborhood(Utils.computeDistanceMatrix(dataset, new EuclideanDistance()), 2)));
+        functions.add(new OverallDeviation(dataset));
+        functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix(), 2)));
 
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         IntegerSolution s = problem.createSolution();
@@ -108,7 +107,7 @@ public class ClusterProblemTest {
         JMetalRandom.getInstance().setRandomGenerator(new MockRandomNumberGenerator(new double[]{3}));
         Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.test5.toString());
         List<ObjectiveFunction> functions = new ArrayList<>();
-        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
+        functions.add(new OverallDeviation(dataset));
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         PartitionSolution x = (PartitionSolution) problem.createSolution();
         PartitionSolution y = (PartitionSolution) problem.createSolution();
@@ -137,7 +136,7 @@ public class ClusterProblemTest {
         dataset.addDataPoint("d", new ArrayPoint(new double[]{-1.0, -1.0}));
 
         List<ObjectiveFunction> functions = new ArrayList<>(1);
-        functions.add(new OverallDeviation(dataset, new EuclideanDistance()));
+        functions.add(new OverallDeviation(dataset));
 
         List<List<Integer>> neighborhood = new ArrayList<>(4);
         neighborhood.add(new ArrayList<>(Arrays.asList(1)));

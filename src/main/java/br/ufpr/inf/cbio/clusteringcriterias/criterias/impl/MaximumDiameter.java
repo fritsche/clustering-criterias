@@ -17,13 +17,9 @@
 package br.ufpr.inf.cbio.clusteringcriterias.criterias.impl;
 
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
-import java.util.ArrayList;
-import java.util.List;
+import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.solution.IntegerSolution;
-import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
-import org.uma.jmetal.util.point.util.distance.PointDistance;
 
 /**
  *
@@ -31,14 +27,10 @@ import org.uma.jmetal.util.point.util.distance.PointDistance;
  */
 public class MaximumDiameter implements ObjectiveFunction<IntegerSolution> {
 
-    List<List<Double>> distances;
+    private final DoubleMatrix2D distances;
 
     public MaximumDiameter(Dataset dataset) {
-        this(dataset, new EuclideanDistance());
-    }
-
-    public MaximumDiameter(Dataset dataset, PointDistance distance) {
-        distances = initDistances(dataset, distance);
+        distances = dataset.getDistanceMatrix();
     }
 
     @Override
@@ -49,25 +41,13 @@ public class MaximumDiameter implements ObjectiveFunction<IntegerSolution> {
             for (int j = 0; j < size; j++) {
                 // i and j belong to the same cluster?
                 if (s.getVariableValue(i).equals(s.getVariableValue(j))) {
-                    if (max < distances.get(i).get(j)) {
-                        max = distances.get(i).get(j);
+                    double d = distances.getQuick(i, j);
+                    if (max < d) {
+                        max = d;
                     }
                 }
             }
         }
         return max;
-    }
-
-    private List<List<Double>> initDistances(Dataset dataset, PointDistance distance) {
-        List<List<Double>> distanceMatrix = new ArrayList<>();
-        List<DataPoint> datapoints = dataset.getDataPoints();
-        for (int i = 0; i < datapoints.size(); i++) {
-            List<Double> row = new ArrayList<>();
-            for (int j = 0; j < datapoints.size(); j++) {
-                row.add(distance.compute(datapoints.get(i).getPoint(), datapoints.get(j).getPoint()));
-            }
-            distanceMatrix.add(row);
-        }
-        return distanceMatrix;
     }
 }

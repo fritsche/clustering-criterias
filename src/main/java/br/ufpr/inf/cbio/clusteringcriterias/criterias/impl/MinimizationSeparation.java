@@ -57,7 +57,7 @@ public class MinimizationSeparation implements ObjectiveFunction<IntegerSolution
                 }
             }
         }
-        double separation = (2.0 / k * (k - 1)) * sum;
+        double separation = (2.0 / (k * (k - 1))) * sum;
         // normalize
         separation = separation / (maximumDistanceInDataset * 2.0);
         // invert
