@@ -99,7 +99,7 @@ public class Experiment {
                     .setReferenceFrontDirectory(experimentBaseDirectory + "/Experiment0/referenceFronts")
                     .setIndicatorList(Arrays.asList(
                             new PISAHypervolume<>()))
-                    .setNumberOfCores(3)
+                    .setNumberOfCores(3) //todo: check concurrentHash
                     .setIndependentRuns(INDEPENDENT_RUNS)
                     .build();
 
