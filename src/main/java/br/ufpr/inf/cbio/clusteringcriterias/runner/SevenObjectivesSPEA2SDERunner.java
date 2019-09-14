@@ -38,7 +38,6 @@ import jep.JepException;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.operator.impl.crossover.TwoPointCrossover;
 import org.uma.jmetal.operator.impl.mutation.NullMutation;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
@@ -56,11 +55,11 @@ public class SevenObjectivesSPEA2SDERunner {
 
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix())));
-        functions.add(new DaviesBouldin(dataset));
-        functions.add(new InvertedMinimumCentroidDistance(dataset));
-        functions.add(new MaximumDiameter(dataset));
-        functions.add(new MinimizationSeparation(dataset));
+        // functions.add(new DaviesBouldin(dataset));
         functions.add(new MinimizationSilhouette(dataset));
+        functions.add(new InvertedMinimumCentroidDistance(dataset));
+        // functions.add(new MinimizationSeparation(dataset));
+        // functions.add(new MaximumDiameter(dataset));
         functions.add(new OverallDeviation(dataset));
         Problem problem = new ClusterProblem(true, dataset, functions);
 
@@ -90,13 +89,26 @@ public class SevenObjectivesSPEA2SDERunner {
         }
 
         int countnew = 0;
-        for (int i = 0; i < result.size(); i++) {
-            PartitionSolution ps = result.get(i);
-            if (!initial.contains(ps)) {
+        for (PartitionSolution pres : result) {
+            boolean contains = false;
+            for (PartitionSolution pini : initial) {
+                boolean equals = true;
+                for (int i = 0; i < pini.getNumberOfObjectives(); i++) {
+                    if (pres.getObjective(i) != pini.getObjective(i)) {
+                        equals = false;
+                        break;
+                    }
+                }
+                if (equals) {
+                    contains = true;
+                    break;
+                }
+            }
+            if (!contains) {
                 countnew++;
             }
         }
-        System.out.println(countnew + " newly generated solutions. [" + crossover.getClass().getSimpleName() + "]");
+        System.out.println(countnew + " newly generated solutions. [" + functions.size() + " objectives]");
     }
 
     public static void main(String[] args) throws JepException {

@@ -48,12 +48,12 @@ public class DataExtractor {
         
         List<ObjectiveFunction> functions = new ArrayList<>();
         functions.add(new Connectivity(Utils.computeNeighborhood(dataset.getDistanceMatrix())));
-        functions.add(new DaviesBouldin(dataset));
-        functions.add(new InvertedMinimumCentroidDistance(dataset));
-        functions.add(new MaximumDiameter(dataset));
-        functions.add(new MinimizationSeparation(dataset));
+        // functions.add(new DaviesBouldin(dataset));
         functions.add(new MinimizationSilhouette(dataset));
-        functions.add(new OverallDeviation(dataset));
+        functions.add(new InvertedMinimumCentroidDistance(dataset));
+        // functions.add(new MinimizationSeparation(dataset));
+        functions.add(new MaximumDiameter(dataset));
+        // functions.add(new OverallDeviation(dataset));
         
         ClusterProblem problem = new ClusterProblem(true, dataset, functions);
         PartitionSolution trueSolution = problem.createSolution();
