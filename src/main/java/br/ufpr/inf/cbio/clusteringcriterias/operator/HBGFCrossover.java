@@ -40,9 +40,11 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
     }
     private Partition partition;
     private final int numberOfRequiredParents;
+    private final int kmax;
 
-    public HBGFCrossover() {
+    public HBGFCrossover(Integer kmax) {
         this.numberOfRequiredParents = 2;
+        this.kmax = kmax;
     }
 
     public Partition getPartition() {
@@ -110,7 +112,9 @@ public class HBGFCrossover implements CrossoverOperator<PartitionSolution> {
         int nvtxs = gcsr.getNumberOfVertices(); // number of vertices
         int min = Math.min(a.getVariableValue(a.getNumberOfVariables() - 1), b.getVariableValue(b.getNumberOfVariables() - 1));
         int max = Math.max(a.getVariableValue(a.getNumberOfVariables() - 1), b.getVariableValue(b.getNumberOfVariables() - 1));
-        int k = JMetalRandom.getInstance().nextInt(min, max);
+//        int k = JMetalRandom.getInstance().nextInt(min, max);
+
+        int k = JMetalRandom.getInstance().nextInt(2, kmax); //teste com numero diferente de min max
         int part[] = new int[nvtxs];
 
         getPartition().partition(nvtxs, gcsr.getAdjacencyIndexes(), gcsr.getAdacencies(), k, part);

@@ -16,14 +16,19 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.runner;
 
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUIBEABuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEAD;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEADBuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
+import br.ufpr.inf.cbio.clusteringcriterias.operator.ClusterRandomMutation;
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
+import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.ExperimentAlgorithmMOCLE;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.uma.jmetal.algorithm.Algorithm;
@@ -73,25 +78,35 @@ public class Runner {
 
         problem = new ClusterProblem(true, dataset, functions);
 
-        crossover = new HBGFCrossover();
+        crossover = new HBGFCrossover(20);
 
-        mutation = new NullMutation<>();
+        mutation = new ClusterRandomMutation(0.1);
 
         selection = new BinaryTournamentSelection<>(
                 new RankingAndCrowdingDistanceComparator<>());
 
         int popSize = ((ClusterProblem) problem).getPopulationSize();
-        int maxFitnessEvaluations = popSize * 51;
+        int maxFitnessEvaluations = popSize * 2;
         System.out.println(popSize);
 
         //gera os vetores de peso para utilizar quando necessário
         Utils.generateWeightVector(popSize + (popSize % 2)); //todo: gerar os vetores de peso necessarios para os demais algoritmos
 
 
-        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem,crossover,mutation,popSize + (popSize % 2))
-                .setSelectionOperator(selection)
-                .setMaxEvaluations(maxFitnessEvaluations)
-                .build();
+//        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem,crossover,mutation,popSize + (popSize % 2))
+//                .setSelectionOperator(selection)
+//                .setOffspringPopulationSize(((popSize + (popSize % 2))/2))
+//                .setMaxEvaluations(maxFitnessEvaluations)
+//                .build();
+
+
+            Algorithm<List<PartitionSolution>> algorithm = new CLUIBEABuilder(problem)
+                    .setMaxEvaluations(maxFitnessEvaluations)
+                    .setMutation(mutation)
+                    .setPopulationSize(popSize + (popSize % 2))
+                    .setSelection(selection)
+                    .build();
+
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
                 .execute();
