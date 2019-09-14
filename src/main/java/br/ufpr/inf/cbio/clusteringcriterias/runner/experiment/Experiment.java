@@ -119,7 +119,8 @@ public class Experiment {
     CrossoverOperator<PartitionSolution> crossover;
     MutationOperator<PartitionSolution> mutation;
 
-    crossover = new HBGFCrossover(20);
+//    crossover = new HBGFCrossover(20);
+    crossover = new HBGFCrossover();
 //    mutation = new ClusterRandomMutation(0.5);
     mutation = new NullMutation<>();
     SelectionOperator<List<PartitionSolution>, PartitionSolution> selection;
@@ -134,19 +135,19 @@ public class Experiment {
 
 
 
-//      for (int i = 0; i < problemList.size(); i++){
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxIterations = 51;
-//
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new CLUMOMBI2<>(problem,maxIterations,crossover,mutation,selection, new SequentialSolutionListEvaluator<>(),
-//                "weight_vectors/a.sld");
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOMBI2",problemList.get(i), dataset, run));
-//
-//      }
-//
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxIterations = 51;
+
+
+        Algorithm<List<PartitionSolution>> algorithm = new CLUMOMBI2<>(problem,maxIterations,crossover,mutation,selection, new SequentialSolutionListEvaluator<>(),
+                "weight_vectors/a.sld");
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOMBI2",problemList.get(i), dataset, run));
+
+      }
+
        for (int i = 0; i < problemList.size(); i++) {
 
         Problem problem = problemList.get(i).getProblem();
@@ -179,67 +180,67 @@ public class Experiment {
 
       }
 
-//      for (int i = 0; i < problemList.size(); i++){
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxEvaluations = popSize * 51;
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new CLUNSGAIIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation)
-//                .setSelection(selection)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .setMaxEvaluations(maxEvaluations)
-//                .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"NSGAIII",problemList.get(i), dataset, run));
-//
-//      }
-//
-//
-//      for (int i = 0; i < problemList.size(); i++){
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new ThetaDEABuilder<>(problem)
-//                .setCrossover(crossover)
-//                .setMutation(mutation)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .setMaxGenerations(51)
-//                .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"ThetaDEA",problemList.get(i),dataset,run));
-//      }
-//
-//      for (int i = 0; i < problemList.size(); i++) {
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new SPEA2Builder<>(problemList.get(i).getProblem(),crossover,mutation)
-//                .setSelectionOperator(selection)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .setMaxIterations(51)
-//                .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"SPEA2",problemList.get(i),dataset,run));
-//      }
-//
-//
-//
-//      for (int i = 0; i < problemList.size(); i++){
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxIterations = 51;
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new CLUSPEA2SDEBuilder<>(problemList.get(i).getProblem())
-//                .setCrossoverOperator(crossover)
-//                .setMutationOperator(mutation)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .setMaxIterations(maxIterations)
-//                .setSelectionOperator(selection)
-//                .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"SPEA2SDE",problemList.get(i),dataset,run));
-//      }
-//
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxEvaluations = popSize * 51;
+
+        Algorithm<List<PartitionSolution>> algorithm = new CLUNSGAIIIBuilder<>(problemList.get(i).getProblem(), crossover, mutation)
+                .setSelection(selection)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setMaxEvaluations(maxEvaluations)
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"NSGAIII",problemList.get(i), dataset, run));
+
+      }
+
+
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+
+        Algorithm<List<PartitionSolution>> algorithm = new ThetaDEABuilder<>(problem)
+                .setCrossover(crossover)
+                .setMutation(mutation)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setMaxGenerations(51)
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"ThetaDEA",problemList.get(i),dataset,run));
+      }
+
+      for (int i = 0; i < problemList.size(); i++) {
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+
+        Algorithm<List<PartitionSolution>> algorithm = new SPEA2Builder<>(problemList.get(i).getProblem(),crossover,mutation)
+                .setSelectionOperator(selection)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setMaxIterations(51)
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"SPEA2",problemList.get(i),dataset,run));
+      }
+
+
+
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxIterations = 51;
+
+        Algorithm<List<PartitionSolution>> algorithm = new CLUSPEA2SDEBuilder<>(problemList.get(i).getProblem())
+                .setCrossoverOperator(crossover)
+                .setMutationOperator(mutation)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setMaxIterations(maxIterations)
+                .setSelectionOperator(selection)
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"SPEA2SDE",problemList.get(i),dataset,run));
+      }
+
       for (int i = 0; i < problemList.size(); i++) {
 
         Problem problem = problemList.get(i).getProblem();
@@ -253,66 +254,66 @@ public class Experiment {
                 .build();
         algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm, "IBEA", problemList.get(i),dataset,run));
       }
-//
-//      for (int i = 0; i < problemList.size(); i++){
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxFitnessEvaluations = popSize * 51;
-//
-//                Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEADSTM)
-//                        .setPopulationSize(popSize + (popSize % 2))
-//                        .setMaxEvaluations(maxFitnessEvaluations)
-//                        .setCrossover(crossover)
-//                        .setMutation(mutation)
-//                        .setNeighborSize(2)
-//                        .setFunctionType(CLUMOEAD.FunctionType.AGG)
-//                        .setMaximumNumberOfReplacedSolutions(1)
-//                        .setNeighborhoodSelectionProbability(1)
-//                        .setResultPopulationSize(popSize + (popSize % 2))
-//                        .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEADSTM",problemList.get(i),dataset,run));
-//
-//      }
-//
-//      for (int i = 0; i < problemList.size(); i++){
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxFitnessEvaluations = popSize * 51;
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEAD)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .setMaxEvaluations(maxFitnessEvaluations)
-//                .setCrossover(crossover)
-//                .setMutation(mutation)
-//                .setNeighborSize(2)
-//                .setFunctionType(CLUMOEAD.FunctionType.AGG)
-//                .setMaximumNumberOfReplacedSolutions(1)
-//                .setNeighborhoodSelectionProbability(1)
-//                .setResultPopulationSize(popSize + (popSize % 2))
-//                .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEAD",problemList.get(i),dataset,run));
-//
-//      }
-//
-//      for (int i = 0; i < problemList.size(); i++){
-//
-//        Problem problem = problemList.get(i).getProblem();
-//        int popSize = ((ClusterProblem) problem).getPopulationSize();
-//        int maxFitnessEvaluations = popSize * 51;
-//
-//        Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEADD)
-//                .setPopulationSize(popSize + (popSize % 2))
-//                .setMaxEvaluations(maxFitnessEvaluations)
-//                .setCrossover(crossover)
-//                .setMutation(mutation)
-//                .setNeighborSize(Math.toIntExact(Math.round((popSize * 0.2))))
-//                .setResultPopulationSize(popSize + (popSize % 2))
-//                .build();
-//        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEADD",problemList.get(i),dataset,run));
-//
-//      }
+
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxFitnessEvaluations = popSize * 51;
+
+                Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEADSTM)
+                        .setPopulationSize(popSize + (popSize % 2))
+                        .setMaxEvaluations(maxFitnessEvaluations)
+                        .setCrossover(crossover)
+                        .setMutation(mutation)
+                        .setNeighborSize(2)
+                        .setFunctionType(CLUMOEAD.FunctionType.AGG)
+                        .setMaximumNumberOfReplacedSolutions(1)
+                        .setNeighborhoodSelectionProbability(1)
+                        .setResultPopulationSize(popSize + (popSize % 2))
+                        .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEADSTM",problemList.get(i),dataset,run));
+
+      }
+
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxFitnessEvaluations = popSize * 51;
+
+        Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEAD)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setMaxEvaluations(maxFitnessEvaluations)
+                .setCrossover(crossover)
+                .setMutation(mutation)
+                .setNeighborSize(2)
+                .setFunctionType(CLUMOEAD.FunctionType.AGG)
+                .setMaximumNumberOfReplacedSolutions(1)
+                .setNeighborhoodSelectionProbability(1)
+                .setResultPopulationSize(popSize + (popSize % 2))
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEAD",problemList.get(i),dataset,run));
+
+      }
+
+      for (int i = 0; i < problemList.size(); i++){
+
+        Problem problem = problemList.get(i).getProblem();
+        int popSize = ((ClusterProblem) problem).getPopulationSize();
+        int maxFitnessEvaluations = popSize * 51;
+
+        Algorithm<List<PartitionSolution>> algorithm = new CLUMOEADBuilder(problem, CLUMOEADBuilder.Variant.MOEADD)
+                .setPopulationSize(popSize + (popSize % 2))
+                .setMaxEvaluations(maxFitnessEvaluations)
+                .setCrossover(crossover)
+                .setMutation(mutation)
+                .setNeighborSize(Math.toIntExact(Math.round((popSize * 0.2))))
+                .setResultPopulationSize(popSize + (popSize % 2))
+                .build();
+        algorithms.add(new ExperimentAlgorithmMOCLE<>(algorithm,"MOEADD",problemList.get(i),dataset,run));
+
+      }
 
     }
 
@@ -325,7 +326,7 @@ public class Experiment {
     }
 
 //    (new Experiment()).execute("D31", args[0]);
-    (new Experiment()).execute("ds2c2sc13_V1", args[0]);
+//    (new Experiment()).execute("ds2c2sc13_V1", args[0]);
 //    (new Experiment()).execute("ds2c2sc13_V2", args[0]);
 //    (new Experiment()).execute("ds2c2sc13_V3", args[0]);
 //    (new Experiment()).execute("ds3c3sc6_V1", args[0]);
