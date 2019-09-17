@@ -17,12 +17,10 @@
 package br.ufpr.inf.cbio.clusteringcriterias.solution;
 
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPoint;
-import br.ufpr.inf.cbio.clusteringcriterias.dataset.DataPointComparator;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
