@@ -20,6 +20,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.uma.jmetal.problem.impl.AbstractIntegerProblem;
@@ -41,8 +42,7 @@ public class ClusterProblem extends AbstractIntegerProblem {
     public ClusterProblem(boolean computeCentroids, Dataset dataset,
             List<ObjectiveFunction> objectiveFunctions) {
 
-        File file = new File(getClass().getClassLoader().getResource(dataset.getDatasetPath()).getFile());
-        setName(file.getName().substring(0,file.getName().length()-4));
+        setName(dataset.getDatasetPath().substring(0, dataset.getDatasetPath().length() - 4));
         this.computeCentroids = computeCentroids;
         this.dataset = dataset;
         this.objectiveFunctions = objectiveFunctions;
@@ -69,9 +69,9 @@ public class ClusterProblem extends AbstractIntegerProblem {
         }
     }
 
-    private List<PartitionSolution> parseInitialPopulation(List<File> initialPartitions) {
+    private List<PartitionSolution> parseInitialPopulation(List<InputStream> initialPartitions) {
         List<PartitionSolution> population = new ArrayList<>(initialPartitions.size());
-        for (File file : initialPartitions) {
+        for (InputStream file : initialPartitions) {
             population.add(new PartitionSolution(this, file, dataset));
         }
         return population;
@@ -85,5 +85,13 @@ public class ClusterProblem extends AbstractIntegerProblem {
         this.populationSize = populationSize;
     }
 
-    public void setProblemName(String name) {this.name = name;}
+    public void setProblemName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
 }

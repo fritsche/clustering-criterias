@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.MOEAD;
 
 
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;

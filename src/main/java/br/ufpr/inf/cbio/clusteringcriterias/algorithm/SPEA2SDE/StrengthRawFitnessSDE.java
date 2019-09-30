@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.SPEA2SDE;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.SPEA2SDE;
 
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.DominanceComparator;

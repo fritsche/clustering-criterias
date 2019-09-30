@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.thetaDEA;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.thetaDEA;
 
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;

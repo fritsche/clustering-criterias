@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.MOEAD;
 
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;

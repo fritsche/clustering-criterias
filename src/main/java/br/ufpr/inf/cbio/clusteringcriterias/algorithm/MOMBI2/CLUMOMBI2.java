@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOMBI2;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.MOMBI2;
 
 
 import org.uma.jmetal.algorithm.multiobjective.mombi.util.*;

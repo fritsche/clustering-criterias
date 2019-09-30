@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.NSGAIII;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.NSGAIII;
 
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 

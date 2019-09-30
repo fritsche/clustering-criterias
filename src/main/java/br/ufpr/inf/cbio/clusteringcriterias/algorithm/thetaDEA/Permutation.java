@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.thetaDEA;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.thetaDEA;
 
 /*
  * Copyright (C) 2018 Gian Fritsche <gmfritsche@inf.ufpr.br>

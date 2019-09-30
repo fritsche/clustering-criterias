@@ -21,8 +21,11 @@ import br.ufpr.inf.cbio.clusteringcriterias.runner.Runner;
 import cern.colt.matrix.DoubleMatrix2D;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -57,10 +60,10 @@ public class Dataset {
     public Dataset(String dataSetPath, String initialPartitionsPath) {
         this.initialPartitionsPath = initialPartitionsPath;
         this.dataSetPath = dataSetPath;
-        this.dataPoints = parseFile(new File(getClass().getClassLoader().getResource(dataSetPath).getFile()));
+        this.dataPoints = parseFile(ClassLoader.getSystemResourceAsStream(dataSetPath));
     }
 
-    public static List<DataPoint> parseFile(File file) {
+    public static List<DataPoint> parseFile(InputStream file) {
         List<DataPoint> dps = new ArrayList<>();
         TsvParserSettings settings = new TsvParserSettings();
         settings.setMaxColumns(3600);
@@ -109,23 +112,37 @@ public class Dataset {
         return string;
     }
 
-    public List<File> getInitialPartitionFiles() {
-        List<File> files = new ArrayList<>();
+    private ClassLoader getContextClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    private InputStream getResourceAsStream(String resource) {
+        final InputStream in
+                = getContextClassLoader().getResourceAsStream(resource);
+
+        return in == null ? getClass().getResourceAsStream(resource) : in;
+    }
+
+    public List<InputStream> getInitialPartitionFiles() {
+        List<InputStream> files = new ArrayList<>();
         List<String> paths = new ArrayList<>();
         try {
-            paths = IOUtils.readLines(Utils.class.getClassLoader().getResourceAsStream(initialPartitionsPath), Charsets.UTF_8);
+            InputStream input = ClassLoader.getSystemResourceAsStream(initialPartitionsPath);
+            System.out.println("input: " + input);
+            paths = IOUtils.readLines(input);
         } catch (IOException ex) {
             Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, "Error reading [" + initialPartitionsPath + "] folder.", ex);
         }
+        System.out.println("paths: " + paths);
         for (String file : paths) {
-            files.add(new File(Utils.class.getClassLoader().getResource(initialPartitionsPath + File.separator + file).getFile()));
+            files.add(ClassLoader.getSystemResourceAsStream(initialPartitionsPath + File.separator + file));
         }
         return files;
     }
 
     public static int[] parseTruePartition(String truePartitionPath) {
 
-        File file = new File(Dataset.class.getClassLoader().getResource(truePartitionPath).getFile());
+        InputStream file = Dataset.class.getClassLoader().getResourceAsStream(truePartitionPath);
         TsvParserSettings settings = new TsvParserSettings();
         TsvParser parser = new TsvParser(settings);
         List<String[]> rows = parser.parseAll(file);

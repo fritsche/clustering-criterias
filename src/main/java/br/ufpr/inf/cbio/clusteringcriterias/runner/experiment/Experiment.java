@@ -1,13 +1,13 @@
 package br.ufpr.inf.cbio.clusteringcriterias.runner.experiment;
 
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUIBEABuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEAD;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEADBuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.HypE.HypEBuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOMBI2.CLUMOMBI2;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.NSGAIII.CLUNSGAIIIBuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.SPEA2SDE.CLUSPEA2SDEBuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.thetaDEA.ThetaDEABuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.CLUIBEABuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.MOEAD.CLUMOEAD;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.MOEAD.CLUMOEADBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.HypE.HypEBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.MOMBI2.CLUMOMBI2;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.NSGAIII.CLUNSGAIIIBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.SPEA2SDE.CLUSPEA2SDEBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.thetaDEA.ThetaDEABuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;

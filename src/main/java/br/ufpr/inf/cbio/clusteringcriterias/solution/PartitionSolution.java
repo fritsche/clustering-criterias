@@ -21,6 +21,7 @@ import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ import org.uma.jmetal.solution.impl.AbstractGenericSolution;
  */
 public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerProblem> implements IntegerSolution {
 
-    public PartitionSolution(IntegerProblem problem, File file, Dataset dataset) {
+    public PartitionSolution(IntegerProblem problem, InputStream file, Dataset dataset) {
         super(problem);
         initializeIntegerVariables(file, dataset);
         initializeObjectiveValues();
@@ -80,7 +81,7 @@ public class PartitionSolution extends AbstractGenericSolution<Integer, IntegerP
         return getVariableValue(index).toString();
     }
 
-    private void initializeIntegerVariables(File file, Dataset dataset) {
+    private void initializeIntegerVariables(InputStream file, Dataset dataset) {
 
         TsvParserSettings settings = new TsvParserSettings();
         TsvParser parser = new TsvParser(settings);

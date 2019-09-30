@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.SPEA2SDE;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.SPEA2SDE;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.uma.jmetal.operator.SelectionOperator;

@@ -31,7 +31,6 @@ import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
-import static br.ufpr.inf.cbio.hhco.runner.Main.help;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -248,7 +247,7 @@ public class Main {
         selection = new BinaryTournamentSelection<>();
         int popSize = ((ClusterProblem) problem).getPopulationSize();
         int iterations = 51;
-        
+
         if (algorithmName.equals("SPEA2SDE")) {
             return new SPEA2SDEConfiguration().configure(problem, crossover, mutation, popSize, selection, iterations);
         } else {

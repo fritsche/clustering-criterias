@@ -16,8 +16,8 @@
  */
 package br.ufpr.inf.cbio.clusteringcriterias.runner;
 
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.SPEA2SDE.CLUSPEA2SDEBuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.SPEA2SDE.SPEA2SDE;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.SPEA2SDE.CLUSPEA2SDEBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.SPEA2SDE.SPEA2SDE;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.DaviesBouldin;

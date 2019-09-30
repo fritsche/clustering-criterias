@@ -17,8 +17,6 @@
 package br.ufpr.inf.cbio.clusteringcriterias.algorithm.SPEA2SDE;
 
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.ClusteringAlgorithmConfiguration;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.SPEA2SDE.CLUSPEA2SDEBuilder;
-import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.SPEA2SDE.SPEA2SDE;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;

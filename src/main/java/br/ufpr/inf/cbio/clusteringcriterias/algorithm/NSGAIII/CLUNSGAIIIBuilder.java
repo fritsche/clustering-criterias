@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.NSGAIII;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.NSGAIII;
 
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;

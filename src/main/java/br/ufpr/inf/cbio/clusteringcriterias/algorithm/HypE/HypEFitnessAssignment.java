@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.HypE;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.HypE;
 
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.Fitness;

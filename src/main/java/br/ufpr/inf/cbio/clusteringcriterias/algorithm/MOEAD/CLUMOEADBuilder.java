@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
+package br.ufpr.inf.cbio.clusteringcriterias.algorithm.MOEAD;
 
 import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
@@ -174,7 +174,7 @@ public class CLUMOEADBuilder implements AlgorithmBuilder<AbstractMOEAD<Partition
 			algorithm = new CLUMOEAD(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
 					crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
 					maximumNumberOfReplacedSolutions, neighborSize);
-		}else if (moeadVariant.equals(br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEADBuilder.Variant.MOEADSTM)) {
+		}else if (moeadVariant.equals(br.ufpr.inf.cbio.clusteringcriterias.algorithm.MOEAD.CLUMOEADBuilder.Variant.MOEADSTM)) {
 			algorithm =  new CLUMOEADSTM(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
 					crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
 					maximumNumberOfReplacedSolutions, neighborSize);
