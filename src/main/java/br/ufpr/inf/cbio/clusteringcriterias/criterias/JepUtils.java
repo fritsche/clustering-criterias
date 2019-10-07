@@ -33,4 +33,10 @@ public class JepUtils {
             MainInterpreter.setJepLibraryPath(JepUtils.class.getClassLoader().getResource("lib/jep.so").getFile());
         }
     }
+    public static void initializePython3Interpreter() throws JepException {
+        if (!initialized) {
+            initialized = true;
+            MainInterpreter.setJepLibraryPath(JepUtils.class.getClassLoader().getResource("lib/libjep.so").getFile());
+        }
+    }
 }
