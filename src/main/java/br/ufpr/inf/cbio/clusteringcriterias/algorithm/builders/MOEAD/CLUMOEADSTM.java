@@ -1,6 +1,5 @@
 package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
 
-import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -11,7 +10,6 @@ import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,25 +24,27 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class CLUMOEADSTM extends AbstractMOEAD<PartitionSolution> {
 
-    protected HBGFCrossover hbgfCrossover;
-
     protected PartitionSolution[] savedValues;
     protected double[] utility;
     protected int[] frequency;
 
     JMetalRandom randomGenerator;
 
-    public CLUMOEADSTM(Problem<PartitionSolution> problem, int populationSize, int resultPopulationSize,
-                    int maxEvaluations,
-                    MutationOperator<PartitionSolution> mutation, CrossoverOperator<PartitionSolution> crossover,
-                    FunctionType functionType, String dataDirectory, double neighborhoodSelectionProbability,
-                    int maximumNumberOfReplacedSolutions, int neighborSize) {
+    public CLUMOEADSTM(Problem<PartitionSolution> problem,
+                       int populationSize,
+                       int resultPopulationSize,
+                       int maxEvaluations,
+                       MutationOperator<PartitionSolution> mutation,
+                       CrossoverOperator<PartitionSolution> crossover,
+                       FunctionType functionType, String dataDirectory,
+                       double neighborhoodSelectionProbability,
+                       int maximumNumberOfReplacedSolutions,
+                       int neighborSize) {
         super(problem, populationSize, resultPopulationSize, maxEvaluations, crossover, mutation,
                 functionType,
                 dataDirectory, neighborhoodSelectionProbability, maximumNumberOfReplacedSolutions,
                 neighborSize);
 
-        hbgfCrossover = (HBGFCrossover) crossoverOperator;
 
         savedValues = new PartitionSolution[populationSize];
         utility = new double[populationSize];
@@ -82,7 +82,7 @@ public class CLUMOEADSTM extends AbstractMOEAD<PartitionSolution> {
 
                 parents.remove(2);
 
-                List<PartitionSolution> children = hbgfCrossover.execute(parents);
+                List<PartitionSolution> children = crossoverOperator.execute(parents);
 
                 PartitionSolution child = children.get(0);
                 mutationOperator.execute(child);

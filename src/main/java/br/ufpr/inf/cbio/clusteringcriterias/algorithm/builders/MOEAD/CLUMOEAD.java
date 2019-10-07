@@ -1,6 +1,5 @@
 package br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD;
 
-import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CLUMOEAD extends AbstractMOEAD<PartitionSolution> {
-	protected HBGFCrossover hbgfCrossover ;
 
 	public CLUMOEAD(Problem<PartitionSolution> problem,
 					int populationSize,
@@ -28,7 +26,6 @@ public class CLUMOEAD extends AbstractMOEAD<PartitionSolution> {
 				dataDirectory, neighborhoodSelectionProbability, maximumNumberOfReplacedSolutions,
 				neighborSize);
 
-		hbgfCrossover = (HBGFCrossover) crossoverOperator;
 	}
 
 	@Override
@@ -51,7 +48,7 @@ public class CLUMOEAD extends AbstractMOEAD<PartitionSolution> {
 
 				parents.remove(2);
 
-				List<PartitionSolution> children = hbgfCrossover.execute(parents);
+				List<PartitionSolution> children = crossoverOperator.execute(parents);
 
 				PartitionSolution child = children.get(0) ;
 				mutationOperator.execute(child);
