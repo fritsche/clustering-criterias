@@ -326,3 +326,6 @@ $RECYCLE.BIN/
 /src/main/resources/datasets/reais/optdigits_INIPOP_ARI
 /src/main/resources/datasets/reais/seeds_INIPOP_ARI
 /src/main/resources/datasets/reais/UKC1_INIPOP_ARI
+/experimentResults_V2_double_runs/
+/experimentResults_V3_HBGF_kmax/
+/experimentResults_randompop/

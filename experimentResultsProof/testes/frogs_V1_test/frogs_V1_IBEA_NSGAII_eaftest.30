@@ -1,0 +1,20 @@
+Using default random seed
+Read 60 rows, 473 columns
+Assuming 2 sets of 30 runs each
+
+First-order EAF KS-like two-sample two-sided test
+==================================================
+
+Test statistic = 6/30
+               = 0.2
+
+Using 10000 random permutations to estimate null distribution
+Please be patient... done.
+
+Critical value = 4/30
+               = 0.133333
+
+p-value = 0.0359
+
+Decision: REJECT the null hypothesis
+

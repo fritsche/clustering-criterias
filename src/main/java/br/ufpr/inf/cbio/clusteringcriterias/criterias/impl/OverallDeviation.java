@@ -62,7 +62,7 @@ public class OverallDeviation implements ObjectiveFunction<IntegerSolution> {
             int cluster = s.getVariableValue(i);
             sum += distance.compute(centroids.get(cluster), dataset.getPoint(i));
         }
-
+//        System.out.printf(sum+" ");
         return sum;
     }
 

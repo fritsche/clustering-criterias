@@ -19,20 +19,22 @@ package br.ufpr.inf.cbio.clusteringcriterias.runner;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.CLUIBEABuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEAD;
 import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.MOEAD.CLUMOEADBuilder;
+import br.ufpr.inf.cbio.clusteringcriterias.algorithm.builders.NSGAIII.CLUNSGAIIIBuilder;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.ObjectiveFunction;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.Connectivity;
 import br.ufpr.inf.cbio.clusteringcriterias.criterias.impl.OverallDeviation;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.Dataset;
 import br.ufpr.inf.cbio.clusteringcriterias.dataset.DatasetFactory;
-import br.ufpr.inf.cbio.clusteringcriterias.operator.ClusterRandomMutation;
-import br.ufpr.inf.cbio.clusteringcriterias.operator.HBGFCrossover;
+import br.ufpr.inf.cbio.clusteringcriterias.operator.*;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.ClusterProblem;
 import br.ufpr.inf.cbio.clusteringcriterias.problem.Utils;
 import br.ufpr.inf.cbio.clusteringcriterias.runner.experiment.ExperimentAlgorithmMOCLE;
 import br.ufpr.inf.cbio.clusteringcriterias.solution.PartitionSolution;
 import cern.colt.matrix.DoubleMatrix2D;
+import jep.JepException;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.pesa2.PESA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
@@ -43,6 +45,7 @@ import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
+import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetal.util.point.util.distance.EuclideanDistance;
@@ -58,9 +61,9 @@ import java.util.logging.Level;
  */
 public class Runner {
 
-    public void run() throws FileNotFoundException {
+    public void run() throws FileNotFoundException, JepException {
 
-        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.golub_V1.toString());
+        Dataset dataset = DatasetFactory.getInstance().getDataset(DatasetFactory.DATASET.ds2c2sc13_V3.toString());
 
         Problem problem;
         CrossoverOperator<PartitionSolution> crossover;
@@ -78,34 +81,42 @@ public class Runner {
 
         problem = new ClusterProblem(true, dataset, functions);
 
-        crossover = new HBGFCrossover(20);
+//        crossover = new HBGFCrossover(20);
+        crossover = new HBGFCrossover();
+//        crossover = new MixedHBGFCrossover();
+//        crossover = new MPHBGFCrossover(20);
+//        crossover = new CSPACrossover(dataset);
+//        crossover = new MCLACrossover();
+//        crossover = new CECrossover();
 
-        mutation = new ClusterRandomMutation(0.1);
+//        mutation = new ClusterRandomMutation(0.1);
+//        mutation = new CentroidBasedMutation(1, dataset);
+        mutation = new NullMutation<>();
 
         selection = new BinaryTournamentSelection<>(
                 new RankingAndCrowdingDistanceComparator<>());
 
         int popSize = ((ClusterProblem) problem).getPopulationSize();
-        int maxFitnessEvaluations = popSize * 2;
+        int maxFitnessEvaluations = popSize * 1;
         System.out.println(popSize);
 
         //gera os vetores de peso para utilizar quando necessário
         Utils.generateWeightVector(popSize + (popSize % 2)); //todo: gerar os vetores de peso necessarios para os demais algoritmos
 
 
-//        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem,crossover,mutation,popSize + (popSize % 2))
-//                .setSelectionOperator(selection)
-//                .setOffspringPopulationSize(((popSize + (popSize % 2))/2))
-//                .setMaxEvaluations(maxFitnessEvaluations)
-//                .build();
+        Algorithm<List<PartitionSolution>> algorithm = new NSGAIIBuilder<>(problem,crossover,mutation,popSize + (popSize % 2))
+                .setSelectionOperator(selection)
+                .setOffspringPopulationSize((popSize + (popSize % 2))/2)
+                .setMaxEvaluations(maxFitnessEvaluations)
+                .build();
+
+//            Algorithm<List<PartitionSolution>> algorithm = new CLUNSGAIIIBuilder<>(problem, crossover, mutation)
+//                    .setSelection(selection)
+//                    .setPopulationSize(popSize + (popSize % 2))
+//                    .setMaxEvaluations(maxFitnessEvaluations)
+//                    .build();
 
 
-            Algorithm<List<PartitionSolution>> algorithm = new CLUIBEABuilder(problem)
-                    .setMaxEvaluations(maxFitnessEvaluations)
-                    .setMutation(mutation)
-                    .setPopulationSize(popSize + (popSize % 2))
-                    .setSelection(selection)
-                    .build();
 
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
@@ -130,7 +141,7 @@ public class Runner {
 
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, JepException {
         (new Runner()).run();
     }
 
